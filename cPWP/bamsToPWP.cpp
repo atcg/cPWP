@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Evan McCartney-Melstad. All rights reserved.
 //
 
-#include "readsToPWP.h"
+#include "bamsToPWP.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
