@@ -143,7 +143,7 @@ int convertANGSDcountsToBinary(std::string angsdPrefix, std::string binaryOutput
             catch(const boost::bad_lexical_cast &)
             {
                 //If we're here it's not an integer
-                std::cout << "Problem converting the strings from readCounts into integers!" << endl;
+                std::cout << "Problem converting the strings from readCounts into integers!" << std::endl;
                 exit(EXIT_FAILURE);
             }
             
