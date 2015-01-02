@@ -19,7 +19,6 @@
 #include <boost/iostreams/filtering_streambuf.hpp>
 #include <boost/iostreams/filter/gzip.hpp>
 #include <boost/algorithm/string.hpp>
-#include <boost/lexical_cast.hpp>
 
 
 
@@ -134,18 +133,9 @@ int convertANGSDcountsToBinary(std::string angsdPrefix, std::string binaryOutput
              repetitive regions, we'll throw out any locus that has more than readDepthMax reads
              for any individual at that locus */
             std::vector<int> countsFieldsInts;
-            try
-            {
-                for (size_t i=0; i<countsFields.size(); i++)
-                {
-                    countsFieldsInts.push_back(boost::lexical_cast<int>(countsFields[i]));
-                }
-            }
-            catch(const boost::bad_lexical_cast &)
-            {
-                //If we're here it's not an integer
-                std::cout << "Problem converting the strings from readCounts into integers!" << std::endl;
-                exit(EXIT_FAILURE);
+            for (size_t i=0; i<countsFields.size(); i++) {
+                int countInt = atoi(countsFields[i]);
+                countsFieldsInts.push_back(countInt);
             }
             
             
