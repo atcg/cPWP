@@ -29,3 +29,6 @@ TEST_CASE( "Convert ANGSD read counts to unsigned chars for major and minor coun
     REQUIRE( convertANGSDcountsToBinary("angsdOut", "angsdOut.readCounts.binary", 3, 50) == 0); // 3 individuals, not 2, because generateReadsAndMap actually generates n+1 individuals, since one individual is identical to the reference genome
 }
 
+TEST_CASE( "Calculate PWP from the binary representations of the ANGSD readcounts", "[calcPWP]") {
+    REQUIRE( calcPWPfromBinaryFile ("angsdOut.readCounts.binary", 7000000, 3) == 0);
+}
