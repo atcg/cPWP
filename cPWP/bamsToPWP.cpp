@@ -232,7 +232,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, const int numInd
                         
                         
                         pwp[tortoise][tortoise] += double(locusWeighting) * (2.0 * majorAlleleFreqs[tortoise] * (double(coverages[tortoise]) - double(readCounts[locus * 552 + 2 * tortoise]))) / (double((coverages[tortoise])-1.0));
-                        std::cout << "Cumulative self weighting for individual " << tortoise << ": " << weightings[tortoise][tortoise] << ". Cumulative self PWP: " << pwp[tortoise][tortoise] << std::endl;
+                        std::cout << "Cumulative self weighting for individual " << tortoise << " by locus: " << locus << ": " << weightings[tortoise][tortoise] << ". Cumulative self PWP: " << pwp[tortoise][tortoise] << std::endl;
                         //std::cout << "PWP for self:" << pwp[tortoise][tortoise] << std::endl;
                         //std::cout << "Made it to line 233 for locus " << locus << ". Weightings = " << weightings[tortoise][tortoise] << ". PWP = " << pwp[tortoise][tortoise] << std::endl;
                     }
@@ -241,8 +241,8 @@ int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, const int numInd
                     for( int comparisonTortoise = 0; comparisonTortoise < tortoise; comparisonTortoise++) {
                         if (coverages[comparisonTortoise] > 0) {
                             
-                            std::cout << "Coverages for the two comparison individuals: " << std::to_string((double)coverages[tortoise]) << " and " << std::to_string((double)coverages[comparisonTortoise]) << std::endl;
-                            std::cout << "Major allele freqs for the two comparison individuals: " << std::to_string(majorAlleleFreqs[tortoise]) << " and " << std::to_string(majorAlleleFreqs[comparisonTortoise]) << std::endl;
+                            //std::cout << "Coverages for the two comparison individuals: " << std::to_string((double)coverages[tortoise]) << " and " << std::to_string((double)coverages[comparisonTortoise]) << std::endl;
+                            //std::cout << "Major allele freqs for the two comparison individuals: " << std::to_string(majorAlleleFreqs[tortoise]) << " and " << std::to_string(majorAlleleFreqs[comparisonTortoise]) << std::endl;
                             double locusWeighting = (double)coverages[tortoise] * (double)coverages[comparisonTortoise];
                             weightings[tortoise][comparisonTortoise] += locusWeighting;
                             //std::cout << "locusDiffPWP: " << (double)locusWeighting * ((double)majorAlleleFreqs[tortoise] * (1-(double)majorAlleleFreqs[comparisonTortoise]) + (double)majorAlleleFreqs[comparisonTortoise] * (1-(double)majorAlleleFreqs[tortoise])) << std::endl;
