@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Evan McCartney-Melstad. All rights reserved.
 //
 
-
+#include "readsToPWP.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
@@ -17,7 +17,7 @@
 #include <boost/iostreams/filtering_stream.hpp>
 #include <boost/iostreams/filtering_streambuf.hpp>
 #include <boost/iostreams/filter/gzip.hpp>
-#include "readsToPWP.h"
+
 
 
 

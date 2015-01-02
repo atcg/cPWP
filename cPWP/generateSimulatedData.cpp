@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Evan McCartney-Melstad. All rights reserved.
 //
 
+#include "generateSimulatedData.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
@@ -13,7 +14,6 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include "generateSimulatedData.h"
 
 
 
