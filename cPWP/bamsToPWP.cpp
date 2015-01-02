@@ -176,7 +176,7 @@ int convertANGSDcountsToBinary(std::string angsdPrefix, std::string binaryOutput
 
 
 
-int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, int numIndividuals) {
+int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, const int numIndividuals) {
     
     
     //****MODIFY THIS TO ONLY READ IN N LOCI AT A TIME, INSTEAD OF USING THE ENTIRE FILE****
@@ -206,6 +206,8 @@ int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, int numIndividua
         
         long double pwp[numIndividuals][numIndividuals] = {0.0}; // This is the matrix that will hold the pwp estimates
         unsigned long long int weightings[numIndividuals][numIndividuals] = {0.0}; // This is the matrix that will hold the weightings--need to use a long long because the values are basically equal to the coverage squared by the end
+        
+        
         //std::cout << "Made it to line 207" << std::endl;
         
         for( int locus = 0; locus < totalLoci; locus++) {
