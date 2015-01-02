@@ -123,6 +123,7 @@ int convertANGSDcountsToBinary(std::string angsdPrefix, std::string binaryOutput
              line represents a locus) */
             std::vector<std::string> countsFields;
             boost::algorithm::split(countsFields, str, boost::is_any_of("\t"), boost::token_compress_on);
+            
             std::vector<std::string> mafFields;
             boost::algorithm::split(mafFields, mafStr, boost::is_any_of("\t"), boost::token_compress_on);
             
@@ -130,6 +131,22 @@ int convertANGSDcountsToBinary(std::string angsdPrefix, std::string binaryOutput
             /* Since we're using a weighted PWP calculation, and since we don't want to overweight
              repetitive regions, we'll throw out any locus that has more than readDepthMax reads
              for any individual at that locus */
+            std::vector<int> countsFieldsInts;
+            try
+            {
+                for (size_t i=0; i<countsFields.size(); i++)
+                {
+                    countsFieldsInts.push_back(boost::lexical_cast<int>(countsFields[i]));
+                }
+            }
+            catch(const boost::bad_lexical_cast &)
+            {
+                //If we're here it's not an integer
+                std::cout << "Problem converting the strings from readCounts into integers!" << endl;
+                exit(EXIT_FAILURE);
+            }
+            
+            
             auto countMax = std::minmax_element(countsFields.begin(),countsFields.end());
             if (*countMax.second > readDepthMax) {
                 continue; // Skip to the next locus
