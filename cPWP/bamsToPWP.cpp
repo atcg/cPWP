@@ -199,7 +199,9 @@ int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, int numIndividua
         std::cout << "the total size of the file is " << size << std::endl;
         
         // We now have an array of numIndividuals * 2 (major and minor allele) * 1million (loci)
-        int totalLoci = (int)size / (numIndividuals*2); // The 1 million locus file has 999,999 sites in it (because of header line)
+        //int totalLoci = (int)size / (numIndividuals*2); // The 1 million locus file has 999,999 sites in it (because of header line)
+        int totalLoci = 100000;
+        
         std::cout << "Made it to line 203" << std::endl;
         
         long double pwp[numIndividuals][numIndividuals]; // This is the matrix that will hold the pwp estimates
