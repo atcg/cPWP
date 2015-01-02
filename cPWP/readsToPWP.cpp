@@ -149,7 +149,7 @@ int convertANGSDcountsToBinary(std::string angsdPrefix, std::string binaryOutput
             }
             
             
-            auto countMax = std::minmax_element(countsFields.begin(),countsFields.end());
+            auto countMax = std::minmax_element(countsFieldsInts.begin(),countsFieldsInts.end());
             if (*countMax.second > readDepthMax) {
                 continue; // Skip to the next locus
             }
