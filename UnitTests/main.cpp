@@ -17,18 +17,19 @@
 
 TEST_CASE( "Simulated reads are generated", "[generateReads]" ) {
     // Make sure that the read simulation finishes
-    REQUIRE( generateReadsAndMap(2, 0.01, "0.0", "300", "50", "100000", "100", "1234", "scaffold_0.fasta") == 0);
+    REQUIRE( generateReadsAndMap(1, 0.01, "0.0", "300", "50", "100000", "100", "1234", "scaffold_0.fasta") == 0);
 
 }
+
 
 TEST_CASE( "Run ANGSD on simulated reads", "[runANGSD]" ) {
     REQUIRE( runANGSDforReadCounts("bamlist.txt", "angsdOut", "10", "angsdOutLog.txt") == 0);
 }
 
 TEST_CASE( "Convert ANGSD read counts to unsigned chars for major and minor counts", "[convertCountsToBinary]") {
-    REQUIRE( convertANGSDcountsToBinary("angsdOut", "angsdOut.readCounts.binary", 3, 50) == 0); // 3 individuals, not 2, because generateReadsAndMap actually generates n+1 individuals, since one individual is identical to the reference genome
+    REQUIRE( convertANGSDcountsToBinary("angsdOut", "angsdOut.readCounts.binary", 2, 50) == 0); // 3 individuals, not 2, because generateReadsAndMap actually generates n+1 individuals, since one individual is identical to the reference genome
 }
 
 TEST_CASE( "Calculate PWP from the binary representations of the ANGSD readcounts", "[calcPWP]") {
-    REQUIRE( calcPWPfromBinaryFile ("angsdOut.readCounts.binary", 70000, 3) == 0);
+    REQUIRE( calcPWPfromBinaryFile ("angsdOut.readCounts.binary", 70000, 2) == 0);
 }
