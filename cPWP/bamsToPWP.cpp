@@ -191,7 +191,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, int numIndividua
         unsigned char* readCounts;
         readCounts = new unsigned char[size];
         
-        file.seekg (0, ios::beg); // Go back to the beginning of the file
+        file.seekg (0, std::ios::beg); // Go back to the beginning of the file
         file.read((char*)readCounts, size); // cast to a char* to give to file.read
         file.close();
         
@@ -251,7 +251,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, int numIndividua
         int rowCounter = 0;
         //std::cout << "Made it past the ofstream call" << std::endl;
         if (!pwpOUT) {
-            cerr << "Crap, pwptest.txt didn't open!" << std::endl;
+            std::cerr << "Crap, pwptest.txt didn't open!" << std::endl;
         } else {
             // std::cout << "Made it past the check to see if !pwpOUT" << std::endl;
             for (int tortoise=0; tortoise <= (numIndividuals-1); tortoise++) {
