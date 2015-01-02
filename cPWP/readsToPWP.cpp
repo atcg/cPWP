@@ -134,7 +134,7 @@ int convertANGSDcountsToBinary(std::string angsdPrefix, std::string binaryOutput
              for any individual at that locus */
             std::vector<int> countsFieldsInts;
             for (size_t i=0; i<countsFields.size(); i++) {
-                int countInt = atoi(countsFields[i]);
+                int countInt = atoi((countsFields[i]).c_str());
                 countsFieldsInts.push_back(countInt);
             }
             
