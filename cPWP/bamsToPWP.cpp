@@ -231,9 +231,9 @@ int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, const int numInd
                         weightings[tortoise][tortoise] += (unsigned long long)locusWeighting; // This is an int--discrete number of reads
                         
                         
-                        pwp[tortoise][tortoise] += double(locusWeighting) * (2.0 * majorAlleleFreqs[tortoise] * (double(coverages[tortoise]) - double(readCounts[locus * 552 + 2 * tortoise]))) / (double((coverages[tortoise])-1.0));
-                        std::cout << "Locus self weighting for individual " << tortoise << " at locus: " << locus << ": " << locusWeighting << ". Locus self PWP: " << double(locusWeighting) * (2.0 * majorAlleleFreqs[tortoise] * (double(coverages[tortoise]) - double(readCounts[locus * 552 + 2 * tortoise]))) / (double((coverages[tortoise])-1.0)) << std::endl;
-                        std::cout << "\tmajorAlleleFreq: " << majorAlleleFreqs[tortoise] << ". Coverages: " << double(coverages[tortoise]) << ". readCounts: " << double(readCounts[locus * 552 + 2 * tortoise]) << std::endl;
+                        pwp[tortoise][tortoise] += double(locusWeighting) * (2.0 * majorAlleleFreqs[tortoise] * (double(coverages[tortoise]) - double(readCounts[locus * numIndividuals * 2 + 2 * tortoise]))) / (double((coverages[tortoise])-1.0));
+                        std::cout << "Locus self weighting for individual " << tortoise << " at locus: " << locus << ": " << locusWeighting << ". Locus self PWP: " << double(locusWeighting) * (2.0 * majorAlleleFreqs[tortoise] * (double(coverages[tortoise]) - double(readCounts[locus * numIndividuals * 2 + 2 * tortoise]))) / (double((coverages[tortoise])-1.0)) << std::endl;
+                        std::cout << "\tmajorAlleleFreq: " << majorAlleleFreqs[tortoise] << ". Coverages: " << double(coverages[tortoise]) << ". readCounts: " << double(readCounts[locus * numIndividuals * 2 + 2 * tortoise]) << std::endl;
                         //std::cout << "PWP for self:" << pwp[tortoise][tortoise] << std::endl;
                         //std::cout << "Made it to line 233 for locus " << locus << ". Weightings = " << weightings[tortoise][tortoise] << ". PWP = " << pwp[tortoise][tortoise] << std::endl;
                     }
