@@ -251,7 +251,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, int numIndividua
         int rowCounter = 0;
         //std::cout << "Made it past the ofstream call" << std::endl;
         if (!pwpOUT) {
-            std:cerr << "Crap, pwptest.txt didn't open!" << std::endl;
+            std::cerr << "Crap, pwptest.txt didn't open!" << std::endl;
         } else {
             // std::cout << "Made it past the check to see if !pwpOUT" << std::endl;
             for (int tortoise=0; tortoise <= (3-1); tortoise++) {
