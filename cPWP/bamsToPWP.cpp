@@ -199,24 +199,24 @@ int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, int numIndividua
         std::cout << "the total size of the file is " << size << std::endl;
         
         // We now have an array of numIndividuals * 2 (major and minor allele) * 1million (loci)
-        int totalLoci = (int)size / (numIndividuals*2); // The 1 million locus file has 999,999 sites in it (because of header line)
+        int totalLoci = (int)size / (3*2); // The 1 million locus file has 999,999 sites in it (because of header line)
         
-        long double pwp[numIndividuals][numIndividuals]; // This is the matrix that will hold the pwp estimates
-        unsigned long long int weightings[numIndividuals][numIndividuals]; // This is the matrix that will hold the weightings--need to use a long long because the values are basically equal to the coverage squared by the end
+        long double pwp[3][3]; // This is the matrix that will hold the pwp estimates
+        unsigned long long int weightings[3][3]; // This is the matrix that will hold the weightings--need to use a long long because the values are basically equal to the coverage squared by the end
         
         for( int locus = 0; locus < totalLoci; locus++) {
-            int coverages[numIndividuals];
-            double *majorAlleleFreqs = new double[numIndividuals]; // This will hold the major allele frequencies for that locus for each tortoise
+            int coverages[3];
+            double *majorAlleleFreqs = new double[3]; // This will hold the major allele frequencies for that locus for each tortoise
             
-            for( int tortoise = 0; tortoise <= (numIndividuals-1); tortoise++ ) {
+            for( int tortoise = 0; tortoise <= (3-1); tortoise++ ) {
                 
-                coverages[tortoise] = int(readCounts[locus * (numIndividuals*2) + 2 * tortoise]) + int(readCounts[locus * (numIndividuals*2) + 2 * tortoise + 1]); // Hold the coverages for each locus
+                coverages[tortoise] = int(readCounts[locus * (3*2) + 2 * tortoise]) + int(readCounts[locus * (3*2) + 2 * tortoise + 1]); // Hold the coverages for each locus
                 //std::cout << coverages[tortoise] << std::endl;
                 
                 //std::cout << "Total coverage for tortoise " << tortoise << " at locus " << locus+1 << ": " << coverages[tortoise] << std::endl;
                 
                 if ( coverages[tortoise] > 0 ) {
-                    majorAlleleFreqs[tortoise] = (double)readCounts[locus * (numIndividuals*2) + (2*tortoise)] / (double)coverages[tortoise]; // Not necessarily an int, but could be 0 or 1
+                    majorAlleleFreqs[tortoise] = (double)readCounts[locus * (3*2) + (2*tortoise)] / (double)coverages[tortoise]; // Not necessarily an int, but could be 0 or 1
                     //std::cout << "Major allele frequency: " << majorAlleleFreqs[tortoise] << std::endl;
                     
                     if (coverages[tortoise] > 1) {
@@ -251,10 +251,10 @@ int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, int numIndividua
         int rowCounter = 0;
         //std::cout << "Made it past the ofstream call" << std::endl;
         if (!pwpOUT) {
-            std::cerr << "Crap, pwptest.txt didn't open!" << std::endl;
+            std:cerr << "Crap, pwptest.txt didn't open!" << std::endl;
         } else {
             // std::cout << "Made it past the check to see if !pwpOUT" << std::endl;
-            for (int tortoise=0; tortoise <= (numIndividuals-1); tortoise++) {
+            for (int tortoise=0; tortoise <= (3-1); tortoise++) {
                 // std::cout << "Made it past the beginning of the end for loop" << std::endl;
                 for (int comparisonTortoise = 0; comparisonTortoise < tortoise; comparisonTortoise++) {
                     rowCounter++;
