@@ -71,7 +71,7 @@ int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::s
         } else {
             std::cout << "**********\nExecuted the following command: " << bwaCommandToRun << "\n**********\n";
         }
-        bamsFile << bamOut << endl;
+        bamsFile << bamOut << std::endl;
         step++; // Move on to the next individual
     }
     bamsFile.close();
