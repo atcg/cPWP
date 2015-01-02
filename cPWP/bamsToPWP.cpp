@@ -233,7 +233,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, const int numInd
                         
                         pwp[tortoise][tortoise] += double(locusWeighting) * (2.0 * majorAlleleFreqs[tortoise] * (double(coverages[tortoise]) - double(readCounts[locus * 552 + 2 * tortoise]))) / (double((coverages[tortoise])-1.0));
                         //std::cout << "PWP for self:" << pwp[tortoise][tortoise] << std::endl;
-                        std::cout << "Made it to line 233 for locus " << locus << ". Weightings = " << weightings[tortoise][tortoise] << ". PWP = " << pwp[tortoise][tortoise] << std::endl;
+                        //std::cout << "Made it to line 233 for locus " << locus << ". Weightings = " << weightings[tortoise][tortoise] << ". PWP = " << pwp[tortoise][tortoise] << std::endl;
                     }
                     
                     
@@ -247,7 +247,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, const int numInd
                             //std::cout << "locusDiffPWP: " << (double)locusWeighting * ((double)majorAlleleFreqs[tortoise] * (1-(double)majorAlleleFreqs[comparisonTortoise]) + (double)majorAlleleFreqs[comparisonTortoise] * (1-(double)majorAlleleFreqs[tortoise])) << std::endl;
                             pwp[tortoise][comparisonTortoise] += (double)locusWeighting * (majorAlleleFreqs[tortoise] * (1.0-majorAlleleFreqs[comparisonTortoise]) + majorAlleleFreqs[comparisonTortoise] * (1.0-majorAlleleFreqs[tortoise]));
                             //std::cout << pwp[tortoise][comparisonTortoise] << std::endl;
-                            std::cout << "Made it to line 245 for locus " << locus << " and individuals " << tortoise << " and " << comparisonTortoise << ". Weightings = " << weightings[tortoise][comparisonTortoise] << ". PWP = " << pwp[tortoise][comparisonTortoise] << std::endl;
+                            std::cout << "Cumulative weightings = " << weightings[tortoise][comparisonTortoise] << ". Cumulative PWP = " << pwp[tortoise][comparisonTortoise] << std::endl;
                         }
                     }
                 }
