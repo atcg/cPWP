@@ -14,7 +14,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include "readsToPWP.h"
+#include "bamsToPWP.h"
 
 using namespace std;
 
