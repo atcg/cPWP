@@ -1,0 +1,9 @@
+*.xcodeproj
+cPWP.xcodeproj
+cPWP.xcodeproj/
+Build/
+DerivedData/
+cPWP.xcodeproj/project.xcworkspace 
+cPWP.xcodeproj/project.pbxproj 
+cPWP.xcodeproj/xcuserdata
+cPWP.xcodeproj/*
