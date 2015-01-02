@@ -209,19 +209,19 @@ int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, int numIndividua
         std::cout << "Made it to line 207" << std::endl;
         
         for( int locus = 0; locus < totalLoci; locus++) {
-            std::cout << "Made it to line 210" << std::endl;
+            std::cout << "Made it to line 210 for locus " << locus << std::endl;
             int coverages[numIndividuals];
             double *majorAlleleFreqs = new double[numIndividuals]; // This will hold the major allele frequencies for that locus for each tortoise
             
             for( int tortoise = 0; tortoise <= (numIndividuals-1); tortoise++ ) {
-                std::cout << "Made it to line 215" << std::endl;
+                std::cout << "Made it to line 215 for locus " << locus << std::endl;
                 coverages[tortoise] = int(readCounts[locus * (numIndividuals*2) + 2 * tortoise]) + int(readCounts[locus * (numIndividuals*2) + 2 * tortoise + 1]); // Hold the coverages for each locus
                 //std::cout << coverages[tortoise] << std::endl;
                 
                 //std::cout << "Total coverage for tortoise " << tortoise << " at locus " << locus+1 << ": " << coverages[tortoise] << std::endl;
                 
                 if ( coverages[tortoise] > 0 ) {
-                    std::cout << "Made it to line 222" << std::endl;
+                    std::cout << "Made it to line 222 for locus " << locus << std::endl;
                     majorAlleleFreqs[tortoise] = (double)readCounts[locus * (numIndividuals*2) + (2*tortoise)] / (double)coverages[tortoise]; // Not necessarily an int, but could be 0 or 1
                     //std::cout << "Major allele frequency: " << majorAlleleFreqs[tortoise] << std::endl;
                     
