@@ -27,7 +27,7 @@ int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::s
     std::ofstream bamsFile;
     bamsFile.open("bamlist.txt", std::ios::out | std::ios::app);
     
-    std::cout << "**********\nChecking if processor is available...";
+    std::cout << "**********\nChecking if processor is available to run wgsim...";
     if (system(NULL)) puts ("Ok");
     else exit (EXIT_FAILURE);
     

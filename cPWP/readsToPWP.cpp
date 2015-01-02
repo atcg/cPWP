@@ -24,7 +24,7 @@
 
 
 int runANGSDforReadCounts (std::string bamlist, std::string angsdPrefix, std::string nThreads, std::string angsdOutputLog) {
-    std::cout << "**********\nChecking if processor is available...**********\n";
+    std::cout << "**********\nChecking if processor is available to run ANGSD...**********\n";
     if (system(NULL)) puts ("Ok");
     else exit (EXIT_FAILURE);
     
