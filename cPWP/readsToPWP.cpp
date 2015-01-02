@@ -131,7 +131,7 @@ int convertANGSDcountsToBinary(std::string angsdPrefix, std::string binaryOutput
              repetitive regions, we'll throw out any locus that has more than readDepthMax reads
              for any individual at that locus */
             auto countMax = std::minmax_element(countsFields.begin(),countsFields.end());
-            if (*result.second > readDepthMax) {
+            if (*countMax.second > readDepthMax) {
                 continue; // Skip to the next locus
             }
             
