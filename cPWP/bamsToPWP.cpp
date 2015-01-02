@@ -200,7 +200,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, int numIndividua
         
         // We now have an array of numIndividuals * 2 (major and minor allele) * 1million (loci)
         //int totalLoci = (int)size / (numIndividuals*2); // The 1 million locus file has 999,999 sites in it (because of header line)
-        int totalLoci = 100000;
+        int totalLoci = numLoci;
         
         //std::cout << "Made it to line 203" << std::endl;
         
