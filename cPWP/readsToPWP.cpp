@@ -121,9 +121,9 @@ int convertANGSDcountsToBinary(std::string angsdPrefix, std::string binaryOutput
              be recreated for every line of the gzipped counts and mafs files output by angsd (each 
              line represents a locus) */
             std::vector<std::string> countsFields;
-            boost::split(countsFields, str, boost::is_any_of("\t"), boost::token_compress_on);
+            boost::algorithm::split(countsFields, str, boost::is_any_of("\t"), boost::token_compress_on);
             std::vector<std::string> mafFields;
-            boost::split(mafFields, mafStr, boost::is_any_of("\t"), boost::token_compress_on);
+            boost::algorithm::split(mafFields, mafStr, boost::is_any_of("\t"), boost::token_compress_on);
             
             
             /* Since we're using a weighted PWP calculation, and since we don't want to overweight
