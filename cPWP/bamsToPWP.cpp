@@ -203,8 +203,8 @@ int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, const int numInd
         int totalLoci = numLoci;
         
         //std::cout << "Made it to line 203" << std::endl;
-        
-        long double pwp[numIndividuals][numIndividuals] = {0.0}; // This is the matrix that will hold the pwp estimates
+        std::vector< std::vector<long double> > pwp(numIndividuals), std::vector<long double>(numIndividuals,0)) ;
+        //long double pwp[numIndividuals][numIndividuals] = {0.0}; // This is the matrix that will hold the pwp estimates
         unsigned long long int weightings[numIndividuals][numIndividuals] = {0.0}; // This is the matrix that will hold the weightings--need to use a long long because the values are basically equal to the coverage squared by the end
         
         
