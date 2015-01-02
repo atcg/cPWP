@@ -17,7 +17,7 @@
 
 TEST_CASE( "Simulated reads are generated", "[generateReads]" ) {
     // Make sure that the read simulation finishes
-    REQUIRE( generateReadsAndMap(1, 0.01, "0.0", "300", "50", "100000", "100", "1234", "scaffold_0.fasta") == 0);
+    REQUIRE( generateReadsAndMap(1, 0.01, "0.0", "300", "50", "1000000", "100", "1234", "scaffold_0.fasta") == 0);
 
 }
 
