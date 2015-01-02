@@ -17,7 +17,7 @@
 #include <boost/iostreams/filtering_stream.hpp>
 #include <boost/iostreams/filtering_streambuf.hpp>
 #include <boost/iostreams/filter/gzip.hpp>
-#includ "readsToPWP.h"
+#include "readsToPWP.h"
 
 
 
