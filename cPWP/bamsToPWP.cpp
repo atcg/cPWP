@@ -202,11 +202,11 @@ int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, int numIndividua
         //int totalLoci = (int)size / (numIndividuals*2); // The 1 million locus file has 999,999 sites in it (because of header line)
         int totalLoci = 100000;
         
-        std::cout << "Made it to line 203" << std::endl;
+        //std::cout << "Made it to line 203" << std::endl;
         
         long double pwp[numIndividuals][numIndividuals]; // This is the matrix that will hold the pwp estimates
         unsigned long long int weightings[numIndividuals][numIndividuals]; // This is the matrix that will hold the weightings--need to use a long long because the values are basically equal to the coverage squared by the end
-        std::cout << "Made it to line 207" << std::endl;
+        //std::cout << "Made it to line 207" << std::endl;
         
         for( int locus = 0; locus < totalLoci; locus++) {
             int coverages[numIndividuals];
@@ -237,7 +237,8 @@ int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, int numIndividua
                     for( int comparisonTortoise = 0; comparisonTortoise < tortoise; comparisonTortoise++) {
                         if (coverages[comparisonTortoise] > 0) {
                             
-                            
+                            std::cout << "Coverages for the two comparison individuals: " << std::to_string((double)coverages[tortoise]) << " and " << std::to_string((double)coverages[comparisonTortoise]) << std::endl;
+                            std::cout << "Major allele freqs for the two comparison individuals: " << std::to_string(majorAlleleFreqs[tortoise]) << " and " << std::to_string(majorAlleleFreqs[comparisonTortoise]) << std::endl;
                             double locusWeighting = (double)coverages[tortoise] * (double)coverages[comparisonTortoise];
                             weightings[tortoise][comparisonTortoise] += locusWeighting;
                             //std::cout << "locusDiffPWP: " << (double)locusWeighting * ((double)majorAlleleFreqs[tortoise] * (1-(double)majorAlleleFreqs[comparisonTortoise]) + (double)majorAlleleFreqs[comparisonTortoise] * (1-(double)majorAlleleFreqs[tortoise])) << std::endl;
