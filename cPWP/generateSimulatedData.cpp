@@ -54,6 +54,19 @@ int createReferenceGenome (int totalBases, double gcContent, std::string genomeO
         genomeOut << singleBase;
         baseCounter++;
     }
+    
+    // Now index the genome for bwa    
+    std::cout << "**********\nChecking if processor is available to run bwa index...";
+    if (system(NULL)) puts ("OK");
+    else exit (EXIT_FAILURE);
+    std::string bwaIndexCommand = "bwa index " + genomeOutFile;
+    system(bwaIndexCommand);
+    if (system((bwaIndexCommand).c_str()) != 0) {
+        std::cout << "**********\nFailure running the following command: " << bwaIndexCommand << "\n**********\n";
+        exit(EXIT_FAILURE);
+    } else {
+        std::cout << "**********\nExecuted the following command: " << bwaIndexCommand << "\n**********\n";
+    }
     return 0;
 }
 
