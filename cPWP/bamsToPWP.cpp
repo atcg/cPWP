@@ -270,7 +270,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, const int numInd
             // std::cout << "Made it past the check to see if !pwpOUT" << std::endl;
             for (int tortoise=0; tortoise <= (numIndividuals-1); tortoise++) {
                 // std::cout << "Made it past the beginning of the end for loop" << std::endl;
-                for (int comparisonTortoise = 0; comparisonTortoise < tortoise; comparisonTortoise++) {
+                for (int comparisonTortoise = 0; comparisonTortoise <= tortoise; comparisonTortoise++) {
                     rowCounter++;
                     
                     if (pwp[tortoise][comparisonTortoise] / weightings[tortoise][comparisonTortoise] < 0.12 and pwp[tortoise][comparisonTortoise] / weightings[tortoise][comparisonTortoise] > 0) {
