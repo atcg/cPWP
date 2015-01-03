@@ -22,21 +22,21 @@ TEST_CASE( "Simulated reads are generated", "[generateReads]" ) {
  */
 
 TEST_CASE( "Generate reference genome for simulation tests", "[generateReference]") {
-    REQUIRE( createReferenceGenome(10000000, 0.42668722, "simulatedReferenceGenome.fasta") == 0 );
+    REQUIRE( createReferenceGenome(100000000, 0.42668722, "simulatedReferenceGenome.fasta") == 0 );
 }
 
 TEST_CASE( "Generate mutated reference genomes and simulate reads", "[genomeAndReadSim]") {
-    REQUIRE( generateReadsAndMap(2, 0.01, "300", "25", "100", "100", "1234", "simulatedReferenceGenome.fasta", "10") == 0);
+    REQUIRE( generateReadsAndMap(5, 0.01, "300", "25", "100", "100", "1234", "simulatedReferenceGenome.fasta", "25") == 0);
 }
 
 TEST_CASE( "Run ANGSD on simulated reads", "[runANGSD]" ) {
-    REQUIRE( runANGSDforReadCounts("bamlist.txt", "angsdOut", "10", "angsdOutLog.txt") == 0);
+    REQUIRE( runANGSDforReadCounts("bamlist.txt", "angsdOut", "25", "angsdOutLog.txt") == 0);
 }
 
 TEST_CASE( "Convert ANGSD read counts to unsigned chars for major and minor counts", "[convertCountsToBinary]") {
-    REQUIRE( convertANGSDcountsToBinary("angsdOut", "angsdOut.readCounts.binary", 3, 5000) == 0); // 3 individuals, not 2, because generateReadsAndMap actually generates n+1 individuals, since one individual is identical to the reference genome. And 5000 as a max because we don't want to exclude any loci for this test
+    REQUIRE( convertANGSDcountsToBinary("angsdOut", "angsdOut.readCounts.binary", 6, 5000) == 0); // 3 individuals, not 2, because generateReadsAndMap actually generates n+1 individuals, since one individual is identical to the reference genome. And 5000 as a max because we don't want to exclude any loci for this test
 }
 
 TEST_CASE( "Calculate PWP from the binary representations of the ANGSD readcounts", "[calcPWP]") {
-    REQUIRE( calcPWPfromBinaryFile ("angsdOut.readCounts.binary", 74963, 3) == 0);
+    REQUIRE( calcPWPfromBinaryFile ("angsdOut.readCounts.binary", 74963, 6) == 0);
 }
