@@ -20,7 +20,6 @@
 int createReferenceGenome (int totalBases, double gcContent) {
     std::ofstream genomeOut("simulatedReferenceGenome.fasta");
     genomeOut << ">Fake_scaffold0";
-    static const char bases[] = "ATCG";
     // Set up the random number generator:
     std::random_device rd;
     std::mt19937 gen(rd());
