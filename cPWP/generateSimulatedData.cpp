@@ -44,7 +44,10 @@ int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::s
         
         // Since we're identifying individuals by the looping variable (an int), we need to convert that to a string to use it in the file names
         std::ostringstream pirsIndSS;
+        std::ostringstream pirsIndNumSS;
         pirsIndSS << "ind" + pirsInd;
+        pirsIndNumSS << pirsInd;
+        std::string pirsIndNum = pirsIndNumSS.str();
         std::string indName = pirsIndSS.str();
         std::string pirsGenomeSTDOUT = indName + "_genome.stdout";
         std::string pirsGenomeSTDERR = indName + "_genome.stderr";
@@ -77,7 +80,7 @@ int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::s
         // Generate the bwa mem command and then run it using a system call
         std::string R1 = indReadsPrefix + "_" + readLengths + "_" + libFragmentSize + "_1.fq";
         std::string R2 = indReadsPrefix + "_" + readLengths + "_" + libFragmentSize + "_2.fq";
-        std::string bamOut = "ind" + ind + ".bam";
+        std::string bamOut = "ind" + pirsIndNum + ".bam";
         std::string bwaCommandToRun = "bwa mem -t " + threads + " " + reference + " " + R1 + " " + R2 + " | samtools view -bS - | samtools sort -T temp -o " + bamOut + " -";
         if (system((bwaCommandToRun).c_str()) != 0) {
             std::cout << "**********\nFailure running the following command: " << bwaCommandToRun << "\n**********\n";
