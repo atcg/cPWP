@@ -40,7 +40,7 @@ int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::s
         mutStr << mutRate;
         std::string mutRateString = mutStr.str();
         
-        std::cout << "**********\nGenerating reference genome for individual " << step << " using a mutation rate of " << mutRateString << " from the reference genome\n**********\n";
+        std::cout << "**********\nGenerating reference genome for individual " << pirsInd << " using a mutation rate of " << mutRateString << " from the reference genome\n**********\n";
         
         // Since we're identifying individuals by the looping variable (an int), we need to convert that to a string to use it in the file names
         std::ostringstream pirsIndSS;
@@ -53,7 +53,7 @@ int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::s
         std::string pirsGenomeSTDERR = indName + "_genome.stderr";
     
         // Simulate the other strand of the mutated reference genome. On the first individual it should be identical to the reference (because mutStr = 0 * mutationRateStepSize
-        std::string pirsCommandToRun = "pirs diploid -s " + mutStr + " -d 0.00 -v 0.00 -S 1234 -o " + indName + " " + reference + " >" pirsGenomeSTDOUT + " 2>" + pirsGenomeSTDERR;
+        std::string pirsCommandToRun = "pirs diploid -s " + mutRateString + " -d 0.00 -v 0.00 -S 1234 -o " + indName + " " + reference + " >" pirsGenomeSTDOUT + " 2>" + pirsGenomeSTDERR;
         if (system((pirsCommandToRun).c_str()) != 0) {
             std::cout << "**********\nFailure running the following command: " << pirsCommandToRun << "\n**********\n";
             exit(EXIT_FAILURE);
@@ -68,7 +68,7 @@ int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::s
         std::string pirsSimSTDOUT = indName + "_reads.stdout";
         std::string pirsSimSTDERR = indName + "_reads.stderr";
         std::string indReadsPrefix = indName + "_reads";
-        std::string pirsSimulateCommandToRun = "pirs simulate --diploid " + reference + " " + mutatedChromosome + " -l " << readLengths << " -x " << depth << " -m " << libFragmentSize << " -v " << stdevLibFragmentSize << " --no-substitution-errors --no-indel-errors --no-gc-content-bias -o " + indReadsPrefix + " >" + pirsSimSTDOUT + " 2>" + pirsSimSTDERR;
+        std::string pirsSimulateCommandToRun = "pirs simulate --diploid " + reference + " " + mutatedChromosome + " -l " + readLengths + " -x " + depth + " -m " + libFragmentSize + " -v " + stdevLibFragmentSize + " --no-substitution-errors --no-indel-errors --no-gc-content-bias -o " + indReadsPrefix + " >" + pirsSimSTDOUT + " 2>" + pirsSimSTDERR;
         if (system((pirsSimulateCommandToRun).c_str()) != 0) {
             std::cout << "**********\nFailure running the following command: " << pirsSimulateCommandToRun << "\n**********\n";
             exit(EXIT_FAILURE);
