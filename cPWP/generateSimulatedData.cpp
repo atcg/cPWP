@@ -14,7 +14,52 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <random>
 
+
+int createReferenceGenome (int totalBases, double gcContent) {
+    std::ofstream genomeOut("simulatedReferenceGenome.fasta");
+    genomeOut << ">Fake_scaffold0";
+    static const char bases[] = "ATCG";
+    // Set up the random number generator:
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<> dis(0, 1);
+    
+    
+    std::string genomeString; // Will store the genome
+    
+    char pickBase() {
+        float rando = dis(gen);
+        if (rando < gcContent) {
+            if (dis(gen) < 0.50) {
+                return "C";
+            } else {
+                return "G";
+            }
+        } else {
+            if (dis(gen) < 0.50) {
+                return "A";
+            } else {
+                return "T";
+            }
+        }
+    }
+    
+    for (int position; position < totalBases; position++) {
+        genomeString += pickBase();
+    }
+    
+    int baseCounter = 0;
+    for(char& singleBase : genomeString) {
+        if (baseCounter % 80 == 0) {
+            genomeOut << "\n";
+        }
+        genomeOut << singleBase;
+        baseCounter++;
+    }
+    return 0;
+}
 
 
 
