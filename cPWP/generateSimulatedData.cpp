@@ -53,7 +53,7 @@ int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::s
         std::string pirsGenomeSTDERR = indName + "_genome.stderr";
     
         // Simulate the other strand of the mutated reference genome. On the first individual it should be identical to the reference (because mutStr = 0 * mutationRateStepSize
-        std::string pirsCommandToRun = "pirs diploid -s " + mutRateString + " -d 0.00 -v 0.00 -S 1234 -o " + indName + " " + reference + " >" pirsGenomeSTDOUT + " 2>" + pirsGenomeSTDERR;
+        std::string pirsCommandToRun = "pirs diploid -s " + mutRateString + " -d 0.00 -v 0.00 -S 1234 -o " + indName + " " + reference + " >" + pirsGenomeSTDOUT + " 2>" + pirsGenomeSTDERR;
         if (system((pirsCommandToRun).c_str()) != 0) {
             std::cout << "**********\nFailure running the following command: " << pirsCommandToRun << "\n**********\n";
             exit(EXIT_FAILURE);
