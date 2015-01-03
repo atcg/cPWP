@@ -29,25 +29,22 @@ int createReferenceGenome (int totalBases, double gcContent) {
     
     std::string genomeString; // Will store the genome
     
-    char pickBase() {
+
+    for (int position; position < totalBases; position++) {
         float rando = dis(gen);
         if (rando < gcContent) {
             if (dis(gen) < 0.50) {
-                return "C";
+                genomeString += "C";
             } else {
-                return "G";
+                genomeString += "G";
             }
         } else {
             if (dis(gen) < 0.50) {
-                return "A";
+                genomeString += "A";
             } else {
-                return "T";
+                genomeString += "T";
             }
         }
-    }
-    
-    for (int position; position < totalBases; position++) {
-        genomeString += pickBase();
     }
     
     int baseCounter = 0;
