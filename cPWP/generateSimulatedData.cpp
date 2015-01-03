@@ -54,6 +54,7 @@ int createReferenceGenome (int totalBases, double gcContent, std::string genomeO
         genomeOut << singleBase;
         baseCounter++;
     }
+    genomeOut << std::endl;
     
     // Now index the genome for bwa
     std::cout << "**********\nChecking if processor is available to run bwa index...";
