@@ -45,7 +45,7 @@ int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::s
         // Since we're identifying individuals by the looping variable (an int), we need to convert that to a string to use it in the file names
         std::ostringstream pirsIndSS;
         std::ostringstream pirsIndNumSS;
-        pirsIndSS << "ind" + pirsInd;
+        pirsIndSS << "ind" << pirsInd;
         pirsIndNumSS << pirsInd;
         std::string pirsIndNum = pirsIndNumSS.str();
         std::string indName = pirsIndSS.str();
