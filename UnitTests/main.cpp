@@ -14,13 +14,16 @@
 
 
 
-
+/*
 TEST_CASE( "Simulated reads are generated", "[generateReads]" ) {
     // Make sure that the read simulation finishes
     REQUIRE( generateReadsAndMap(1, 0.01, "0.0", "300", "50", "1000000", "100", "1234", "scaffold_0.fasta") == 0);
-
 }
+ */
 
+TEST_CASE( "Generate mutated reference genomes and simulate reads", "[genomeAndReadSim]") {
+    REQUIRE( generateReadsAndMap(2, 0.01, "300", "25", "20", "100", "1234", "scaffold_0.fasta", "10") == 0);
+}
 
 TEST_CASE( "Run ANGSD on simulated reads", "[runANGSD]" ) {
     REQUIRE( runANGSDforReadCounts("bamlist.txt", "angsdOut", "10", "angsdOutLog.txt") == 0);

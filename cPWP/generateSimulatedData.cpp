@@ -18,7 +18,7 @@
 
 
 
-int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::string baseErrorRate, std::string libFragmentSize, std::string stdevLibFragmentSize, std::string depth, std::string readLengths, std::string randomSeed, std::string reference, std::string threads) {
+int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::string libFragmentSize, std::string stdevLibFragmentSize, std::string depth, std::string readLengths, std::string randomSeed, std::string reference, std::string threads) {
 /*// supply 1) number of individuals, 2) the mutation rate steps between them, 3) the base error rate, 4) the average library fragment size, 5) the standard deviation of the library fragment size, 6) the number of read pairs for each individual, 7) read lengths (per read), 8) random number generator seed
  
     So, for instance, if numIndividuals is 5, and mutationRateSteps is 0.01, then there will be four individuals generated with mutation rate steps of 0.01, 0.02, 0.03, and 0.04 away from the reference genome. Individual 0 is created as being identical to the reference genome (mutation rate parameter set to 0.00).
