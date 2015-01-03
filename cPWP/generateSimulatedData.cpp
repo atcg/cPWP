@@ -53,30 +53,42 @@ int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::s
         std::string pirsGenomeSTDERR = indName + "_genome.stderr";
     
         // Simulate the other strand of the mutated reference genome. On the first individual it should be identical to the reference (because mutStr = 0 * mutationRateStepSize
-        std::string pirsCommandToRun = "pirs diploid -s " + mutRateString + " -d 0.00 -v 0.00 -S 1234 -o " + indName + " " + reference + " >" + pirsGenomeSTDOUT + " 2>" + pirsGenomeSTDERR;
-        if (system((pirsCommandToRun).c_str()) != 0) {
-            std::cout << "**********\nFailure running the following command: " << pirsCommandToRun << "\n**********\n";
-            exit(EXIT_FAILURE);
+        if (pirsInd == 0) {
+            // For this individual, we are not simulating any polymorphisms. So instead of the diploid pirs simulate command, we can use a haploid simulate command on the original reference
+            std::string pirsSimSTDOUT = indName + "_reads.stdout";
+            std::string pirsSimSTDERR = indName + "_reads.stderr";
+            std::string indReadsPrefix = indName + "_reads";
+            
+            std::string pirsSimulateCommandToRun = "pirs simulate " + reference + " -l " + readLengths + " -x " + depth + " -m " + libFragmentSize + " -v " + stdevLibFragmentSize + " --no-substitution-errors --no-indel-errors --no-gc-content-bias -o " + indReadsPrefix + " >" + pirsSimSTDOUT + " 2>" + pirsSimSTDERR;
+            if (system((pirsSimulateCommandToRun).c_str()) != 0) {
+                std::cout << "**********\nFailure running the following command: " << pirsSimulateCommandToRun << "\n**********\n";
+                exit(EXIT_FAILURE);
+            } else {
+                std::cout << "**********\nExecuted the following command: " << pirsSimulateCommandToRun << "\n**********\n";
+            }
         } else {
-            std::cout << "**********\nExecuted the following command: " << pirsCommandToRun << "\n**********\n";
+            std::string pirsCommandToRun = "pirs diploid -s " + mutRateString + " -d 0.00 -v 0.00 -S 1234 -o " + indName + " " + reference + " >" + pirsGenomeSTDOUT + " 2>" + pirsGenomeSTDERR;
+            if (system((pirsCommandToRun).c_str()) != 0) {
+                std::cout << "**********\nFailure running the following command: " << pirsCommandToRun << "\n**********\n";
+                exit(EXIT_FAILURE);
+            } else {
+                std::cout << "**********\nExecuted the following command: " << pirsCommandToRun << "\n**********\n";
+            }
+            // The following file is output by the pirs diploid command:
+            std::string mutatedChromosome = indName + ".snp.fa";
+            
+            // After generating the mutated strand for each individual, we simulate reads from both strands for each individual. Parameterize the
+            std::string pirsSimSTDOUT = indName + "_reads.stdout";
+            std::string pirsSimSTDERR = indName + "_reads.stderr";
+            std::string indReadsPrefix = indName + "_reads";
+            std::string pirsSimulateCommandToRun = "pirs simulate --diploid " + reference + " " + mutatedChromosome + " -l " + readLengths + " -x " + depth + " -m " + libFragmentSize + " -v " + stdevLibFragmentSize + " --no-substitution-errors --no-indel-errors --no-gc-content-bias -o " + indReadsPrefix + " >" + pirsSimSTDOUT + " 2>" + pirsSimSTDERR;
+            if (system((pirsSimulateCommandToRun).c_str()) != 0) {
+                std::cout << "**********\nFailure running the following command: " << pirsSimulateCommandToRun << "\n**********\n";
+                exit(EXIT_FAILURE);
+            } else {
+                std::cout << "**********\nExecuted the following command: " << pirsSimulateCommandToRun << "\n**********\n";
+            }
         }
-        // The following file is output by the pirs diploid command:
-        std::string mutatedChromosome = indName + ".snp.fa";
-        
-        
-        // After generating the mutated strand for each individual, we simulate reads from both strands for each individual. Parameterize the
-        std::string pirsSimSTDOUT = indName + "_reads.stdout";
-        std::string pirsSimSTDERR = indName + "_reads.stderr";
-        std::string indReadsPrefix = indName + "_reads";
-        std::string pirsSimulateCommandToRun = "pirs simulate --diploid " + reference + " " + mutatedChromosome + " -l " + readLengths + " -x " + depth + " -m " + libFragmentSize + " -v " + stdevLibFragmentSize + " --no-substitution-errors --no-indel-errors --no-gc-content-bias -o " + indReadsPrefix + " >" + pirsSimSTDOUT + " 2>" + pirsSimSTDERR;
-        if (system((pirsSimulateCommandToRun).c_str()) != 0) {
-            std::cout << "**********\nFailure running the following command: " << pirsSimulateCommandToRun << "\n**********\n";
-            exit(EXIT_FAILURE);
-        } else {
-            std::cout << "**********\nExecuted the following command: " << pirsSimulateCommandToRun << "\n**********\n";
-        }
-        
-        
         // Generate the bwa mem command and then run it using a system call
         std::string R1 = indReadsPrefix + "_" + readLengths + "_" + libFragmentSize + "_1.fq";
         std::string R2 = indReadsPrefix + "_" + readLengths + "_" + libFragmentSize + "_2.fq";
@@ -89,7 +101,7 @@ int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::s
             std::cout << "**********\nExecuted the following command: " << bwaCommandToRun << "\n**********\n";
         }
         bamsFile << bamOut << std::endl;
-        
+
         
         pirsInd++; // Move on to the next individual
     }
