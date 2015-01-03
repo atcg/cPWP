@@ -33,7 +33,7 @@ int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::s
     else exit (EXIT_FAILURE);
     
     int pirsInd = 0;
-    while(pirsInd < numIndividuals) {
+    while(pirsInd <= numIndividuals) {
         double mutRate = pirsInd * mutationRateStepSize;
         // Covert the mutation rate into a string for the system command
         std::ostringstream mutStr;
