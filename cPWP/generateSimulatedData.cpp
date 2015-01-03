@@ -18,7 +18,7 @@
 
 
 
-int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::string baseErrorRate, std::string libFragmentSize, std::string stdevLibFragmentSize, std::string numReadPairs, std::string readLengths, std::string randomSeed, std::string reference, std::string threads) {
+int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::string baseErrorRate, std::string libFragmentSize, std::string stdevLibFragmentSize, std::string depth, std::string readLengths, std::string randomSeed, std::string reference, std::string threads) {
 /*// supply 1) number of individuals, 2) the mutation rate steps between them, 3) the base error rate, 4) the average library fragment size, 5) the standard deviation of the library fragment size, 6) the number of read pairs for each individual, 7) read lengths (per read), 8) random number generator seed
  
     So, for instance, if numIndividuals is 5, and mutationRateSteps is 0.01, then there will be four individuals generated with mutation rate steps of 0.01, 0.02, 0.03, and 0.04 away from the reference genome. Individual 0 is created as being identical to the reference genome (mutation rate parameter set to 0.00).
@@ -27,11 +27,75 @@ int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::s
     std::ofstream bamsFile;
     bamsFile.open("bamlist.txt", std::ios::out | std::ios::app);
     
+    
+    std::cout << "**********\nChecking if processor is available to run pirs...";
+    if (system(NULL)) puts ("OK");
+    else exit (EXIT_FAILURE);
+    
+    int pirsInd = 0;
+    while(pirsInd < numIndividuals) {
+        double mutRate = pirsInd * mutationRateStepSize;
+        // Covert the mutation rate into a string for the system command
+        std::ostringstream mutStr;
+        mutStr << mutRate;
+        std::string mutRateString = mutStr.str();
+        
+        std::cout << "**********\nGenerating reference genome for individual " << step << " using a mutation rate of " << mutRateString << " from the reference genome\n**********\n";
+        
+        // Since we're identifying individuals by the looping variable (an int), we need to convert that to a string to use it in the file names
+        std::ostringstream pirsIndSS;
+        pirsIndSS << "ind" + pirsInd;
+        std::string indName = pirsIndSS.str();
+        std::string pirsGenomeSTDOUT = indName + "_genome.stdout";
+        std::string pirsGenomeSTDERR = indName + "_genome.stderr";
+    
+        // Simulate the other strand of the mutated reference genome. On the first individual it should be identical to the reference (because mutStr = 0 * mutationRateStepSize
+        std::string pirsCommandToRun = "pirs diploid -s " + mutStr + " -d 0.00 -v 0.00 -S 1234 -o " + indName + " " + reference + " >" pirsGenomeSTDOUT + " 2>" + pirsGenomeSTDERR;
+        if (system((pirsCommandToRun).c_str()) != 0) {
+            std::cout << "**********\nFailure running the following command: " << pirsCommandToRun << "\n**********\n";
+            exit(EXIT_FAILURE);
+        } else {
+            std::cout << "**********\nExecuted the following command: " << pirsCommandToRun << "\n**********\n";
+        }
+        // The following file is output by the pirs diploid command:
+        std::string mutatedChromosome = indName + ".snp.fa";
+        
+        
+        // After generating the mutated strand for each individual, we simulate reads from both strands for each individual. Parameterize the
+        std::string pirsSimSTDOUT = indName + "_reads.stdout";
+        std::string pirsSimSTDERR = indName + "_reads.stderr";
+        std::string indReadsPrefix = indName + "_reads";
+        std::string pirsSimulateCommandToRun = "pirs simulate --diploid " + reference + " " + mutatedChromosome + " -l " << readLengths << " -x " << depth << " -m " << libFragmentSize << " -v " << stdevLibFragmentSize << " --no-substitution-errors --no-indel-errors --no-gc-content-bias -o " + indReadsPrefix + " >" + pirsSimSTDOUT + " 2>" + pirsSimSTDERR;
+        if (system((pirsSimulateCommandToRun).c_str()) != 0) {
+            std::cout << "**********\nFailure running the following command: " << pirsSimulateCommandToRun << "\n**********\n";
+            exit(EXIT_FAILURE);
+        } else {
+            std::cout << "**********\nExecuted the following command: " << pirsSimulateCommandToRun << "\n**********\n";
+        }
+        
+        
+        // Generate the bwa mem command and then run it using a system call
+        std::string R1 = indReadsPrefix + "_" + readLengths + "_" + libFragmentSize + "_1.fq";
+        std::string R2 = indReadsPrefix + "_" + readLengths + "_" + libFragmentSize + "_2.fq";
+        std::string bamOut = "ind" + ind + ".bam";
+        std::string bwaCommandToRun = "bwa mem -t " + threads + " " + reference + " " + R1 + " " + R2 + " | samtools view -bS - | samtools sort -T temp -o " + bamOut + " -";
+        if (system((bwaCommandToRun).c_str()) != 0) {
+            std::cout << "**********\nFailure running the following command: " << bwaCommandToRun << "\n**********\n";
+            exit(EXIT_FAILURE);
+        } else {
+            std::cout << "**********\nExecuted the following command: " << bwaCommandToRun << "\n**********\n";
+        }
+        bamsFile << bamOut << std::endl;
+        
+        
+        pirsInd++; // Move on to the next individual
+    }
+    
+    /* Implementation with wgsim
     std::cout << "**********\nChecking if processor is available to run wgsim...";
     if (system(NULL)) puts ("Ok");
     else exit (EXIT_FAILURE);
     
-    std::vector<std::string> wgsimCommands;
     int step = 0;
     while(step <= numIndividuals) {
         double mutRate = step * mutationRateStepSize;
@@ -74,6 +138,7 @@ int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::s
         bamsFile << bamOut << std::endl;
         step++; // Move on to the next individual
     }
+    */
     bamsFile.close();
     return 0;
 }
@@ -122,3 +187,4 @@ int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::s
  -h            haplotype mode
  
  */
+
