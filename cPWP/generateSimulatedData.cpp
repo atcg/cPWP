@@ -68,7 +68,7 @@ int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::s
         std::string pirsSimSTDOUT = indName + "_reads.stdout";
         std::string pirsSimSTDERR = indName + "_reads.stderr";
         std::string indReadsPrefix = indName + "_reads";
-        std::string pirsSimulateCommandToRun = "pirs simulate --diploid " + reference + " " + mutatedChromosome + " -l " + readLengths + " -x " + depth + " -m " + libFragmentSize + " -v " + stdevLibFragmentSize + " --s 0.00000000000001 --no-indel-errors --no-gc-content-bias -o " + indReadsPrefix + " >" + pirsSimSTDOUT + " 2>" + pirsSimSTDERR;
+        std::string pirsSimulateCommandToRun = "pirs simulate --diploid " + reference + " " + mutatedChromosome + " -l " + readLengths + " -x " + depth + " -m " + libFragmentSize + " -v " + stdevLibFragmentSize + " --s 0.000001 --no-indel-errors --no-gc-content-bias -o " + indReadsPrefix + " >" + pirsSimSTDOUT + " 2>" + pirsSimSTDERR;
         if (system((pirsSimulateCommandToRun).c_str()) != 0) {
             std::cout << "**********\nFailure running the following command: " << pirsSimulateCommandToRun << "\n**********\n";
             exit(EXIT_FAILURE);
