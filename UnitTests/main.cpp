@@ -25,6 +25,11 @@ TEST_CASE( "Generate reference genome for simulation tests", "[generateReference
     REQUIRE( createReferenceGenome(10000, 0.42668722, "simulatedReferenceGenome.fasta") == 0 );
 }
 
+TEST_CASE ( "Mutate a reference genome", "[mutateRefGenome]") {
+    REQUIRE( createMutatedGenome("simulatedReferenceGenome.fasta", "simulatedReferenceGenomeMutated.fasta", 0.01) == 0);
+}
+
+
 TEST_CASE( "Generate sequence reads", "[perfectReads]") {
     REQUIRE( generatePerfectReads ("simulatedReferenceGenome.fasta", 1, 100, 300, "blah") == 0);
 }

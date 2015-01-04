@@ -74,6 +74,91 @@ int createReferenceGenome (int totalBases, double gcContent, std::string genomeO
 }
 
 
+int createMutatedGenome (std::string reference, std::string mutatedReferenceFile, float percDivergent) {
+    // First put the entire genome string into a single line
+    std::ifstream referenceFile(reference);
+    std::string line;
+    std::string wholeGenome;
+    std::ofstream mutGenomeOut(mutatedReferenceFile);
+    std::string headerLine;
+    int header = 1;
+    while(std::getline(referenceFile, line)) {
+        if (header == 1) {
+            headerLine = line;
+            header--;
+            continue; // Skip the first line (fasta defline)
+        }
+        wholeGenome += line;
+    }
+    
+    /* Since we don't want to put any mutations early in the reference (we want decent coverage at them),
+     we'll subtract 100bp from each end of the genome, and evenly space the rest of the mutations after that
+     */
+    int numMutations = (wholeGenome.length()) * percDivergent;
+    int mutationEveryNbp = (wholeGenome.length() - 200) / numMutations;
+    
+    /* So, let's imaging the reference is 10,000 bp long, and is 1% (0.01) divergent.
+     At this stage we'd then have numMutations = 100 mutations, with mutationEveryNbp = (9800/100) every 98bp
+    */
+    int finalGenomePosition = wholeGenome.length() - 100;
+    int baseNum = 0;
+    int mutationCounter = 0;
+    char abase = 'A';
+    char tbase = 'T';
+    char cbase = 'C';
+    char gbase = 'G';
+    string aMutBases [] = {"T", "C", "G"};
+    string tMutBases [] = {"A", "C", "G"};
+    string cMutBases [] = {"A", "T", "G"};
+    string gMutBases [] = {"A", "T", "C"};
+    while (baseNum < finalGenomePosition) {
+        if (baseNum % 80 == 0) {
+            mutGenomeOut << std::endl;
+        }
+        
+        if (baseNum < 100) {
+            mutGenomeOut << wholeGenome[baseNum];
+            baseNum++;
+            continue; // Don't want to put mutations in the first 100 bp
+        }
+        
+        
+        if (baseNum % mutationEveryNbp == 0) {
+            int randomBaseNum = rand() % 4; // Pick which random base to assign later
+            // Mutate that base of the reference and print out
+            if (wholeGenome[baseNum] == abase) {
+                mutGenomeOut << aMutBases[randomBaseNum];
+                baseNum++;
+                mutationCounter++;
+                continue;
+            } else if (wholeGenome[baseNum] == tbase) {
+                mutGenomeOut << tMutBases[randomBaseNum];
+                baseNum++;
+                mutationCounter++;
+                continue;
+            } else if (wholeGenome[baseNum] == cbase) {
+                mutGenomeOut << cMutBases[randomBaseNum];
+                baseNum++;
+                mutationCounter++;
+                continue;
+            } else if (wholeGenome[baseNum] == gbase) {
+                mutGenomeOut << gMutBases[randomBaseNum];
+                baseNum++;
+                mutationCounter++;
+                continue;
+            } else {
+                std::cout << "Base " << wholeGenome[baseNum] << " doesn't equal A, T, C, or G. Exiting" << std::endl;
+                exit(EXIT_FAILURE);
+            }
+        }
+        mutGenomeOut << wholeGenome[baseNum];
+        baseNum++;
+    }
+    mutGenomeOut.close();
+    std::cout << "Inserted " << mutationCounter << " total mutations into " << mutatedReferenceFile << std::endl;
+}
+
+
 int generatePerfectReads (std::string reference, unsigned int stagger, unsigned int readLengths, unsigned int fragmentLengths, std::string readPrefix) {
     /* This function generates error-free paired-end sequencing reads from a fasta reference. The reference
      must be a single sequence in fasta format (only one > should be present), with only ATCG characters and
