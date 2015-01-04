@@ -90,7 +90,7 @@ int createMutatedGenome (std::string reference, std::string mutatedReferenceFile
         }
         wholeGenome += line;
     }
-    mutatedReferenceFile << headerLine << std::endl;
+    mutGenomeOut << headerLine << std::endl;
     
     /* Since we don't want to put any mutations early in the reference (we want decent coverage at them),
      we'll subtract 100bp from each end of the genome, and evenly space the rest of the mutations after that
