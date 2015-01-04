@@ -26,5 +26,5 @@ int main (int argc, char *argv[]) {
     
     /* Full 272 tort SNP list: calcPWPfromBinaryFile ("272torts_snp1e6_minmapq20minq30.binarycounts", 56575856, 272);
      */
-     calcPWPfromBinaryFile ("allSNPs272torts.binary8bitunsigned", 2000000, 272, "2millionloci_272torts.pwp");
+     calcPWPfromBinaryFile ("allSNPs272torts.binary8bitunsigned", argv[1], 272, "2millionloci_272torts.pwp");
 }
