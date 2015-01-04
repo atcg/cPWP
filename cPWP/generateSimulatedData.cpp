@@ -92,9 +92,9 @@ int generatePerfectReads (std::string reference, unsigned int stagger, unsigned 
     std::string R1out = readPrefix + "_R1.fastq";
     std::string R2out = readPrefix + "_R2.fastq";
     std::ofstream R1;
-    R1.open(R1out);
+    R1.open(R1out, std::ios_out);
     std::ofstream R2;
-    R2.open(R2out);
+    R2.open(R2out, std::ios_out);
     int positionCounter = 1;
     int maxPosition = wholeGenome.length() - fragmentLengths;
     while (positionCounter < maxPosition) {
