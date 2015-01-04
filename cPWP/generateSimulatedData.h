@@ -15,7 +15,7 @@
 int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::string baseErrorRate, std::string libFragmentSize, std::string stdevLibFragmentSize, std::string numReadPairs, std::string readLengths, std::string randomSeed, std::string reference, std::string threads = "10");
 */
 int createReferenceGenome (int totalBases, double gcContent, std::string genomeOutFile);
-int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::string libFragmentSize, std::string stdevLibFragmentSize, std::string depth, std::string readLengths, std::string randomSeed, std::string reference, std::string threads = "25");
+int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::string libFragmentSize, std::string stdevLibFragmentSize, std::string numReadPairs, std::string readLengths, std::string randomSeed, std::string reference, std::string threads = "25");
 
 
 
