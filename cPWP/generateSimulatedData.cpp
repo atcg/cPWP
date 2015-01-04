@@ -89,8 +89,8 @@ int generatePerfectReads (std::string reference, int stagger, int readLengths, i
         }
         wholeGenome += line;
     }
-    std::string R1out = readPrefix . "_R1.fastq";
-    std::string R2out = readPrefix . "_R2.fastq";
+    std::string R1out = readPrefix + "_R1.fastq";
+    std::string R2out = readPrefix + "_R2.fastq";
     std::ofstream R1;
     R1.open(R1out);
     std::ofstream R2;
