@@ -26,5 +26,6 @@ int main (int argc, char *argv[]) {
     
     /* Full 272 tort SNP list: calcPWPfromBinaryFile ("272torts_snp1e6_minmapq20minq30.binarycounts", 56575856, 272);
      */
-     calcPWPfromBinaryFile ("allSNPs272torts.binary8bitunsigned", atoi(argv[1]), 272, argv[2]);
+     calcPWPfromBinaryFile (argv[1], atoi(argv[2]), 272, argv[3]);
+    // First supply the binary readcounts file, then the number of loci to consider, then the number of individuals, then the output file
 }
