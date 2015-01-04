@@ -31,7 +31,11 @@ TEST_CASE ( "Mutate a reference genome", "[mutateRefGenome]") {
 
 
 TEST_CASE( "Generate sequence reads", "[perfectReads]") {
-    REQUIRE( generatePerfectReads ("simulatedReferenceGenome.fasta", 1, 100, 300, "blah") == 0);
+    REQUIRE( generatePerfectReads ("simulatedReferenceGenome.fasta", 1, 100, 300, "normalRef") == 0);
+}
+
+TEST_CASE( "Generate sequence reads", "[perfectReads]") {
+    REQUIRE( generatePerfectReads ("simulatedReferenceGenomeMutated.fasta", 1, 100, 300, "mutatedRef") == 0);
 }
 
 /*
