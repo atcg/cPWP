@@ -107,10 +107,10 @@ int createMutatedGenome (std::string reference, std::string mutatedReferenceFile
     char tbase = 'T';
     char cbase = 'C';
     char gbase = 'G';
-    string aMutBases [] = {"T", "C", "G"};
-    string tMutBases [] = {"A", "C", "G"};
-    string cMutBases [] = {"A", "T", "G"};
-    string gMutBases [] = {"A", "T", "C"};
+    std::string aMutBases [] = {"T", "C", "G"};
+    std::string tMutBases [] = {"A", "C", "G"};
+    std::string cMutBases [] = {"A", "T", "G"};
+    std::string gMutBases [] = {"A", "T", "C"};
     while (baseNum < finalGenomePosition) {
         if (baseNum % 80 == 0) {
             mutGenomeOut << std::endl;
