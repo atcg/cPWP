@@ -90,7 +90,7 @@ int createMutatedGenome (std::string reference, std::string mutatedReferenceFile
         }
         wholeGenome += line;
     }
-    mutGenomeOut << headerLine << std::endl;
+    mutGenomeOut << headerLine;
     
     /* Since we don't want to put any mutations early in the reference (we want decent coverage at them),
      we'll subtract 100bp from each end of the genome, and evenly space the rest of the mutations after that
@@ -125,7 +125,7 @@ int createMutatedGenome (std::string reference, std::string mutatedReferenceFile
         
         
         if (baseNum % mutationEveryNbp == 0) {
-            int randomBaseNum = rand() % 4; // Pick which random base to assign later
+            int randomBaseNum = rand() % 3; // Pick which random base to assign later
             // Mutate that base of the reference and print out
             if (wholeGenome[baseNum] == abase) {
                 mutGenomeOut << aMutBases[randomBaseNum];
