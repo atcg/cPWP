@@ -103,7 +103,7 @@ int generatePerfectReads (std::string reference, unsigned int stagger, unsigned 
         R2 << "@" << readPrefix << "genome_position=" << (positionCounter+fragmentLengths-readLengths) << "to" << (positionCounter+fragmentLengths-readLengths-1) << " 2:N:0:AAAAAAAA\n";
         std::string R2Seq = wholeGenome.substr((positionCounter+fragmentLengths-readLengths-1),readLengths);
         reverse(R2Seq.begin(), R2Seq.end());
-        for(int i = 0; i < R2Seq.length(); i++) {
+        for(unsigned int i = 0; i < R2Seq.length(); i++) {
             if (R2Seq[i] == "A") {
                 R2 << "T";
             } else if (R2Seq[i] == "T") {
