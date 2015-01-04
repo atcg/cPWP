@@ -113,7 +113,7 @@ int createMutatedGenome (std::string reference, std::string mutatedReferenceFile
     std::string tMutBases [] = {"A", "C", "G"};
     std::string cMutBases [] = {"A", "T", "G"};
     std::string gMutBases [] = {"A", "T", "C"};
-    while (baseNum < finalGenomePosition) {
+    while (baseNum < wholeGenome.length()) {
         if (baseNum % 80 == 0) {
             mutGenomeOut << std::endl;
         }
@@ -122,6 +122,11 @@ int createMutatedGenome (std::string reference, std::string mutatedReferenceFile
             mutGenomeOut << wholeGenome[baseNum];
             baseNum++;
             continue; // Don't want to put mutations in the first 100 bp
+        }
+        if (baseNum > wholeGenome.length() - 100) {
+            mutGenomeOut << wholeGenome[baseNum];
+            baseNum++;
+            continue; // Don't want to put any mutations in the last 100 bp
         }
         
         
