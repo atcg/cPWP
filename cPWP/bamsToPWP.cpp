@@ -87,27 +87,33 @@ unsigned char readCountToUnsignedChar(int individual, std::string allele, std::v
 
 int convertANGSDcountsToBinary(std::string angsdPrefix, std::string binaryOutputFileName, int numIndividuals, int readDepthMax)
 {
-    std::string countsFileName = angsdPrefix + ".counts.gz";
-    std::string mafsFileName = angsdPrefix + ".mafs.gz";
-    std::ifstream countsFile(countsFileName, std::ios_base::in | std::ios_base::binary);
-    std::ifstream mafsFile(mafsFileName, std::ios_base::in | std::ios_base::binary);
+    //std::string countsFileName = angsdPrefix + ".counts.gz";
+    std::string countsFileName = angsdPrefix + ".counts";
+    //std::string mafsFileName = angsdPrefix + ".mafs.gz";
+    std::string mafsFileName = angsdPrefix + ".mafs";
+    //std::ifstream countsFile(countsFileName, std::ios_base::in | std::ios_base::binary);
+    std::ifstream countsFile(countsFileName, std::ios_base::in);
+    //std::ifstream mafsFile(mafsFileName, std::ios_base::in | std::ios_base::binary);
+    std::ifstream mafsFile(mafsFileName, std::ios_base::in);
     std::ofstream outCountsFile(binaryOutputFileName, std::ios_base::out | std::ios_base::binary);
     
     try {
+        /*
         boost::iostreams::filtering_istream in;
         boost::iostreams::filtering_istream inMafs;
         in.push(boost::iostreams::gzip_decompressor());
         in.push(countsFile);
         inMafs.push(boost::iostreams::gzip_decompressor());
         inMafs.push(mafsFile);
+        */
         int counter = 0;
         //int numIndividuals = 3;
-        for(std::string str; std::getline(in, str); )
+        for(std::string str; std::getline(countsFile, str); )
         {
             /* Make sure to get the maf string before we do anything else to keep it in
              sync with the counts string */
             std::string mafStr;
-            std::getline(inMafs, mafStr);
+            std::getline(mafsFile, mafStr);
             
             // Skip the first line of the counts and mafs file, since it is a header
             if (counter == 0) {
