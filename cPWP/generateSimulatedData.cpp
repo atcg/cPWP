@@ -121,8 +121,8 @@ int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::s
                 std::cout << "**********\nExecuted the following command: " << pirsSimulateCommandToRun << "\n**********\n";
             }
             */
-            std::string R1out = "ind" + indName + "_R1.fastq";
-            std::string R2out = "ind" + indName + "_R2.fastq";
+            std::string R1out = indName + "_R1.fastq";
+            std::string R2out = indName + "_R2.fastq";
             
             std::string wgsimCommandToRun = "wgsim -N " + numReadPairs + " -r 0 -R 0.00 -X 0.00 -d " + libFragmentSize + " -s " + stdevLibFragmentSize +  " -1 " + readLengths + " -2 " + readLengths + " -S " + randomSeed + " -e 0.00 " + reference + " " + R1out + " " + R2out + " > ind0_polymorphisms"; // No indels, no probability of indel extension, no base call error rates
             
@@ -169,9 +169,9 @@ int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::s
 
             
             // Generate the output file names as strings
-            std::string R1out = "ind" + indName + "_R1.fastq";
-            std::string R2out = "ind" + indName + "_R2.fastq";
-            std::string polymorphismFile = "ind" + indName + "_polymorphisms.txt";
+            std::string R1out = indName + "_R1.fastq";
+            std::string R2out = indName + "_R2.fastq";
+            std::string polymorphismFile = indName + "_polymorphisms.txt";
             
             // Generate the wgsim command and then run it using a system call
             std::string wgsimCommandToRun = "wgsim -N " + numReadPairs + " -r " + mutRateString + " -R 0.00 -X 0.00 -d " + libFragmentSize + " -s " + stdevLibFragmentSize +  " -1 " + readLengths + " -2 " + readLengths + " -S " + randomSeed + " -e0 " + reference + " " + R1out + " " + R2out + " > " + polymorphismFile; // No indels, no probability of indel extension, no base call error rates
