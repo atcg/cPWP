@@ -163,7 +163,7 @@ int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::s
             mutStrs << mutRate;
             std::string mutRateString = mutStrs.str();
             
-            std::cout << "**********\nGenerating sequence reads for individual " << step << " using a mutation rate of " << mutRateString << " from the reference genome\n**********\n";
+            std::cout << "**********\nGenerating sequence reads for individual " << indName << " using a mutation rate of " << mutRateString << " from the reference genome\n**********\n";
             
             // Get the number of the individual as a string
 
