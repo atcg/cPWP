@@ -21,8 +21,10 @@ int main (int argc, char *argv[]) {
     
     
     // Throw out any loci that have an individual with at least 10 reads at that locus
-    convertANGSDcountsToBinary("272torts_snp1e6_minmapq20minq30", "272torts_snp1e6_minmapq20minq30.binarycounts", 272, 10);
+    // Actually, the Perl version is way faster--use that
+    // convertANGSDcountsToBinary("272torts_snp1e6_minmapq20minq30", "272torts_snp1e6_minmapq20minq30.binarycounts", 272, 10);
     
-    
-    calcPWPfromBinaryFile ("272torts_snp1e6_minmapq20minq30.binarycounts", 56575856, 272);
+    /* Full 272 tort SNP list: calcPWPfromBinaryFile ("272torts_snp1e6_minmapq20minq30.binarycounts", 56575856, 272);
+     */
+     calcPWPfromBinaryFile ("allSNPs272torts.binary8bitunsigned", 2000000, 272, "2millionloci_272torts.pwp");
 }

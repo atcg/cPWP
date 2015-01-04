@@ -184,7 +184,7 @@ int convertANGSDcountsToBinary(std::string angsdPrefix, std::string binaryOutput
 
 
 
-int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, const int numIndividuals) {
+int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, const int numIndividuals, std::string outFile) {
     
     
     //****MODIFY THIS TO ONLY READ IN N LOCI AT A TIME, INSTEAD OF USING THE ENTIRE FILE****
@@ -267,11 +267,11 @@ int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, const int numInd
         //std::cout << pwp[2][1] / weightings[2][1] << std::endl;
         
         // Now print out the final output to the pairwise pi file:
-        std::ofstream pwpOUT ("pwptest.txt");
+        std::ofstream pwpOUT (outFile);
         int rowCounter = 0;
         //std::cout << "Made it past the ofstream call" << std::endl;
         if (!pwpOUT) {
-            std::cerr << "Crap, pwptest.txt didn't open!" << std::endl;
+            std::cerr << "Crap, " << outFile << "didn't open!" << std::endl;
         } else {
             // std::cout << "Made it past the check to see if !pwpOUT" << std::endl;
             for (int tortoise=0; tortoise <= (numIndividuals-1); tortoise++) {
