@@ -101,7 +101,6 @@ int createMutatedGenome (std::string reference, std::string mutatedReferenceFile
     /* So, let's imaging the reference is 10,000 bp long, and is 1% (0.01) divergent.
      At this stage we'd then have numMutations = 100 mutations, with mutationEveryNbp = (9800/100) every 98bp
     */
-    int finalGenomePosition = wholeGenome.length() - 100;
     unsigned int baseNum = 0;
     int mutationCounter = 0;
     int lastMutationPosition = 0;
