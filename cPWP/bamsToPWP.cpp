@@ -226,7 +226,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, const int numInd
                 if ( coverages[tortoise] > 0 ) {
                     //std::cout << "Made it to line 222 for locus " << locus << std::endl;
                     majorAlleleFreqs[tortoise] = (double)readCounts[locus * (numIndividuals*2) + (2*tortoise)] / (double)coverages[tortoise]; // Not necessarily an int, but could be 0 or 1
-                    std::cout << "Major allele frequency for individual " << tortoise << " at locus " << locus << ": " << majorAlleleFreqs[tortoise] << std::endl;
+                    //std::cout << "Major allele frequency for individual " << tortoise << " at locus " << locus << ": " << majorAlleleFreqs[tortoise] << std::endl;
                     
                     if (coverages[tortoise] > 1) {
                         unsigned long long locusWeighting = coverages[tortoise]*(coverages[tortoise]-1);
@@ -235,7 +235,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, const int numInd
                         
                         pwp[tortoise][tortoise] += double(locusWeighting) * (2.0 * majorAlleleFreqs[tortoise] * (double(coverages[tortoise]) - double(readCounts[locus * numIndividuals * 2 + 2 * tortoise]))) / (double((coverages[tortoise])-1.0));
                         //std::cout << "Locus self weighting for individual " << tortoise << " at locus: " << locus << ": " << locusWeighting << ". Locus self PWP: " << double(locusWeighting) * (2.0 * majorAlleleFreqs[tortoise] * (double(coverages[tortoise]) - double(readCounts[locus * numIndividuals * 2 + 2 * tortoise]))) / (double((coverages[tortoise])-1.0)) << std::endl;
-                        std::cout << "\tmajorAlleleFreq: " << majorAlleleFreqs[tortoise] << ". Coverages: " << double(coverages[tortoise]) << ". readCounts: " << double(readCounts[locus * numIndividuals * 2 + 2 * tortoise]) << std::endl;
+                        //std::cout << "\tmajorAlleleFreq: " << majorAlleleFreqs[tortoise] << ". Coverages: " << double(coverages[tortoise]) << ". readCounts: " << double(readCounts[locus * numIndividuals * 2 + 2 * tortoise]) << std::endl;
                         //std::cout << "PWP for self:" << pwp[tortoise][tortoise] << std::endl;
                         //std::cout << "Made it to line 233 for locus " << locus << ". Weightings = " << weightings[tortoise][tortoise] << ". PWP = " << pwp[tortoise][tortoise] << std::endl;
                     }

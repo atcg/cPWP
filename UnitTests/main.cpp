@@ -22,7 +22,7 @@ TEST_CASE( "Simulated reads are generated", "[generateReads]" ) {
  */
 
 TEST_CASE( "Generate reference genome for simulation tests", "[generateReference]") {
-    REQUIRE( createReferenceGenome(100000, 0.42668722, "simulatedReferenceGenome.fasta") == 0 );
+    REQUIRE( createReferenceGenome(1000000, 0.42668722, "simulatedReferenceGenome.fasta") == 0 );
 }
 
 TEST_CASE ( "Mutate a reference genome", "[mutateRefGenome]") {
@@ -72,5 +72,5 @@ TEST_CASE( "Convert ANGSD read counts to unsigned chars for major and minor coun
 }
 
 TEST_CASE( "Calculate PWP from the binary representations of the ANGSD readcounts", "[calcPWP]") {
-    REQUIRE( calcPWPfromBinaryFile ("angsdOut.readCounts.binary", 100000, 2) == 0);
+    REQUIRE( calcPWPfromBinaryFile ("angsdOut.readCounts.binary", 1000000, 2) == 0);
 }
