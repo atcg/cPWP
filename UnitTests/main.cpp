@@ -63,12 +63,13 @@ TEST_CASE( "Generate mutated reference genomes and simulate reads", "[genomeAndR
 TEST_CASE( "Run ANGSD on simulated reads", "[runANGSD]" ) {
     REQUIRE( runANGSDforReadCounts("bamlist.txt", "angsdOut", "25", "angsdOutLog.txt") == 0);
 }
+ 
+ */
 
 TEST_CASE( "Convert ANGSD read counts to unsigned chars for major and minor counts", "[convertCountsToBinary]") {
-    REQUIRE( convertANGSDcountsToBinary("angsdOut", "angsdOut.readCounts.binary", 4, 5000) == 0); // 3 individuals, not 2, because generateReadsAndMap actually generates n+1 individuals, since one individual is identical to the reference genome. And 5000 as a max because we don't want to exclude any loci for this test
+    REQUIRE( convertANGSDcountsToBinary("angsdOut", "angsdOut.readCounts.binary", 2, 5000) == 0); // 3 individuals, not 2, because generateReadsAndMap actually generates n+1 individuals, since one individual is identical to the reference genome. And 5000 as a max because we don't want to exclude any loci for this test
 }
 
 TEST_CASE( "Calculate PWP from the binary representations of the ANGSD readcounts", "[calcPWP]") {
     REQUIRE( calcPWPfromBinaryFile ("angsdOut.readCounts.binary", 74963, 4) == 0);
 }
-*/
