@@ -16,6 +16,7 @@
 #include <vector>
 #include <random>
 #include <algorithm>
+#include <cstring>
 
 
 int createReferenceGenome (int totalBases, double gcContent, std::string genomeOutFile) {
