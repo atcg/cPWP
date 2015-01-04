@@ -105,14 +105,18 @@ int generatePerfectReads (std::string reference, unsigned int stagger, unsigned 
         R2 << "@" << readPrefix << "genome_position=" << (positionCounter+fragmentLengths-readLengths) << "to" << (positionCounter+fragmentLengths-readLengths-1) << " 2:N:0:AAAAAAAA\n";
         std::string R2Seq = wholeGenome.substr((positionCounter+fragmentLengths-readLengths-1),readLengths);
         reverse(R2Seq.begin(), R2Seq.end());
+        char abase = "A";
+        char tbase = "T";
+        char cbase = "C";
+        char gbase = "G";
         for(unsigned int i = 0; i < R2Seq.length(); i++) {
-            if (strcmp(R2Seq[i], char 'A')==0) {
+            if (R2Seq[i] == abase) {
                 R2 << "T";
-            } else if (strcmp(R2Seq[i], char 'T')==0) {
+            } else if (R2Seq[i] == tbase) {
                 R2 << "A";
-            } else if (strcmp(R2Seq[i], char 'C')==0) {
+            } else if (R2Seq[i] == cbase) {
                 R2 << "G";
-            } else if (strcmp(R2Seq[i], char 'G')==0) {
+            } else if (R2Seq[i] == gbase) {
                 R2 << "C";
             } else {
                 std::cout << "Base pair is not an A, T, C, or G!\n" << std::endl;
