@@ -104,6 +104,7 @@ int createMutatedGenome (std::string reference, std::string mutatedReferenceFile
     int finalGenomePosition = wholeGenome.length() - 100;
     int baseNum = 0;
     int mutationCounter = 0;
+    int lastMutationPosition = 0;
     char abase = 'A';
     char tbase = 'T';
     char cbase = 'C';
@@ -131,21 +132,25 @@ int createMutatedGenome (std::string reference, std::string mutatedReferenceFile
                 mutGenomeOut << aMutBases[randomBaseNum];
                 baseNum++;
                 mutationCounter++;
+                lastMutationPosition = baseNum;
                 continue;
             } else if (wholeGenome[baseNum] == tbase) {
                 mutGenomeOut << tMutBases[randomBaseNum];
                 baseNum++;
                 mutationCounter++;
+                lastMutationPosition = baseNum;
                 continue;
             } else if (wholeGenome[baseNum] == cbase) {
                 mutGenomeOut << cMutBases[randomBaseNum];
                 baseNum++;
                 mutationCounter++;
+                lastMutationPosition = baseNum;
                 continue;
             } else if (wholeGenome[baseNum] == gbase) {
                 mutGenomeOut << gMutBases[randomBaseNum];
                 baseNum++;
                 mutationCounter++;
+                lastMutationPosition = baseNum;
                 continue;
             } else {
                 std::cout << "Base " << wholeGenome[baseNum] << " doesn't equal A, T, C, or G. Exiting" << std::endl;
