@@ -100,9 +100,9 @@ int generatePerfectReads (std::string reference, unsigned int stagger, unsigned 
     int positionCounter = 1;
     int maxPosition = wholeGenome.length() - fragmentLengths;
     while (positionCounter < maxPosition) {
-        R1 << "@" << readPrefix << ":genome_position=" << positionCounter << "to" << positionCounter + readLengths - 1 << " 1:N:0:AAAAAAAA\n";
+        R1 << "@" << readPrefix << ":genome_position_left_read=" << positionCounter << "to" << positionCounter + readLengths - 1 << " 1:N:0:AAAAAAAA\n";
         R1 << wholeGenome.substr((positionCounter-1),readLengths) << "\n+\n" << std::string(readLengths, 'I') << "\n";
-        R2 << "@" << readPrefix << "genome_position=" << (positionCounter+fragmentLengths-readLengths) << "to" << (positionCounter+fragmentLengths-readLengths-1) << " 2:N:0:AAAAAAAA\n";
+        R2 << "@" << readPrefix << ":genome_position_left_read=" << positionCounter << "to" << positionCounter + readLengths - 1 << " 2:N:0:AAAAAAAA\n";
         std::string R2Seq = wholeGenome.substr((positionCounter+fragmentLengths-readLengths-1),readLengths);
         reverse(R2Seq.begin(), R2Seq.end());
         char abase = 'A';
