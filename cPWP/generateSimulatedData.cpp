@@ -72,7 +72,7 @@ int createReferenceGenome (int totalBases, double gcContent, std::string genomeO
 }
 
 
-int generatePerfectReads (std::string reference, int stagger, int readLengths, int fragmentLengths, std::string readPrefix) {
+int generatePerfectReads (std::string reference, unsigned int stagger, unsigned int readLengths, unsigned int fragmentLengths, std::string readPrefix) {
     /* This function generates error-free paired-end sequencing reads from a fasta reference. The reference
      must be a single sequence in fasta format (only one > should be present), with only ATCG characters and
      no gaps. It also assumes that the genome file has 80 bases per line.
