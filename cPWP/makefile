@@ -1,0 +1,1 @@
+g++ -Wall main.cpp generateSimulatedData.cpp bamsToPWP.cpp -o cPWP -lboost_iostreams -std=c++0x
