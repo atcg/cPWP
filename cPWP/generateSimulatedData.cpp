@@ -163,6 +163,7 @@ int createMutatedGenome (std::string reference, std::string mutatedReferenceFile
     mutGenomeOut << std::endl;
     mutGenomeOut.close();
     std::cout << "Inserted " << mutationCounter << " total mutations into " << mutatedReferenceFile << std::endl;
+    std::cout << "Position of last mutation: " << lastMutationPosition << std::endl;
     return 0;
 }
 
