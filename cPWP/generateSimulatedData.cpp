@@ -91,7 +91,7 @@ int generatePerfectReads (std::string reference, int stagger, int readLengths, i
     std::cout << wholeGenome << std::endl;
     
     
-    
+    return 0;
 }
 
 
