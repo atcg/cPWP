@@ -71,6 +71,32 @@ int createReferenceGenome (int totalBases, double gcContent, std::string genomeO
 }
 
 
+int generatePerfectReads (std::string reference, int stagger, int readLengths, int fragmentLengths, std::string readPrefix) {
+    /* This function generates error-free paired-end sequencing reads from a fasta reference. The reference
+     must be a single sequence in fasta format (only one > should be present), with only ATCG characters and
+     no gaps. It also assumes that the genome file has 80 bases per line.
+    */
+    
+    std::ifstream referenceFile(reference);
+    std::string line;
+    std::string wholeGenome;
+    int header = 1;
+    while(std::getline(referenceFile, line)) {
+        if (header == 1) {
+            header--;
+            continue; // Skip the first line (fasta defline)
+        }
+        wholeGenome += line;
+    }
+    std::cout << wholeGenome << std::endl;
+    
+    
+    
+}
+
+
+
+
 
 int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::string libFragmentSize, std::string stdevLibFragmentSize, std::string numReadPairs, std::string readLengths, std::string randomSeed, std::string reference, std::string threads) {
 /*// supply 1) number of individuals, 2) the mutation rate steps between them, 3) the base error rate, 4) the average library fragment size, 5) the standard deviation of the library fragment size, 6) the number of read pairs for each individual, 7) read lengths (per read), 8) random number generator seed

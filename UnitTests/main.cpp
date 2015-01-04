@@ -22,8 +22,14 @@ TEST_CASE( "Simulated reads are generated", "[generateReads]" ) {
  */
 
 TEST_CASE( "Generate reference genome for simulation tests", "[generateReference]") {
-    REQUIRE( createReferenceGenome(100000, 0.42668722, "simulatedReferenceGenome.fasta") == 0 );
+    REQUIRE( createReferenceGenome(1000, 0.42668722, "simulatedReferenceGenome.fasta") == 0 );
 }
+
+TEST_CASE( "Generate sequence reads", "[perfectReads]") {
+    REQUIRE( generatePerfectReads ("simulatedReferenceGenome.fasta", 1, 100, 300, "blah") == 0);
+}
+
+/*
 
 TEST_CASE( "Generate mutated reference genomes and simulate reads", "[genomeAndReadSim]") {
     REQUIRE( generateReadsAndMap(3, 0.01, "300", "25", "10000", "100", "1234", "simulatedReferenceGenome.fasta", "25") == 0);
@@ -40,3 +46,4 @@ TEST_CASE( "Convert ANGSD read counts to unsigned chars for major and minor coun
 TEST_CASE( "Calculate PWP from the binary representations of the ANGSD readcounts", "[calcPWP]") {
     REQUIRE( calcPWPfromBinaryFile ("angsdOut.readCounts.binary", 74963, 4) == 0);
 }
+*/
