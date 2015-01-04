@@ -95,7 +95,7 @@ int generatePerfectReads (std::string reference, int stagger, int readLengths, i
     R1.open(R1out);
     std::ofstream R2;
     R2.open(R2out);
-    my positionCounter = 1;
+    int positionCounter = 1;
     while (positionCounter < (wholeGenome.length()-fragmentLengths)) {
         R1out << "@" << readPrefix << ":genome_position=" << positionCounter << "to" << positionCounter + readLengths - 1 << " 1:N:0:AAAAAAAA\n";
         R1out << wholeGenome.substr((positionCounter-1),readLengths) << "\n+\n" << std::string(readLengths, "I") << "\n";
