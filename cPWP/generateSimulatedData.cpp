@@ -228,6 +228,33 @@ int generatePerfectReads (std::string reference, unsigned int stagger, unsigned 
 }
 
 
+int mapReads (std::string reference, std::string R1file, std::string R2file, std::string outBam, std::string threads) {
+   
+    // Make sure the reference is bwa indexed
+    std::cout << "**********\nChecking if processor is available to run bwa index...";
+    if (system(NULL)) puts ("OK");
+    else exit (EXIT_FAILURE);
+    std::string bwaIndexCommand = "bwa index " + reference;
+    if (system((bwaIndexCommand).c_str()) != 0) {
+        std::cout << "**********\nFailure running the following command: " << bwaIndexCommand << "\n**********\n";
+        exit(EXIT_FAILURE);
+    } else {
+        std::cout << "**********\nExecuted the following command: " << bwaIndexCommand << "\n**********\n";
+    }
+    
+    std::string mapCommand = "bwa mem -t " + threads + " " + reference + " " + R1file + " " + R2file + " | samtools view -bS - | samtools sort -T blah -o " + outBam + " -";
+    
+    std::cout << "**********\nChecking if processor is available to run bwa mem...";
+    if (system(NULL)) puts ("OK");
+    else exit (EXIT_FAILURE);
+    if (system((mapCommand).c_str()) != 0) {
+        std::cout << "**********\nFailure running the following command: " << mapCommand << "\n**********\n";
+        exit(EXIT_FAILURE);
+    } else {
+        std::cout << "**********\nExecuted the following command: " << mapCommand << "\n**********\n";
+    }
+    return 0;
+}
 
 
 

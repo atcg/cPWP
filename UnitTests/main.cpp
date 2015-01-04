@@ -34,8 +34,24 @@ TEST_CASE( "Generate sequence reads", "[perfectReads]") {
     REQUIRE( generatePerfectReads ("simulatedReferenceGenome.fasta", 1, 100, 300, "normalRef") == 0);
 }
 
+
+Test_CASE( " Mapping first set of reads", "[mapReads]") {
+    REQUIRE( mapReads("simulatedReferenceGenome.fasta", "normalRef_R1.fastq", "normalRef_R2.fastq", "normal.bam", "10"));
+}
+
+
 TEST_CASE( "Generate sequence reads 2", "[perfectReads2]") {
     REQUIRE( generatePerfectReads ("simulatedReferenceGenomeMutated.fasta", 1, 100, 300, "mutatedRef") == 0);
+}
+
+
+Test_CASE( " Mapping second set of reads", "[mapReads2]") {
+    REQUIRE( mapReads("simulatedReferenceGenome.fasta", "mutatedRef_R1.fastq", "mutatedRef_R2.fastq", "mutated.bam", "10"));
+}
+
+
+TEST_CASE( "Run ANGSD on simulated reads", "[runANGSD]" ) {
+    REQUIRE( runANGSDforReadCounts("bamlist.txt", "angsdOut", "25", "angsdOutLog.txt") == 0);
 }
 
 /*
