@@ -187,8 +187,8 @@ int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::s
             
         }
         // Generate the bwa mem command and then run it using a system call
-        std::string R1 = indReadsPrefix + "_" + readLengths + "_" + libFragmentSize + "_1.fq";
-        std::string R2 = indReadsPrefix + "_" + readLengths + "_" + libFragmentSize + "_2.fq";
+        std::string R1 = indReadsPrefix + "_R1.fastq";
+        std::string R2 = indReadsPrefix + "_R2.fastq";
         std::string bamOut = "ind" + pirsIndNum + ".bam";
         std::string bwaCommandToRun = "bwa mem -t " + threads + " " + reference + " " + R1 + " " + R2 + " | samtools view -bS - | samtools sort -T temp -o " + bamOut + " -";
         if (system((bwaCommandToRun).c_str()) != 0) {
