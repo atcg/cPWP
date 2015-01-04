@@ -35,7 +35,7 @@ TEST_CASE( "Generate sequence reads", "[perfectReads]") {
 }
 
 
-Test_CASE( " Mapping first set of reads", "[mapReads]") {
+TEST_CASE( " Mapping first set of reads", "[mapReads]") {
     REQUIRE( mapReads("simulatedReferenceGenome.fasta", "normalRef_R1.fastq", "normalRef_R2.fastq", "normal.bam", "10"));
 }
 
