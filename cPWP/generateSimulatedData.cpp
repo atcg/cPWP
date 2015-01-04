@@ -102,7 +102,7 @@ int createMutatedGenome (std::string reference, std::string mutatedReferenceFile
      At this stage we'd then have numMutations = 100 mutations, with mutationEveryNbp = (9800/100) every 98bp
     */
     int finalGenomePosition = wholeGenome.length() - 100;
-    int baseNum = 0;
+    unsigned int baseNum = 0;
     int mutationCounter = 0;
     int lastMutationPosition = 0;
     char abase = 'A';
