@@ -84,12 +84,13 @@ int createMutatedGenome (std::string reference, std::string mutatedReferenceFile
     int header = 1;
     while(std::getline(referenceFile, line)) {
         if (header == 1) {
-            headerLine = line;
+            headerLine = line + "_mutated";
             header--;
             continue; // Skip the first line (fasta defline)
         }
         wholeGenome += line;
     }
+    mutatedReferenceFile << headerLine << std::endl;
     
     /* Since we don't want to put any mutations early in the reference (we want decent coverage at them),
      we'll subtract 100bp from each end of the genome, and evenly space the rest of the mutations after that
@@ -154,6 +155,7 @@ int createMutatedGenome (std::string reference, std::string mutatedReferenceFile
         mutGenomeOut << wholeGenome[baseNum];
         baseNum++;
     }
+    mutGenomeOut << std::endl;
     mutGenomeOut.close();
     std::cout << "Inserted " << mutationCounter << " total mutations into " << mutatedReferenceFile << std::endl;
     return 0;
