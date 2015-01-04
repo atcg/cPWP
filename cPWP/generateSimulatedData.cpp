@@ -91,8 +91,10 @@ int generatePerfectReads (std::string reference, int stagger, int readLengths, i
     }
     std::string R1out = readPrefix . "_R1.fastq";
     std::string R2out = readPrefix . "_R2.fastq";
-    std::ofstream R1(R1out);
-    std::ofstream R2(R2out);
+    std::ofstream R1;
+    R1.open(R1out);
+    std::ofstream R2;
+    R2.open(R2out);
     my positionCounter = 1;
     while (positionCounter < (wholeGenome.length()-fragmentLengths)) {
         R1out << "@" << readPrefix << ":genome_position=" << positionCounter << "to" << positionCounter + readLengths - 1 << " 1:N:0:AAAAAAAA\n";
