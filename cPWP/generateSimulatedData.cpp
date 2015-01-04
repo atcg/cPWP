@@ -81,7 +81,6 @@ int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::s
     std::ofstream bamsFile;
     bamsFile.open("bamlist.txt", std::ios::out | std::ios::app);
     
-    
     std::cout << "**********\nChecking if processor is available to run pirs...";
     if (system(NULL)) puts ("OK");
     else exit (EXIT_FAILURE);
@@ -113,6 +112,7 @@ int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::s
         std::string indReadsPrefix = indName + "_reads";
         
         if (pirsInd == 0) {
+            /* pirs simulate implementation
             std::string pirsSimulateCommandToRun = "pirs simulate " + reference + " -l " + readLengths + " -x " + depth + " -m " + libFragmentSize + " -v " + stdevLibFragmentSize + " --no-substitution-errors --no-indel-errors --no-gc-content-bias -o " + indReadsPrefix + " >" + pirsSimSTDOUT + " 2>" + pirsSimSTDERR;
             if (system((pirsSimulateCommandToRun).c_str()) != 0) {
                 std::cout << "**********\nFailure running the following command: " << pirsSimulateCommandToRun << "\n**********\n";
@@ -120,7 +120,18 @@ int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::s
             } else {
                 std::cout << "**********\nExecuted the following command: " << pirsSimulateCommandToRun << "\n**********\n";
             }
+            */
+            
+            std::string wgsimCommandToRun = "wgsim -N " + numReadPairs + " -r 0 -R 0.00 -X 0.00 -d " + libFragmentSize + " -s " + stdevLibFragmentSize +  " -1 " + readLengths + " -2 " + readLengths + " -S " + randomSeed + " -e 0.00 " + reference + " " + R1out + " " + R2out + " > ind0_polymorphisms"; // No indels, no probability of indel extension, no base call error rates
+            
+            if (system((wgsimCommandToRun).c_str()) != 0) {
+                std::cout << "**********\nFailure running the following command: " << wgsimCommandToRun << "\n**********\n";
+                exit(EXIT_FAILURE);
+            } else {
+                std::cout << "**********\nExecuted the following command: " << wgsimCommandToRun << "\n**********" << std::endl;
+            }
         } else {
+            /* pirs implementation
             std::string pirsCommandToRun = "pirs diploid -s " + mutRateString + " -d 0.00 -v 0.00 -S 1234 -o " + indName + " " + reference + " >" + pirsGenomeSTDOUT + " 2>" + pirsGenomeSTDERR;
             if (system((pirsCommandToRun).c_str()) != 0) {
                 std::cout << "**********\nFailure running the following command: " << pirsCommandToRun << "\n**********\n";
@@ -142,6 +153,38 @@ int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::s
             } else {
                 std::cout << "**********\nExecuted the following command: " << pirsSimulateCommandToRun << "\n**********\n";
             }
+            */
+            
+            double mutRate = step * mutationRateStepSize;
+            // Covert the mutation rate into a string for the system command
+            std::ostringstream mutStrs;
+            mutStrs << mutRate;
+            std::string mutRateString = mutStrs.str();
+            
+            std::cout << "**********\nGenerating sequence reads for individual " << step << " using a mutation rate of " << mutRateString << " from the reference genome\n**********\n";
+            
+            // Get the number of the individual as a string
+            std::ostringstream stepString;
+            stepString << step;
+            std::string ind = stepString.str();
+            
+            // Generate the output file names as strings
+            std::string R1out = "ind" + ind + "_R1.fastq";
+            std::string R2out = "ind" + ind + "_R2.fastq";
+            std::string polymorphismFile = "ind" + ind + "_polymorphisms.txt";
+            
+            // Generate the wgsim command and then run it using a system call
+            std::string wgsimCommandToRun = "wgsim -N " + numReadPairs + " -r " + mutRateString + " -R 0.00 -X 0.00 -d " + libFragmentSize + " -s " + stdevLibFragmentSize +  " -1 " + readLengths + " -2 " + readLengths + " -S " + randomSeed + " -e0 " + reference + " " + R1out + " " + R2out + " > " + polymorphismFile; // No indels, no probability of indel extension, no base call error rates
+            if (system((wgsimCommandToRun).c_str()) != 0) {
+                std::cout << "**********\nFailure running the following command: " << wgsimCommandToRun << "\n**********\n";
+                exit(EXIT_FAILURE);
+            } else {
+                std::cout << "**********\nExecuted the following command: " << wgsimCommandToRun << "\n**********\n";
+                
+            }
+
+            
+            
         }
         // Generate the bwa mem command and then run it using a system call
         std::string R1 = indReadsPrefix + "_" + readLengths + "_" + libFragmentSize + "_1.fq";
