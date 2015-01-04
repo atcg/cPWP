@@ -101,16 +101,16 @@ int generatePerfectReads (std::string reference, unsigned int stagger, unsigned 
         R1 << "@" << readPrefix << ":genome_position=" << positionCounter << "to" << positionCounter + readLengths - 1 << " 1:N:0:AAAAAAAA\n";
         R1 << wholeGenome.substr((positionCounter-1),readLengths) << "\n+\n" << std::string(readLengths, 'I') << "\n";
         R2 << "@" << readPrefix << "genome_position=" << (positionCounter+fragmentLengths-readLengths) << "to" << (positionCounter+fragmentLengths-readLengths-1) << " 2:N:0:AAAAAAAA\n";
-        std::string R2forwardSeq = wholeGenome.substr((positionCounter+fragmentLengths-readLengths-1),readLengths);
-        reverse(R2forwardSeq.begin(), R2forwardSeq.end());
-        for(int i = 0; i < length(R2reverseSeq); i++) {
-            if (R2reverseSeq[i] == "A") {
+        std::string R2Seq = wholeGenome.substr((positionCounter+fragmentLengths-readLengths-1),readLengths);
+        reverse(R2Seq.begin(), R2Seq.end());
+        for(int i = 0; i < std::length(R2Seq); i++) {
+            if (R2Seq[i] == "A") {
                 R2 << "T";
-            } else if (R2reverseSeq[i] == "T") {
+            } else if (R2Seq[i] == "T") {
                 R2 << "A";
-            } else if (R2reverseSeq[i] == "C") {
+            } else if (R2Seq[i] == "C") {
                 R2 << "G";
-            } else if (R2reverseSeq[i] == "G") {
+            } else if (R2Seq[i] == "G") {
                 R2 << "C";
             } else {
                 std::cout "Base pair is not an A, T, C, or G!\n";
