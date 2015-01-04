@@ -15,6 +15,7 @@
 #include <string>
 #include <vector>
 #include <random>
+#include <algorithm>
 
 
 int createReferenceGenome (int totalBases, double gcContent, std::string genomeOutFile) {
@@ -88,9 +89,34 @@ int generatePerfectReads (std::string reference, int stagger, int readLengths, i
         }
         wholeGenome += line;
     }
-    std::cout << wholeGenome << std::endl;
-    
-    
+    std::string R1out = readPrefix . "_R1.fastq";
+    std::string R2out = readPrefix . "_R2.fastq";
+    std::ofstream R1(R1out);
+    std::ofstream R2(R2out);
+    my positionCounter = 1;
+    while (positionCounter < (wholeGenome.length()-fragmentLengths)) {
+        R1out << "@" << readPrefix << ":genome_position=" << positionCounter << "to" << positionCounter + readLengths - 1 << " 1:N:0:AAAAAAAA\n";
+        R1out << wholeGenome.substr((positionCounter-1),readLengths) << "\n+\n" << std::string(readLengths, "I") << "\n";
+        R2out << "@" << readPrefix << "genome_position=" << (positionCounter+fragmentLengths-readLengths) << "to" << (positionCounter+fragmentLengths-readLengths-1) << " 2:N:0:AAAAAAAA\n";
+        std::string R2forwardSeq = wholeGenome.substr((positionCounter+fragmentLengths-readLengths-1),readLengths);
+        std::string R2reverseSeq = reverse(R2forwardSeq.begin(), R2forwardSeq.end());
+        for(int i = 0; i < length(R2reverseSeq); i++) {
+            if (R2reverseSeq[i] == "A") {
+                R2out << "T";
+            } else if (R2reverseSeq[i] == "T") {
+                R2out << "A";
+            } else if (R2reverseSeq[i] == "C") {
+                R2out << "G";
+            } else if (R2reverseSeq[i] == "G") {
+                R2out << "C";
+            } else {
+                std::cout "Base pair is not an A, T, C, or G!\n";
+                exit(EXIT_FAILURE);
+            }
+        }
+        R2out << "\n+\n" << std::string(readLengths, "I") << "\n";
+        positionCounter = positionCounter + stagger;
+    }
     return 0;
 }
 
