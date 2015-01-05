@@ -16,5 +16,6 @@ int runANGSDforReadCounts (std::string bamlist, std::string angsdPrefix, std::st
 int convertANGSDcountsToBinary(std::string angsdPrefix, std::string binaryOutputFileName, int numIndividuals, int readDepthMax);
 unsigned char readCountToUnsignedChar(int individual, std::string allele, std::vector<std::string> countsVector);
 int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoci, const int numIndividuals, std::string outFile);
+int calcPWPforRange (unsigned long long startingLocus, unsigned long long endingLocus, const std::vector<BYTE>& mainReadCountVector, std::vector< std::vector<long double> > & threadPWP, std::vector< std::vector<long double> > & threadWeightings);
 
 #endif /* defined(__cPWP__readsToPWP__) */
