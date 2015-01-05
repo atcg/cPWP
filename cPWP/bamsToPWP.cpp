@@ -205,19 +205,16 @@ int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, const int numInd
         
         std::cout << "the entire file content is in memory" << std::endl;
         std::cout << "the total size of the file is " << size << std::endl;
+        std::cout << "the number of elements in the readCounts array is: " << sizeof(readCounts)/sizeof(readCounts[0]) << std::endl; // Will give the total size bytes divided by the size of one element--so it gives the number of elements
         
         // We now have an array of numIndividuals * 2 (major and minor allele) * 1million (loci)
         //int totalLoci = (int)size / (numIndividuals*2); // The 1 million locus file has 999,999 sites in it (because of header line)
         int totalLoci = numLoci;
-        
-        //std::cout << "Made it to line 203" << std::endl;
         std::vector< std::vector<long double> > pwp(numIndividuals, std::vector<long double>(numIndividuals,0));
         std::vector< std::vector<unsigned long long int> > weightings(numIndividuals, std::vector<unsigned long long int>(numIndividuals,0));
         //long double pwp[numIndividuals][numIndividuals] = {0.0}; // This is the matrix that will hold the pwp estimates
         //unsigned long long int weightings[numIndividuals][numIndividuals] = {0.0}; // This is the matrix that will hold the weightings--need to use a long long because the values are basically equal to the coverage squared by the end
         
-        
-        //std::cout << "Made it to line 207" << std::endl;
         
         for( int locus = 0; locus < totalLoci; locus++) {
             
