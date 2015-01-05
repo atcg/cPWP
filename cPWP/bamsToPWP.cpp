@@ -235,17 +235,18 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         // Now we need to determine how many loci for each thread:
         unsigned long long int lociPerThread = (size/(272*2)) / numThreads;
         
-        for (int thread; thread < numThreads; thread++) {
-            unsigned long long firstLocus = (unsigned long long) thread * lociPerThread;
-            unsigned long long finishingLocus = ((unsigned long long) thread * lociPerThread) + lociPerThread - (unsigned long long)1.0;
+        std::thread t[numThreads];
+        for (int threadRunning; threadRunning < numThreads; threadRunning++) {
+            unsigned long long firstLocus = (unsigned long long) threadRunning * lociPerThread;
+            unsigned long long finishingLocus = ((unsigned long long) threadRunning * lociPerThread) + lociPerThread - (unsigned long long)1.0;
             
             // Since we're passing the vectors in by reference, calPWPforRange can modify pwpThreads[thread] and weightingsThreads[thread] (but not mainReadCountVector because that is declared in the function as const
-            calcPWPforRange (firstLocus, finishingLocus, readCounts, pwpThreads[thread], weightingsThreads[thread]);
-            
+            t[threadRunning] = std::thread(calcPWPforRange, firstLocus, finishingLocus, readCounts, pwpThreads[threadRunning], weightingsThreads[threadRunning]);
         }
         
-        //
-        
+        for (int i = 0; i < numThreads; ++i) {
+            t[i].join();
+        }
     }
     else std::cout << "Unable to open file";
     
