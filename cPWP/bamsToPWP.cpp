@@ -305,7 +305,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, const int numInd
             }
         }
         
-        delete[] readCounts; // This holds ALL of the read counts for all loci
+        //delete[] readCounts; // This holds ALL of the read counts for all loci
         /*
          {
          for ( N=1; N<=(NF/2); N++ ) {
