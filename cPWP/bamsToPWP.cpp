@@ -218,7 +218,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         //unsigned long long int weightings[numIndividuals][numIndividuals] = {0.0}; // This is the matrix that will hold the weightings--need to use a long long because the values are basically equal to the coverage squared by the end
         
         
-        for( unsigned long long locus = 3900000; locus < totalLoci; locus++) {
+        for( unsigned long long locus = 0; locus < totalLoci; locus++) {
             //std::cout << "Processing locus # " << locus << std::endl;
             if (locus % 100000 == 0) {
                 std::cout << locus << " loci processed through calcPWPfromBinaryFile" << std::endl;
