@@ -227,7 +227,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, const int numInd
             double *majorAlleleFreqs = new double[numIndividuals]; // This will hold the major allele frequencies for that locus for each tortoise
             
             for( int tortoise = 0; tortoise <= (numIndividuals-1); tortoise++ ) {
-                std::cout << "\tTrying to access readCounts[" << locus * (numIndividuals*2) + 2 * tortoise + 1 << "]" << << ". locus: " << locus << ". numIndividuals: " << numIndividuals << ". tortoise: " << tortoise << std::endl;
+                std::cout << "\tTrying to access readCounts[" << locus * (numIndividuals*2) + 2 * tortoise + 1 << "]" << ". locus: " << locus << ". numIndividuals: " << numIndividuals << ". tortoise: " << tortoise << std::endl;
                 coverages[tortoise] = int(readCounts[locus * (numIndividuals*2) + 2 * tortoise]) + int(readCounts[locus * (numIndividuals*2) + 2 * tortoise + 1]); // Hold the coverages for each locus
                 std::cout << "\t\tCalced coverage in line 232" << std::endl;
                 //std::cout << coverages[tortoise] << std::endl;
