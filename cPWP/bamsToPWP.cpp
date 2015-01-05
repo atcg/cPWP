@@ -220,9 +220,9 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         
         for( unsigned long long locus = 3900000; locus < totalLoci; locus++) {
             std::cout << "Processing locus # " << locus << std::endl;
-//            if (locus % 100000 == 0) {
-//                std::cout << locus << " loci processed through calcPWPfromBinaryFile" << std::endl;
-//            }
+            if (locus % 100000 == 0) {
+                std::cout << locus << " loci processed through calcPWPfromBinaryFile" << std::endl;
+            }
 
             int coverages[numIndividuals];
             double *majorAlleleFreqs = new double[numIndividuals]; // This will hold the major allele frequencies for that locus for each tortoise
