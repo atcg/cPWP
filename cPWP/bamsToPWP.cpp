@@ -185,7 +185,7 @@ int convertANGSDcountsToBinary(std::string angsdPrefix, std::string binaryOutput
 
 
 int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, const int numIndividuals, std::string outFile) {
-    
+    typedef unsigned char BYTE;
     
     //****MODIFY THIS TO ONLY READ IN N LOCI AT A TIME, INSTEAD OF USING THE ENTIRE FILE****
     
@@ -195,17 +195,18 @@ int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, const int numInd
     //ifstream file ("test500k.binary8bitunsigned", ios::in|ios::binary|ios::ate);
     if (file.is_open()) {
         size = file.tellg(); // Just a variable that shows position of stream--at end since ios::ate, so it's the file size. PROBABLY WON'T WORK FOR FILES LARGER THAN ~ 2GB!
-        
-        unsigned char* readCounts;
-        readCounts = new unsigned char[size];
-        
         file.seekg (0, std::ios::beg); // Go back to the beginning of the file
-        file.read((char*)readCounts, size); // cast to a char* to give to file.read
+        //file.read((char*)readCounts, size); // cast to a char* to give to file.read
+
+        //unsigned char* readCounts;
+        //readCounts = new unsigned char[size];
+        std::vector<BYTE> readCounts(size);
+        file.read((char*) &readCounts[0], size);
         file.close();
         
         std::cout << "the entire file content is in memory" << std::endl;
         std::cout << "the total size of the file is " << size << std::endl;
-        std::cout << "the number of elements in the readCounts array is: " << sizeof(readCounts)/sizeof(readCounts[0]) << std::endl; // Will give the total size bytes divided by the size of one element--so it gives the number of elements
+        std::cout << "the number of elements in the readCounts array is: " << readCounts.size() << std::endl; // Will give the total size bytes divided by the size of one element--so it gives the number of elements
         
         // We now have an array of numIndividuals * 2 (major and minor allele) * 1million (loci)
         //int totalLoci = (int)size / (numIndividuals*2); // The 1 million locus file has 999,999 sites in it (because of header line)
