@@ -222,7 +222,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
             std::cout << "Processing locus # " << locus << std::endl;
             if (locus % 100000 == 0) {
                 std::cout << locus << " loci processed through calcPWPfromBinaryFile" << std::endl;
-                std::cout << "\tTrying to access readCounts[" << minorIndex << "]" << ". locus: " << locus << ". numIndividuals: " << numIndividuals << ". tortoise: " << tortoise << std::endl;
+                //std::cout << "\tTrying to access readCounts[" << minorIndex << "]" << ". locus: " << locus << ". numIndividuals: " << numIndividuals << ". tortoise: " << tortoise << std::endl;
             }
 
             int coverages[numIndividuals];
