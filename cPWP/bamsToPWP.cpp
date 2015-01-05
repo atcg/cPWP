@@ -206,11 +206,12 @@ int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, const int numInd
         
         std::cout << "the entire file content is in memory" << std::endl;
         std::cout << "the total size of the file is " << size << std::endl;
-        std::cout << "the number of elements in the readCounts array is: " << readCounts.size() << std::endl; // Will give the total size bytes divided by the size of one element--so it gives the number of elements
+        std::cout << "the number of elements in the readCounts vector is: " << readCounts.size() << std::endl; // Will give the total size bytes divided by the size of one element--so it gives the number of elements
         
         // We now have an array of numIndividuals * 2 (major and minor allele) * 1million (loci)
         //int totalLoci = (int)size / (numIndividuals*2); // The 1 million locus file has 999,999 sites in it (because of header line)
         int totalLoci = numLoci;
+        int totalLoci = size/(272*2);
         std::vector< std::vector<long double> > pwp(numIndividuals, std::vector<long double>(numIndividuals,0));
         std::vector< std::vector<unsigned long long int> > weightings(numIndividuals, std::vector<unsigned long long int>(numIndividuals,0));
         //long double pwp[numIndividuals][numIndividuals] = {0.0}; // This is the matrix that will hold the pwp estimates
@@ -218,14 +219,15 @@ int calcPWPfromBinaryFile (std::string binaryFile, int numLoci, const int numInd
         
         
         for( int locus = 0; locus < totalLoci; locus++) {
-            
-            if (locus % 100000 == 0) {
-                std::cout << locus << " loci processed through calcPWPfromBinaryFile" << std::endl;
-            }
+            std::cout << "Processing locus # " << locus << std::endl;
+//            if (locus % 100000 == 0) {
+//                std::cout << locus << " loci processed through calcPWPfromBinaryFile" << std::endl;
+//            }
             int coverages[numIndividuals];
             double *majorAlleleFreqs = new double[numIndividuals]; // This will hold the major allele frequencies for that locus for each tortoise
             
             for( int tortoise = 0; tortoise <= (numIndividuals-1); tortoise++ ) {
+                std::cout << "\tTrying to access readCounts[" << locus * (numIndividuals*2) + 2 * tortoise + 1 << "]" << std::endl;
                 coverages[tortoise] = int(readCounts[locus * (numIndividuals*2) + 2 * tortoise]) + int(readCounts[locus * (numIndividuals*2) + 2 * tortoise + 1]); // Hold the coverages for each locus
                 //std::cout << coverages[tortoise] << std::endl;
                 
