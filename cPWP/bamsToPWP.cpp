@@ -222,6 +222,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
             std::cout << "Processing locus # " << locus << std::endl;
             if (locus % 100000 == 0) {
                 std::cout << locus << " loci processed through calcPWPfromBinaryFile" << std::endl;
+                std::cout << "\tTrying to access readCounts[" << minorIndex << "]" << ". locus: " << locus << ". numIndividuals: " << numIndividuals << ". tortoise: " << tortoise << std::endl;
             }
 
             int coverages[numIndividuals];
@@ -232,7 +233,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
                 unsigned long long minorIndex = locus * (numIndividuals*2) + 2 * tortoise + 1;
                 
                 
-                std::cout << "\tTrying to access readCounts[" << minorIndex << "]" << ". locus: " << locus << ". numIndividuals: " << numIndividuals << ". tortoise: " << tortoise << std::endl;
+
                 coverages[tortoise] = int(readCounts[majorIndex]) + int(readCounts[minorIndex]); // Hold the coverages for each locus
                 //std::cout << "\t\tCalced coverage in line 232" << std::endl;
                 //std::cout << coverages[tortoise] << std::endl;
