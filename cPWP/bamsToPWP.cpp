@@ -212,7 +212,6 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         
         // We now have an array of numIndividuals * 2 (major and minor allele) * 1million (loci)
         //int totalLoci = (int)size / (numIndividuals*2); // The 1 million locus file has 999,999 sites in it (because of header line)
-        unsigned long long int totalLoci = numLoci;
         //int totalLoci = size/(272*2);
         std::vector< std::vector<long double> > pwp(numIndividuals, std::vector<long double>(numIndividuals,0));
         std::vector< std::vector<unsigned long long int> > weightings(numIndividuals, std::vector<unsigned long long int>(numIndividuals,0));
@@ -227,14 +226,11 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
          First, we'll generate all of these vectors, which apparently in C++ needs to be constructed of a 
          vector of two-dimensional vectors... 
          */
-        std::vector<std::vector<std::vector<unsigned long long int> > > pwpThreads(numThreads, std::vector<std::vector<unsigned long long int> > (numIndividuals, std::vector<unsigned long long int>(numIndividuals,0) ) );
-        
+        std::vector<std::vector<std::vector<unsigned long long int> > > pwpThreads(numThreads, std::vector<std::vector<unsigned long long int> > (numIndividuals, std::vector<unsigned long long int>(numIndividuals,0) ) ); //pwpThreads[0] is the first 2D array for the first thread, etc...
         std::vector<std::vector<std::vector<unsigned long long int> > > weightingsThreads(numThreads, std::vector<std::vector<unsigned long long int> > (numIndividuals, std::vector<unsigned long long int>(numIndividuals,0) ) );
-        
-        //pwpThreads[0] is the first 2D array for the first thread, etc...
 
-        // Now we need to determine how many loci for each thread:
-        unsigned long long int lociPerThread = (size/(272*2)) / numThreads;
+        // Now we need to determine how many loci for each thread. If we want to use the entire binary file, instead of numLoci loci, then change this to lociPerThread = (size/(numIndividuals*2))/numThreads
+        unsigned long long int lociPerThread = numLoci / numThreads;
         
         std::thread t[numThreads];
         for (int threadRunning; threadRunning < numThreads; threadRunning++) {
