@@ -13,8 +13,8 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-//#include <vector>
-//#include <algorithm>
+#include <vector>
+#include <algorithm>
 #include <thread>
 #include <boost/iostreams/filtering_stream.hpp>
 #include <boost/iostreams/filtering_streambuf.hpp>
@@ -232,6 +232,11 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         // Now we need to determine how many loci for each thread. If we want to use the entire binary file, instead of numLoci loci, then change this to lociPerThread = (size/(numIndividuals*2))/numThreads
         unsigned long long int lociPerThread = numLoci / numThreads;
         
+        
+        
+        
+        
+        /*
         std::thread t[numThreads];
         for (int threadRunning; threadRunning < numThreads; threadRunning++) {
             unsigned long long firstLocus = (unsigned long long) threadRunning * lociPerThread;
@@ -246,7 +251,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         }
         
         // Now aggregate the results of the threads and print final results
-        
+        */
         
         
     }
