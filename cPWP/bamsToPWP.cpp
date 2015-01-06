@@ -241,6 +241,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
             
             // Since we're passing the vectors in by reference, calPWPforRange can modify pwpThreads[thread] and weightingsThreads[thread] (but not mainReadCountVector because that is declared in the function as const
             t[threadRunning] = std::thread(calcPWPforRange, firstLocus, finishingLocus, std::ref(readCounts), std::ref(pwpThreads[threadRunning]), std::ref(weightingsThreads[threadRunning]));
+            //calcPWPforRange(firstLocus, finishingLocus, )
         }
         // Wait on threads to finish
         for (int i = 0; i < numThreads; ++i) {
@@ -259,7 +260,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
 
 
 //int calcPWPforRange (unsigned long long startingLocus, unsigned long long endingLocus, int numIndividuals, const std::vector<BYTE>& mainReadCountVector, std::vector< std::vector<long double> > & threadPWP, std::vector< std::vector<long double> > & threadWeightings) {
-int calcPWPforRange (unsigned long long startingLocus, unsigned long long endingLocus, int numIndividuals, const std::vector<unsigned char>* mainReadCountVector, std::vector<std::vector<long double>>* threadPWP, std::vector<std::vector<long double>>* threadWeightings) {
+int calcPWPforRange (unsigned long long startingLocus, unsigned long long endingLocus, int numIndividuals, const std::vector<unsigned char>& mainReadCountVector, std::vector<std::vector<long double>>& threadPWP, std::vector<std::vector<long double>>& threadWeightings) {
 
     
     //usage: calcPWPforRange(0, 1000000, readCounts) // where readCounts is a vector with all the read count data
