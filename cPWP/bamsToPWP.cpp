@@ -185,7 +185,7 @@ int convertANGSDcountsToBinary(std::string angsdPrefix, std::string binaryOutput
 
 
 
-int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoci, const int numIndividuals, std::string outFile) {
+int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoci, const int numIndividuals, std::string outFile, int numThreads) {
     typedef unsigned char BYTE;
     
     //****MODIFY THIS TO ONLY READ IN N LOCI AT A TIME, INSTEAD OF USING THE ENTIRE FILE****
