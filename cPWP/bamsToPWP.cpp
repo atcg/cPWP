@@ -21,6 +21,7 @@
 #include <boost/iostreams/filter/gzip.hpp>
 #include <boost/algorithm/string.hpp>
 
+typedef unsigned char BYTE;
 
 
 
