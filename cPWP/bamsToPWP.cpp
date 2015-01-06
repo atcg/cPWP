@@ -276,7 +276,7 @@ int calcPWPforRange (unsigned long long startingLocus, unsigned long long ending
             
             //std::cout << "\tTrying to access readCounts[" << minorIndex << "]" << ". locus: " << locus << ". numIndividuals: " << numIndividuals << ". tortoise: " << tortoise << std::endl;
             
-            coverages[tortoise] = int(readCounts[majorIndex]) + int(readCounts[minorIndex]); // Hold the coverages for each locus
+            coverages[tortoise] = int(mainReadCountVector[majorIndex]) + int(mainReadCountVector[minorIndex]); // Hold the coverages for each locus
             //std::cout << "\t\tCalced coverage in line 232" << std::endl;
             //std::cout << coverages[tortoise] << std::endl;
             
@@ -284,7 +284,7 @@ int calcPWPforRange (unsigned long long startingLocus, unsigned long long ending
             
             if ( coverages[tortoise] > 0 ) {
                 //std::cout << "Made it to line 222 for locus " << locus << std::endl;
-                majorAlleleFreqs[tortoise] = (double)readCounts[majorIndex] / (double)coverages[tortoise]; // Not necessarily an int, but could be 0 or 1
+                majorAlleleFreqs[tortoise] = (double)mainReadCountVector[majorIndex] / (double)coverages[tortoise]; // Not necessarily an int, but could be 0 or 1
                 //std::cout << "Major allele frequency for individual " << tortoise << " at locus " << locus << ": " << majorAlleleFreqs[tortoise] << std::endl;
                 //std::cout << "\t\t\tCalced majorAlleleFreqs[" << tortoise << "] in line 239" << std::endl;
                 if (coverages[tortoise] > 1) {
@@ -292,7 +292,7 @@ int calcPWPforRange (unsigned long long startingLocus, unsigned long long ending
                     threadWeightings[tortoise][tortoise] += (unsigned long long)locusWeighting; // This is an int--discrete number of reads
                     //std::cout << "\t\t\t\tCalced weightings in line 245 for tortoise[" << tortoise << "]" << std::endl;
                     
-                    threadPWP[tortoise][tortoise] += double(locusWeighting) * (2.0 * majorAlleleFreqs[tortoise] * (double(coverages[tortoise]) - double(readCounts[majorIndex]))) / (double((coverages[tortoise])-1.0));
+                    threadPWP[tortoise][tortoise] += double(locusWeighting) * (2.0 * majorAlleleFreqs[tortoise] * (double(coverages[tortoise]) - double(mainReadCountVector[majorIndex]))) / (double((coverages[tortoise])-1.0));
                     //std::cout << "\t\t\t\t\tCalced pwp in line 247 for tortoise[" << tortoise << "]" << std::endl;
                     //std::cout << "Locus self weighting for individual " << tortoise << " at locus: " << locus << ": " << locusWeighting << ". Locus self PWP: " << double(locusWeighting) * (2.0 * majorAlleleFreqs[tortoise] * (double(coverages[tortoise]) - double(readCounts[locus * numIndividuals * 2 + 2 * tortoise]))) / (double((coverages[tortoise])-1.0)) << std::endl;
                     //std::cout << "\tmajorAlleleFreq: " << majorAlleleFreqs[tortoise] << ". Coverages: " << double(coverages[tortoise]) << ". readCounts: " << double(readCounts[locus * numIndividuals * 2 + 2 * tortoise]) << std::endl;
