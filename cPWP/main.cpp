@@ -28,4 +28,5 @@ int main (int argc, char *argv[]) {
      */
      calcPWPfromBinaryFile (argv[1], atoi(argv[2]), 272, argv[3]);
     // First supply the binary readcounts file, then the number of loci to consider, then the number of individuals, then the output file
+    // calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoci, const int numIndividuals, std::string outFile, int numThreads = 10);
 }

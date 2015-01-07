@@ -253,10 +253,34 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
          */
         
         // Now aggregate the results of the threads and print final results
+        
+        
+        
+        
+        
+        
+        
+        // Now print out the final output to the pairwise pi file:
+        std::ofstream pwpOUT (outFile);
+        int rowCounter = 0;
+        if (!pwpOUT) {
+            std::cerr << "Crap, " << outFile << "didn't open!" << std::endl;
+        } else {
+            for (int tortoise=0; tortoise <= (numIndividuals-1); tortoise++) {
+                for (int comparisonTortoise = 0; comparisonTortoise <= tortoise; comparisonTortoise++) {
+                    rowCounter++;
 
-        
-        
-    }
+                    //std::cout << "Made it past the beginning of the last end for loop" << std::endl;
+                    //std::cout << "Tortoise numbers: " << tortoise << " and " << comparisonTortoise << std::endl;
+                    if (weightings[tortoise][comparisonTortoise] > 0) {
+                        //std::cout << weightings[tortoise][comparisonTortoise] << std::endl;
+                        //std::cout << pwp[tortoise][comparisonTortoise] / weightings[tortoise][comparisonTortoise] << std::endl;
+                        pwpOUT << pwp[tortoise][comparisonTortoise] / weightings[tortoise][comparisonTortoise] << std::endl;
+                    } else {
+                        pwpOUT << "NA" << std::endl;
+                    }
+                }
+            }
     else std::cout << "Unable to open file";
     
     return 0;
