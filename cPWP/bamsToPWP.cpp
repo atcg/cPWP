@@ -233,7 +233,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         unsigned long long int lociPerThread = numLoci / numThreads;
         
         
-
+        std::thread t;
         //std::thread t[numThreads];
         for (int threadRunning; threadRunning < numThreads; threadRunning++) {
             unsigned long long firstLocus = (unsigned long long) threadRunning * lociPerThread;
