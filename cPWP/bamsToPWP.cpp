@@ -281,7 +281,8 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
                     }
                 }
             }
-    else std::cout << "Unable to open file";
+        }
+    } else std::cout << "Unable to open file";
     
     return 0;
 }
