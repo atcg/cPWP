@@ -226,8 +226,8 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
          First, we'll generate all of these vectors, which apparently in C++ needs to be constructed of a 
          vector of two-dimensional vectors... 
          */
-        std::vector<std::vector<std::vector<unsigned long long int>>> pwpThreads(numThreads, std::vector<std::vector<unsigned long long int>> (numIndividuals, std::vector<unsigned long long int> (numIndividuals,0) ) ); //pwpThreads[0] is the first 2D array for the first thread, etc...
-        std::vector<std::vector<std::vector<unsigned long long int>>> weightingsThreads(numThreads, std::vector<std::vector<unsigned long long int> > (numIndividuals, std::vector<unsigned long long int> (numIndividuals,0) ) );
+        //std::vector<std::vector<std::vector<unsigned long long int>>> pwpThreads(numThreads, std::vector<std::vector<unsigned long long int>> (numIndividuals, std::vector<unsigned long long int> (numIndividuals,0) ) ); //pwpThreads[0] is the first 2D array for the first thread, etc...
+        //std::vector<std::vector<std::vector<unsigned long long int>>> weightingsThreads(numThreads, std::vector<std::vector<unsigned long long int> > (numIndividuals, std::vector<unsigned long long int> (numIndividuals,0) ) );
 
         // Now we need to determine how many loci for each thread. If we want to use the entire binary file, instead of numLoci loci, then change this to lociPerThread = (size/(numIndividuals*2))/numThreads
         unsigned long long int lociPerThread = numLoci / numThreads;
@@ -245,7 +245,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
             calcPWPforRange(firstLocus, finishingLocus, 272, readCounts, pwp, weightings);
         }
         
-        t.join();
+        //t.join();
         /*// Wait on threads to finish
         for (int i = 0; i < numThreads; ++i) {
             t[i].join();
