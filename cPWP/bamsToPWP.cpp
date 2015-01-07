@@ -230,8 +230,8 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         //std::vector<std::vector<std::vector<unsigned long long int>>> weightingsThreads(numThreads, std::vector<std::vector<unsigned long long int> > (numIndividuals, std::vector<unsigned long long int> (numIndividuals,0) ) );
 
         // Now we need to determine how many loci for each thread. If we want to use the entire binary file, instead of numLoci loci, then change this to lociPerThread = (size/(numIndividuals*2))/numThreads
-        unsigned long long int lociPerThread = numLoci / numThreads;
-        
+        //unsigned long long int lociPerThread = numLoci / numThreads;
+        unsigned long long int lociPerThread = numLoci;
         
         std::thread t;
         //std::thread t[numThreads];
@@ -253,11 +253,6 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
          */
         
         // Now aggregate the results of the threads and print final results
-        
-        
-        
-        
-        
         
         
         // Now print out the final output to the pairwise pi file:
