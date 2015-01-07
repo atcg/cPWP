@@ -244,7 +244,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
             //std::thread t = std::thread(calcPWPforRange, firstLocus, finishingLocus, std::ref(readCounts), std::ref(pwpThreads[threadRunning]), std::ref(weightingsThreads[threadRunning]));
             std::cout << "Got to the function call" << std::endl;
             //calcPWPforRange(firstLocus, finishingLocus, 272, readCounts, pwp, weightings);
-            std::thread t = std::thread(calcPWPforRange, firstLocus, finishingLocus, readCounts, pwp, weightings);
+            std::thread t = std::thread(calcPWPforRange, firstLocus, finishingLocus, std::ref(readCounts), std::ref(pwp), std::ref(weightings));
         }
         
         t.join();
