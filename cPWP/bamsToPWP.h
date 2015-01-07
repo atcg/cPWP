@@ -20,6 +20,8 @@ unsigned char readCountToUnsignedChar(int individual, std::string allele, std::v
 
 int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoci, const int numIndividuals, std::string outFile, int numThreads = 1);
 
-int calcPWPforRange (unsigned long long startingLocus, unsigned long long endingLocus, int numIndividuals, std::vector<unsigned char> & mainReadCountVector, std::vector<std::vector<long double>> & threadPWP, std::vector<std::vector<unsigned long long int>> & threadWeightings);
+//int calcPWPforRange (unsigned long long startingLocus, unsigned long long endingLocus, int numIndividuals, std::vector<unsigned char> & mainReadCountVector, std::vector<std::vector<long double>> & threadPWP, std::vector<std::vector<unsigned long long int>> & threadWeightings);
+
+int calcPWPforRange (unsigned long long startingLocus, unsigned long long endingLocus, int numIndividuals, std::vector<unsigned char> * mainReadCountVector, std::vector<std::vector<long double>> * threadPWP, std::vector<std::vector<unsigned long long int>> * threadWeightings)
 
 #endif /* defined(__cPWP__readsToPWP__) */
