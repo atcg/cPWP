@@ -264,7 +264,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
 
 
 //int calcPWPforRange (unsigned long long startingLocus, unsigned long long endingLocus, int numIndividuals, const std::vector<BYTE>& mainReadCountVector, std::vector< std::vector<long double> > & threadPWP, std::vector< std::vector<long double> > & threadWeightings) {
-int calcPWPforRange (unsigned long long startingLocus, unsigned long long endingLocus, int numIndividuals, std::vector<unsigned char> &mainReadCountVector, std::vector<std::vector<long double>> &threadPWP, std::vector<std::vector<long double>>& threadWeightings) {
+int calcPWPforRange (unsigned long long startingLocus, unsigned long long endingLocus, int numIndividuals, std::vector<unsigned char> & mainReadCountVector, std::vector<std::vector<long double>> & threadPWP, std::vector<std::vector<long double>> & threadWeightings) {
 
     
     //usage: calcPWPforRange(0, 1000000, readCounts) // where readCounts is a vector with all the read count data
