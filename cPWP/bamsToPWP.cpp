@@ -242,7 +242,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
             // Since we're passing the vectors in by reference, calPWPforRange can modify pwpThreads[thread] and weightingsThreads[thread] (but not mainReadCountVector because that is declared in the function as const
             //t[threadRunning]
             //std::thread t = std::thread(calcPWPforRange, firstLocus, finishingLocus, std::ref(readCounts), std::ref(pwpThreads[threadRunning]), std::ref(weightingsThreads[threadRunning]));
-            calcPWPforRange(firstLocus, finishingLocus, readCounts, pwp, weightings);
+            calcPWPforRange(firstLocus, finishingLocus, 272, readCounts, pwp, weightings);
         }
         
         t.join();
