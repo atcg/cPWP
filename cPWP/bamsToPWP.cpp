@@ -308,7 +308,7 @@ int calcPWPforRange (unsigned long long startingLocus, unsigned long long ending
             
             //std::cout << "\tTrying to access readCounts[" << minorIndex << "]" << ". locus: " << locus << ". numIndividuals: " << numIndividuals << ". tortoise: " << tortoise << std::endl;
             
-            coverages[tortoise] = int(mainReadCountVector[majorIndex]) + int(mainReadCountVector[minorIndex]); // Hold the coverages for each locus
+            coverages[tortoise] = int((*)mainReadCountVector[majorIndex]) + int((*)mainReadCountVector[minorIndex]); // Hold the coverages for each locus
             //std::cout << "\t\tCalced coverage in line 232" << std::endl;
             //std::cout << coverages[tortoise] << std::endl;
             
