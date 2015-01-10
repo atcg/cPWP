@@ -8,12 +8,13 @@
 
 #include "bamsToPWP.h"
 #include <iostream>
+#include <fstream>
+#include <sstream>
 /*
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <fstream>
-#include <sstream>
+
 #include <string>
 #include <vector>
 #include <algorithm>
