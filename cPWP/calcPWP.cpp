@@ -1,0 +1,198 @@
+//
+//  calcPWP.cpp
+//  
+//
+//  Created by Evan McCartney-Melstad on 1/10/15.
+//
+//
+
+#include "calcPWP.h"
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <thread>
+
+int main (void) {
+    return 0;
+}
+
+int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoci, const int numIndividuals, std::string outFile, int numThreads) {
+    typedef unsigned char BYTE;
+    
+    //****MODIFY THIS TO ONLY READ IN N LOCI AT A TIME, INSTEAD OF USING THE ENTIRE FILE****
+    
+    
+    std::streampos size;
+    std::ifstream file (binaryFile, std::ios::in|std::ios::binary|std::ios::ate);
+    //ifstream file ("test500k.binary8bitunsigned", ios::in|ios::binary|ios::ate);
+    if (file.is_open()) {
+        size = file.tellg(); // Just a variable that shows position of stream--at end since ios::ate, so it's the file size. PROBABLY WON'T WORK FOR FILES LARGER THAN ~ 2GB!
+        file.seekg (0, std::ios::beg); // Go back to the beginning of the file
+        //file.read((char*)readCounts, size); // cast to a char* to give to file.read
+        
+        //unsigned char* readCounts;
+        //readCounts = new unsigned char[size];
+        std::vector<unsigned char> readCounts(size);
+        file.read((char*) &readCounts[0], size);
+        file.close();
+        
+        std::cout << "the entire file content is in memory" << std::endl;
+        std::cout << "the total size of the file is " << size << std::endl;
+        std::cout << "the number of elements in the readCounts vector is: " << readCounts.size() << std::endl; // Will give the total size bytes divided by the size of one element--so it gives the number of elements
+        
+        // We now have an array of numIndividuals * 2 (major and minor allele) * 1million (loci)
+        //int totalLoci = (int)size / (numIndividuals*2); // The 1 million locus file has 999,999 sites in it (because of header line)
+        //int totalLoci = size/(272*2);
+        //std::vector< std::vector<long double> > pwp(numIndividuals, std::vector<long double>(numIndividuals,0));
+        //std::vector< std::vector<unsigned long long int> > weightings(numIndividuals, std::vector<unsigned long long int>(numIndividuals,0));
+        //long double pwp[numIndividuals][numIndividuals] = {0.0}; // This is the matrix that will hold the pwp estimates
+        //unsigned long long int weightings[numIndividuals][numIndividuals] = {0.0}; // This is the matrix that will hold the weightings--need to use a long long because the values are basically equal to the coverage squared by the end
+        
+        
+        
+        /* We are going to split the loci between numThreads threads. Each thread will modify two multidimensional
+         vectors of the forms std::vector< std::vector<long double> > pwp(numIndividuals, std::vector<long double>(numIndividuals,0))    and   std::vector< std::vector<unsigned long long int> > weightings(numIndividuals, std::vector<unsigned long long int>(numIndividuals,0))
+         
+         First, we'll generate all of these vectors, which apparently in C++ needs to be constructed of a
+         vector of two-dimensional vectors...
+         */
+        std::vector<std::vector<std::vector<long double>>> pwpThreads(numThreads, std::vector<std::vector<long double>> (numIndividuals, std::vector<long double> (numIndividuals,0) ) ); //pwpThreads[0] is the first 2D array for the first thread, etc...
+        std::vector<std::vector<std::vector<unsigned long long int>>> weightingsThreads(numThreads, std::vector<std::vector<unsigned long long int> > (numIndividuals, std::vector<unsigned long long int> (numIndividuals,0) ) );
+        
+        
+        
+        // Now we need to determine how many loci for each thread. If we want to use the entire binary file, instead of numLoci loci, then change this to lociPerThread = (size/(numIndividuals*2))/numThreads
+        //unsigned long long int lociPerThread = numLoci / numThreads;
+        unsigned long long int lociPerThread = numLoci;
+        
+        //std::thread t;
+        //std::thread t[numThreads];
+        std::vector<std::thread> threadsVec;
+        for (int threadRunning = 0; threadRunning < numThreads; threadRunning++) {
+            unsigned long long firstLocus = (unsigned long long) threadRunning * lociPerThread;
+            unsigned long long finishingLocus = ((unsigned long long) threadRunning * lociPerThread) + lociPerThread - (unsigned long long)1.0;
+            
+            
+            std::cout << "Got to the function call" << std::endl;
+            //calcPWPforRange(firstLocus, finishingLocus, 272, readCounts, pwp, weightings);
+            threadsVec.push_back(std::thread(calcPWPforRange, firstLocus, finishingLocus, std::ref(readCounts), std::ref(pwpThreads[threadRunning]), std::ref(weightingsThreads[threadRunning])));
+            //std::thread t = std::thread(calcPWPforRange, firstLocus, finishingLocus, std::thread(readCounts), std::thread(pwpThreads[threadRunning]), std::thread(weightingsThreads[threadRunning]));
+        }
+        
+        //t.join();
+        // Wait on threads to finish
+        for (int i = 0; i < numThreads; ++i) {
+            threadsVec[i].join();
+        }
+        
+        // Now aggregate the results of the threads and print final results
+        std::vector<std::vector<long double>> weightingsSum(272, std::vector<long double>(272,0));
+        std::vector<std::vector<long double>> pwpSum(272, std::vector<long double>(272,0));
+        for (int element = 0; element < 272; element++) {
+            for (int comparisonElement = 0; comparisonElement <= element; comparisonElement++) {
+                for (int threadVector = 0; threadVector <= numThreads; threadVector++) {
+                    weightingsSum[element][comparisonElement] += weightingsThreads[threadVector][element][comparisonElement];
+                    pwpSum[element][comparisonElement] += pwpThreads[threadVector][element][comparisonElement];
+                }
+            }
+        }
+        
+        // Now print out the final output to the pairwise pi file:
+        std::ofstream pwpOUT (outFile);
+        int rowCounter = 0;
+        if (!pwpOUT) {
+            std::cerr << "Crap, " << outFile << "didn't open!" << std::endl;
+        } else {
+            for (int tortoise=0; tortoise <= (numIndividuals-1); tortoise++) {
+                for (int comparisonTortoise = 0; comparisonTortoise <= tortoise; comparisonTortoise++) {
+                    rowCounter++;
+                    
+                    //std::cout << "Made it past the beginning of the last end for loop" << std::endl;
+                    //std::cout << "Tortoise numbers: " << tortoise << " and " << comparisonTortoise << std::endl;
+                    if (weightingsSum[tortoise][comparisonTortoise] > 0) {
+                        //std::cout << weightings[tortoise][comparisonTortoise] << std::endl;
+                        //std::cout << pwp[tortoise][comparisonTortoise] / weightings[tortoise][comparisonTortoise] << std::endl;
+                        pwpOUT << pwpSum[tortoise][comparisonTortoise] / weightingsSum[tortoise][comparisonTortoise] << std::endl;
+                    } else {
+                        pwpOUT << "NA" << std::endl;
+                    }
+                }
+            }
+        }
+    } else std::cout << "Unable to open file";
+    
+    return 0;
+}
+
+
+//int calcPWPforRange (unsigned long long startingLocus, unsigned long long endingLocus, int numIndividuals, const std::vector<BYTE>& mainReadCountVector, std::vector< std::vector<long double> > & threadPWP, std::vector< std::vector<long double> > & threadWeightings) {
+int calcPWPforRange (unsigned long long startingLocus, unsigned long long endingLocus, int numIndividuals, std::vector<unsigned char>& mainReadCountVector, std::vector<std::vector<long double>>& threadPWP, std::vector<std::vector<unsigned long long int>>& threadWeightings) {
+     
+     std::cout << "Calculating PWP for the following locus range: " << startingLocus << " to " << endingLocus << std::endl;
+     
+     //usage: calcPWPforRange(0, 1000000, readCounts) // where readCounts is a vector with all the read count data
+     //this function will return both the pwp calculations for the matrix as well as the weightings, which will later
+     //be summed across all threads
+     
+     for( unsigned long long locus = startingLocus; locus < endingLocus; locus++) {
+     //std::cout << "Processing locus # " << locus << std::endl;
+     if (locus % 100000 == 0) {
+     std::cout << locus << " loci processed through calcPWPfromBinaryFile" << std::endl;
+     }
+     
+     int coverages[numIndividuals];
+     double *majorAlleleFreqs = new double[numIndividuals]; // This will hold the major allele frequencies for that locus for each tortoise
+     
+     for( int tortoise = 0; tortoise <= (numIndividuals-1); tortoise++ ) {
+     unsigned long long majorIndex = locus * (numIndividuals*2) + 2 * tortoise;
+     unsigned long long minorIndex = locus * (numIndividuals*2) + 2 * tortoise + 1;
+     
+     //std::cout << "\tTrying to access readCounts[" << minorIndex << "]" << ". locus: " << locus << ". numIndividuals: " << numIndividuals << ". tortoise: " << tortoise << std::endl;
+     
+     coverages[tortoise] = int(mainReadCountVector[majorIndex]) + int(mainReadCountVector[minorIndex]); // Hold the coverages for each locus
+     //std::cout << "\t\tCalced coverage in line 232" << std::endl;
+     //std::cout << coverages[tortoise] << std::endl;
+     
+     //std::cout << "Total coverage for tortoise " << tortoise << " at locus " << locus+1 << ": " << coverages[tortoise] << std::endl;
+     
+     if ( coverages[tortoise] > 0 ) {
+     //std::cout << "Made it to line 222 for locus " << locus << std::endl;
+     majorAlleleFreqs[tortoise] = (double)mainReadCountVector[majorIndex] / (double)coverages[tortoise]; // Not necessarily an int, but could be 0 or 1
+     //std::cout << "Major allele frequency for individual " << tortoise << " at locus " << locus << ": " << majorAlleleFreqs[tortoise] << std::endl;
+     //std::cout << "\t\t\tCalced majorAlleleFreqs[" << tortoise << "] in line 239" << std::endl;
+     if (coverages[tortoise] > 1) {
+     unsigned long long locusWeighting = coverages[tortoise]*(coverages[tortoise]-1);
+     threadWeightings[tortoise][tortoise] += (unsigned long long)locusWeighting; // This is an int--discrete number of reads
+     //std::cout << "\t\t\t\tCalced weightings in line 245 for tortoise[" << tortoise << "]" << std::endl;
+     
+     threadPWP[tortoise][tortoise] += double(locusWeighting) * (2.0 * majorAlleleFreqs[tortoise] * (double(coverages[tortoise]) - double(mainReadCountVector[majorIndex]))) / (double((coverages[tortoise])-1.0));
+     //std::cout << "\t\t\t\t\tCalced pwp in line 247 for tortoise[" << tortoise << "]" << std::endl;
+     //std::cout << "Locus self weighting for individual " << tortoise << " at locus: " << locus << ": " << locusWeighting << ". Locus self PWP: " << double(locusWeighting) * (2.0 * majorAlleleFreqs[tortoise] * (double(coverages[tortoise]) - double(readCounts[locus * numIndividuals * 2 + 2 * tortoise]))) / (double((coverages[tortoise])-1.0)) << std::endl;
+     //std::cout << "\tmajorAlleleFreq: " << majorAlleleFreqs[tortoise] << ". Coverages: " << double(coverages[tortoise]) << ". readCounts: " << double(readCounts[locus * numIndividuals * 2 + 2 * tortoise]) << std::endl;
+     //std::cout << "PWP for self:" << pwp[tortoise][tortoise] << std::endl;
+     //std::cout << "Made it to line 233 for locus " << locus << ". Weightings = " << weightings[tortoise][tortoise] << ". PWP = " << pwp[tortoise][tortoise] << std::endl;
+     }
+     
+     
+     for( int comparisonTortoise = 0; comparisonTortoise < tortoise; comparisonTortoise++) {
+     if (coverages[comparisonTortoise] > 0) {
+     
+     //std::cout << "Coverages for the two comparison individuals: " << std::to_string((double)coverages[tortoise]) << " and " << std::to_string((double)coverages[comparisonTortoise]) << std::endl;
+     //std::cout << "Major allele freqs for the two comparison individuals: " << std::to_string(majorAlleleFreqs[tortoise]) << " and " << std::to_string(majorAlleleFreqs[comparisonTortoise]) << std::endl;
+     double locusWeighting = (double)coverages[tortoise] * (double)coverages[comparisonTortoise];
+     threadWeightings[tortoise][comparisonTortoise] += locusWeighting;
+     //std::cout << "locusDiffPWP: " << (double)locusWeighting * ((double)majorAlleleFreqs[tortoise] * (1-(double)majorAlleleFreqs[comparisonTortoise]) + (double)majorAlleleFreqs[comparisonTortoise] * (1-(double)majorAlleleFreqs[tortoise])) << std::endl;
+     threadPWP[tortoise][comparisonTortoise] += (double)locusWeighting * (majorAlleleFreqs[tortoise] * (1.0-majorAlleleFreqs[comparisonTortoise]) + majorAlleleFreqs[comparisonTortoise] * (1.0-majorAlleleFreqs[tortoise]));
+     //std::cout << "\t\t\t\t\t\tCalced pwp for tortoise[" << tortoise << "] and comparisonTortoise[" << comparisonTortoise << "]" << std::endl;
+     //std::cout << pwp[tortoise][comparisonTortoise] << std::endl;
+     //std::cout << "Cumulative weightings = " << weightings[tortoise][comparisonTortoise] << ". Cumulative PWP = " << pwp[tortoise][comparisonTortoise] << std::endl;
+     }
+     }
+     }
+     }
+     delete[] majorAlleleFreqs; // Needed to avoid memory leaks
+     //delete[] coverages; // Since that locus is done, and this variable holds per-locus coverages, we can nuke the coverages to start anew
+     }
+    return 0;
+    
+}
