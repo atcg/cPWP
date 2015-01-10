@@ -13,9 +13,6 @@
 #include <thread>
 #include <string>
 
-int main (void) {
-    return 0;
-}
 
 int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoci, const int numIndividuals, std::string outFile, int numThreads) {
     
