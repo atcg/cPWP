@@ -14,10 +14,10 @@
 #include <string>
 
 
-int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoci, const int numIndividuals, std::string outFile, std::string numThreadsString) {
+int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoci, const int numIndividuals, std::string outFile, int numThreadsString) {
     
     //****MODIFY THIS TO ONLY READ IN N LOCI AT A TIME, INSTEAD OF USING THE ENTIRE FILE****
-    int numThreads = (int)(numThreadsString);
+    
     
     std::streampos size;
     std::ifstream file (binaryFile, std::ios::in|std::ios::binary|std::ios::ate);
