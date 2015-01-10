@@ -95,10 +95,8 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         for (int element = 0; element < 272; element++) {
             for (int comparisonElement = 0; comparisonElement <= element; comparisonElement++) {
                 for (int threadVector = 0; threadVector < numThreads; threadVector++) {
-                    std::cout << "weightingsThreads[" << threadVector << "][" << element << "][" << comparisonElement << "] = " << weightingsThreads[threadVector][element][comparisonElement] << std::endl;
-                    std::cout << "pwpThreads[" << threadVector << "][" << element << "][" << comparisonElement << "] = " << pwpThreads[threadVector][element][comparisonElement] << std::endl;
-                    
-                    
+                    //std::cout << "weightingsThreads[" << threadVector << "][" << element << "][" << comparisonElement << "] = " << weightingsThreads[threadVector][element][comparisonElement] << std::endl;
+                    //std::cout << "pwpThreads[" << threadVector << "][" << element << "][" << comparisonElement << "] = " << pwpThreads[threadVector][element][comparisonElement] << std::endl;
                     weightingsSum[element][comparisonElement] += weightingsThreads[threadVector][element][comparisonElement];
                     pwpSum[element][comparisonElement] += pwpThreads[threadVector][element][comparisonElement];
                 }
