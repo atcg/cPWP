@@ -14,7 +14,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include <algorithm>
+//#include <algorithm>
 #include <thread>
 #include <boost/iostreams/filtering_stream.hpp>
 #include <boost/iostreams/filtering_streambuf.hpp>
