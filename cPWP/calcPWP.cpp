@@ -18,7 +18,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
     
     //****MODIFY THIS TO ONLY READ IN N LOCI AT A TIME, INSTEAD OF USING THE ENTIRE FILE****
     
-    
+    std::cout << "Number of threads: " << numThreads << std::endl;
     std::streampos size;
     std::ifstream file (binaryFile, std::ios::in|std::ios::binary|std::ios::ate);
     //ifstream file ("test500k.binary8bitunsigned", ios::in|ios::binary|ios::ate);
@@ -60,7 +60,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         
         // Now we need to determine how many loci for each thread. If we want to use the entire binary file, instead of numLoci loci, then change this to lociPerThread = (size/(numIndividuals*2))/numThreads
         //unsigned long long int lociPerThread = numLoci / numThreads;
-        unsigned long long int lociPerThread = numLoci/numThreads;
+        unsigned long long int lociPerThread = (numLoci-1)/numThreads; // loci starts with 0, so need to subtract 1 from numLoci
         
 
         std::cout << "Initialized lociPerThread with " << numLoci << std::endl;
