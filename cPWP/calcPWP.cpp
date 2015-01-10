@@ -85,9 +85,13 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         }
         std::cout << "All threads completed running" << std::endl;
         
+        
+        
         // Now aggregate the results of the threads and print final results
         std::vector<std::vector<long double>> weightingsSum(272, std::vector<long double>(272,0));
         std::vector<std::vector<long double>> pwpSum(272, std::vector<long double>(272,0));
+        std::cout << "Created the final results vectors" << std::endl;
+        
         for (int element = 0; element < 272; element++) {
             for (int comparisonElement = 0; comparisonElement <= element; comparisonElement++) {
                 for (int threadVector = 0; threadVector <= numThreads; threadVector++) {
@@ -96,6 +100,8 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
                 }
             }
         }
+        std::cout << "Finished summing the threads vectors" << std::endl;
+        
         
         // Now print out the final output to the pairwise pi file:
         std::ofstream pwpOUT (outFile);
@@ -154,7 +160,7 @@ int calcPWPforRange (unsigned long long startingLocus, unsigned long long ending
                      threadPWP[tortoise][tortoise] += double(locusWeighting) * (2.0 * majorAlleleFreqs[tortoise] * (double(coverages[tortoise]) - double(mainReadCountVector[majorIndex]))) / (double((coverages[tortoise])-1.0));
                  }
      
-                 for( int comparisonTortoise = 0; comparisonTortoise < tortoise; comparisonTortoise++) {
+                 for( int comparisonTortoise = 0; comparisonTortoise <= tortoise; comparisonTortoise++) {
                      if (coverages[comparisonTortoise] > 0) {
                          double locusWeighting = (double)coverages[tortoise] * (double)coverages[comparisonTortoise];
                          
