@@ -62,7 +62,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         //unsigned long long int lociPerThread = numLoci / numThreads;
         
         //unsigned long long int lociPerThread = (readCounts.size()-1)/numThreads; // loci starts with 0, so need to subtract 1 from numLoci
-        unsigned long long int lociPerThread = (numLoci-1)/numThreads;
+        unsigned long long int lociPerThread = (unsigned long long)(numLoci-1)/(unsigned long long)numThreads;
 
         std::cout << "Initialized lociPerThread with " << numLoci << std::endl;
         
@@ -164,7 +164,7 @@ int calcPWPforRange (unsigned long long startingLocus, unsigned long long ending
                 }
             }
         }
-        std::cout << "Made it to deleting majorAlleleFreqs" << std::endl;
+        //std::cout << "Made it to deleting majorAlleleFreqs" << std::endl;
         delete[] majorAlleleFreqs; // Needed to avoid memory leaks
     }
     std::cout << "Finished thread ending on locus " << endingLocus << std::endl;
