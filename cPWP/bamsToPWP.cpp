@@ -213,8 +213,8 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         // We now have an array of numIndividuals * 2 (major and minor allele) * 1million (loci)
         //int totalLoci = (int)size / (numIndividuals*2); // The 1 million locus file has 999,999 sites in it (because of header line)
         //int totalLoci = size/(272*2);
-        std::vector< std::vector<long double> > pwp(numIndividuals, std::vector<long double>(numIndividuals,0));
-        std::vector< std::vector<unsigned long long int> > weightings(numIndividuals, std::vector<unsigned long long int>(numIndividuals,0));
+        //std::vector< std::vector<long double> > pwp(numIndividuals, std::vector<long double>(numIndividuals,0));
+        //std::vector< std::vector<unsigned long long int> > weightings(numIndividuals, std::vector<unsigned long long int>(numIndividuals,0));
         //long double pwp[numIndividuals][numIndividuals] = {0.0}; // This is the matrix that will hold the pwp estimates
         //unsigned long long int weightings[numIndividuals][numIndividuals] = {0.0}; // This is the matrix that will hold the weightings--need to use a long long because the values are basically equal to the coverage squared by the end
         
@@ -226,8 +226,8 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
          First, we'll generate all of these vectors, which apparently in C++ needs to be constructed of a 
          vector of two-dimensional vectors... 
          */
-        //std::vector<std::vector<std::vector<unsigned long long int>>> pwpThreads(numThreads, std::vector<std::vector<unsigned long long int>> (numIndividuals, std::vector<unsigned long long int> (numIndividuals,0) ) ); //pwpThreads[0] is the first 2D array for the first thread, etc...
-        //std::vector<std::vector<std::vector<unsigned long long int>>> weightingsThreads(numThreads, std::vector<std::vector<unsigned long long int> > (numIndividuals, std::vector<unsigned long long int> (numIndividuals,0) ) );
+        std::vector<std::vector<std::vector<unsigned long long int>>> pwpThreads(numThreads, std::vector<std::vector<unsigned long long int>> (numIndividuals, std::vector<unsigned long long int> (numIndividuals,0) ) ); //pwpThreads[0] is the first 2D array for the first thread, etc...
+        std::vector<std::vector<std::vector<unsigned long long int>>> weightingsThreads(numThreads, std::vector<std::vector<unsigned long long int> > (numIndividuals, std::vector<unsigned long long int> (numIndividuals,0) ) );
 
         // Now we need to determine how many loci for each thread. If we want to use the entire binary file, instead of numLoci loci, then change this to lociPerThread = (size/(numIndividuals*2))/numThreads
         //unsigned long long int lociPerThread = numLoci / numThreads;
@@ -244,18 +244,26 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
             //std::thread t = std::thread(calcPWPforRange, firstLocus, finishingLocus, std::ref(readCounts), std::ref(pwpThreads[threadRunning]), std::ref(weightingsThreads[threadRunning]));
             std::cout << "Got to the function call" << std::endl;
             //calcPWPforRange(firstLocus, finishingLocus, 272, readCounts, pwp, weightings);
-            std::thread t = std::thread(calcPWPforRange, firstLocus, finishingLocus, &readCounts, &pwp, &weightings);
+            std::thread t = std::thread(calcPWPforRange, firstLocus, finishingLocus, std::thread(readCounts), std::thread(pwpThreads[threadRunning]), std::thread(weightingsThreads[threadRunning]));
         }
         
-        t.join();
-        /*// Wait on threads to finish
+        //t.join();
+        // Wait on threads to finish
         for (int i = 0; i < numThreads; ++i) {
             t[i].join();
         }
-         */
         
         // Now aggregate the results of the threads and print final results
-        
+        std::vector<std::vector<long double>> weightingsSum(272, std::vector<long double>(272,0));
+        std::vector<std::vector<long double>> pwpSum(272, std::vector<long double>(272,0));
+        for (int element = 0; element < 272; element++) {
+            for (int comparisonElement = 0; comparisonElement <= element; comparisonElement++) {
+                for (int threadVector = 0; threadVector <= numThreads; threadVector++) {
+                    weightingsSum[element][comparisonElement] += weightingsThreads[threadVector][element][comparisonElement];
+                    pwpSum[element][comparisonElement] += pwpThreads[threadVector][element][comparisonElement];
+                }
+            }
+        }
         
         // Now print out the final output to the pairwise pi file:
         std::ofstream pwpOUT (outFile);
@@ -269,10 +277,10 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
 
                     //std::cout << "Made it past the beginning of the last end for loop" << std::endl;
                     //std::cout << "Tortoise numbers: " << tortoise << " and " << comparisonTortoise << std::endl;
-                    if (weightings[tortoise][comparisonTortoise] > 0) {
+                    if (weightingsSum[tortoise][comparisonTortoise] > 0) {
                         //std::cout << weightings[tortoise][comparisonTortoise] << std::endl;
                         //std::cout << pwp[tortoise][comparisonTortoise] / weightings[tortoise][comparisonTortoise] << std::endl;
-                        pwpOUT << pwp[tortoise][comparisonTortoise] / weightings[tortoise][comparisonTortoise] << std::endl;
+                        pwpOUT << pwpSum[tortoise][comparisonTortoise] / weightingsSum[tortoise][comparisonTortoise] << std::endl;
                     } else {
                         pwpOUT << "NA" << std::endl;
                     }
@@ -288,6 +296,8 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
 //int calcPWPforRange (unsigned long long startingLocus, unsigned long long endingLocus, int numIndividuals, const std::vector<BYTE>& mainReadCountVector, std::vector< std::vector<long double> > & threadPWP, std::vector< std::vector<long double> > & threadWeightings) {
 int calcPWPforRange (unsigned long long startingLocus, unsigned long long endingLocus, int numIndividuals, std::vector<unsigned char> * mainReadCountVector, std::vector<std::vector<long double>> * threadPWP, std::vector<std::vector<unsigned long long int>> * threadWeightings) {
 
+    
+    std::cout << "Calculating PWP for the following locus range: " << startingLocus << " to " << endingLocus << std::endl;
     
     //usage: calcPWPforRange(0, 1000000, readCounts) // where readCounts is a vector with all the read count data
     //this function will return both the pwp calculations for the matrix as well as the weightings, which will later
