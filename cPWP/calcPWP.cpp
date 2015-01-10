@@ -68,8 +68,8 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         //std::thread t[numThreads];
         std::vector<std::thread> threadsVec;
         for (int threadRunning = 0; threadRunning < numThreads; threadRunning++) {
-            unsigned long long firstLocus = (unsigned long long) threadRunning * lociPerThread;
-            unsigned long long finishingLocus = ((unsigned long long) threadRunning * lociPerThread) + lociPerThread - (unsigned long long)1.0;
+            unsigned long long int firstLocus = (unsigned long long int) threadRunning * lociPerThread;
+            unsigned long long int finishingLocus = ((unsigned long long int) threadRunning * lociPerThread) + lociPerThread - (unsigned long long)1.0;
             
             
             std::cout << "Got to the function call" << std::endl;
