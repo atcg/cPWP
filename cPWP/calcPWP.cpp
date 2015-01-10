@@ -11,6 +11,7 @@
 #include <vector>
 #include <fstream>
 #include <thread>
+#include <string>
 
 int main (void) {
     return 0;
