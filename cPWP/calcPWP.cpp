@@ -52,10 +52,11 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         //unsigned long long int lociPerThread = numLoci / numThreads;
         
         //unsigned long long int lociPerThread = (readCounts.size()-1)/numThreads; // loci starts with 0, so need to subtract 1 from numLoci
+        unsigned long long int lociPerThread;
         if (numLoci == 0) {
-            unsigned long long int lociPerThread = (unsigned long long)(size/(numIndividuals*2))/(unsigned long long)numThreads;
+            lociPerThread = (unsigned long long)(size/(numIndividuals*2))/(unsigned long long)numThreads;
         } else {
-            unsigned long long int lociPerThread = (unsigned long long)numLoci/(unsigned long long)numThreads;
+            lociPerThread = (unsigned long long)numLoci/(unsigned long long)numThreads;
         }
         
         
