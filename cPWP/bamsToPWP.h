@@ -10,6 +10,7 @@
 #define __cPWP__readsToPWP__
 
 #include <vector>
+#include <string>
 
 int runANGSDforReadCounts (std::string bamlist, std::string angsdPrefix, std::string nThreads="25", std::string angsdOutputLog="angsdOutPut.log");
 
