@@ -60,7 +60,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         
         // Now we need to determine how many loci for each thread. If we want to use the entire binary file, instead of numLoci loci, then change this to lociPerThread = (size/(numIndividuals*2))/numThreads
         //unsigned long long int lociPerThread = numLoci / numThreads;
-        unsigned long long int lociPerThread = (numLoci-1)/numThreads; // loci starts with 0, so need to subtract 1 from numLoci
+        unsigned long long int lociPerThread = (readCounts.size()-1)/numThreads; // loci starts with 0, so need to subtract 1 from numLoci
         
 
         std::cout << "Initialized lociPerThread with " << numLoci << std::endl;
@@ -75,10 +75,14 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
             threadsVec.push_back(std::thread(calcPWPforRange, firstLocus, finishingLocus, numIndividuals, std::ref(readCounts), std::ref(pwpThreads[threadRunning]), std::ref(weightingsThreads[threadRunning])));
         }
         
+        std::cout << "All threads completed launching" << std::endl;
+        
         // Wait on threads to finish
         for (int i = 0; i < numThreads; ++i) {
             threadsVec[i].join();
+            std::cout << "Joined thread " << i << std::endl;
         }
+        std::cout << "All threads completed running" << std::endl;
         
         // Now aggregate the results of the threads and print final results
         std::vector<std::vector<long double>> weightingsSum(272, std::vector<long double>(272,0));
@@ -159,7 +163,9 @@ int calcPWPforRange (unsigned long long startingLocus, unsigned long long ending
                 }
             }
         }
+        std::cout << "Made it to deleting majorAlleleFreqs" << std::endl;
         delete[] majorAlleleFreqs; // Needed to avoid memory leaks
     }
+    std::cout << "Finished thread ending on locus " << endingLocus << std::endl;
     return 0;
 }
