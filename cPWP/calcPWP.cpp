@@ -56,27 +56,25 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         std::vector<std::vector<std::vector<long double>>> pwpThreads(numThreads, std::vector<std::vector<long double>> (numIndividuals, std::vector<long double> (numIndividuals,0) ) ); //pwpThreads[0] is the first 2D array for the first thread, etc...
         std::vector<std::vector<std::vector<unsigned long long int>>> weightingsThreads(numThreads, std::vector<std::vector<unsigned long long int> > (numIndividuals, std::vector<unsigned long long int> (numIndividuals,0) ) );
         
-        
+        std::cout << "Initialized the 3d vectors" << std::endl;
         
         // Now we need to determine how many loci for each thread. If we want to use the entire binary file, instead of numLoci loci, then change this to lociPerThread = (size/(numIndividuals*2))/numThreads
         //unsigned long long int lociPerThread = numLoci / numThreads;
-        unsigned long long int lociPerThread = numLoci;
+        unsigned long long int lociPerThread = numLoci/numThreads;
         
-        //std::thread t;
-        //std::thread t[numThreads];
+
+        std::cout << "Initialized lociPerThread with " numLoci << std::endl;
+        
         std::vector<std::thread> threadsVec;
         for (int threadRunning = 0; threadRunning < numThreads; threadRunning++) {
+            std::cout << "Got to the function call. Running thread # " << threadRunning << std::endl;
             unsigned long long int firstLocus = (unsigned long long int) threadRunning * lociPerThread;
             unsigned long long int finishingLocus = ((unsigned long long int) threadRunning * lociPerThread) + lociPerThread - (unsigned long long)1.0;
+            std::cout << "Set firstLocus to " << firstLocus << " and finishingLocus to " << finishingLocus << std::endl;
             
-            
-            std::cout << "Got to the function call. Running thread # " << threadRunning << std::endl;
-            //calcPWPforRange(firstLocus, finishingLocus, 272, readCounts, pwp, weightings);
             threadsVec.push_back(std::thread(calcPWPforRange, firstLocus, finishingLocus, numIndividuals, std::ref(readCounts), std::ref(pwpThreads[threadRunning]), std::ref(weightingsThreads[threadRunning])));
-            //std::thread t = std::thread(calcPWPforRange, firstLocus, finishingLocus, std::thread(readCounts), std::thread(pwpThreads[threadRunning]), std::thread(weightingsThreads[threadRunning]));
         }
         
-        //t.join();
         // Wait on threads to finish
         for (int i = 0; i < numThreads; ++i) {
             threadsVec[i].join();
