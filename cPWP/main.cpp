@@ -15,6 +15,7 @@
 #include <vector>
 #include "generateSimulatedData.h"
 #include "bamsToPWP.h"
+#include "calcPWP.h"
 
 
 int main (int argc, char *argv[]) {
