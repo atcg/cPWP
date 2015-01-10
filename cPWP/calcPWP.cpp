@@ -70,7 +70,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
             unsigned long long int finishingLocus = ((unsigned long long int) threadRunning * lociPerThread) + lociPerThread - (unsigned long long)1.0;
             
             
-            std::cout << "Got to the function call" << std::endl;
+            std::cout << "Got to the function call. Running thread # " << threadRunning << std::endl;
             //calcPWPforRange(firstLocus, finishingLocus, 272, readCounts, pwp, weightings);
             threadsVec.push_back(std::thread(calcPWPforRange, firstLocus, finishingLocus, numIndividuals, std::ref(readCounts), std::ref(pwpThreads[threadRunning]), std::ref(weightingsThreads[threadRunning])));
             //std::thread t = std::thread(calcPWPforRange, firstLocus, finishingLocus, std::thread(readCounts), std::thread(pwpThreads[threadRunning]), std::thread(weightingsThreads[threadRunning]));
