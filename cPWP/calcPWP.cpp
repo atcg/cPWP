@@ -63,7 +63,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         unsigned long long int lociPerThread = numLoci/numThreads;
         
 
-        std::cout << "Initialized lociPerThread with " numLoci << std::endl;
+        std::cout << "Initialized lociPerThread with " << numLoci << std::endl;
         
         std::vector<std::thread> threadsVec;
         for (int threadRunning = 0; threadRunning < numThreads; threadRunning++) {
