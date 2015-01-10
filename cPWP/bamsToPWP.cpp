@@ -234,7 +234,8 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         unsigned long long int lociPerThread = numLoci;
         
         //std::thread t;
-        std::thread t[numThreads];
+        //std::thread t[numThreads];
+        std::vector<std::thread> threadsVec;
         for (int threadRunning = 0; threadRunning < numThreads; threadRunning++) {
             unsigned long long firstLocus = (unsigned long long) threadRunning * lociPerThread;
             unsigned long long finishingLocus = ((unsigned long long) threadRunning * lociPerThread) + lociPerThread - (unsigned long long)1.0;
@@ -244,13 +245,14 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
             //std::thread t = std::thread(calcPWPforRange, firstLocus, finishingLocus, std::ref(readCounts), std::ref(pwpThreads[threadRunning]), std::ref(weightingsThreads[threadRunning]));
             std::cout << "Got to the function call" << std::endl;
             //calcPWPforRange(firstLocus, finishingLocus, 272, readCounts, pwp, weightings);
-            std::thread t = std::thread(calcPWPforRange, firstLocus, finishingLocus, std::thread(readCounts), std::thread(pwpThreads[threadRunning]), std::thread(weightingsThreads[threadRunning]));
+            threadsVec.push_back(std::thread(calcPWPforRange, firstLocus, finishingLocus, std::thread(readCounts), std::thread(pwpThreads[threadRunning]), std::thread(weightingsThreads[threadRunning]));
+            //std::thread t = std::thread(calcPWPforRange, firstLocus, finishingLocus, std::thread(readCounts), std::thread(pwpThreads[threadRunning]), std::thread(weightingsThreads[threadRunning]));
         }
         
         //t.join();
         // Wait on threads to finish
         for (int i = 0; i < numThreads; ++i) {
-            t[i].join();
+            threadsVec[i].join();
         }
         
         // Now aggregate the results of the threads and print final results
