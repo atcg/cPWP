@@ -60,8 +60,9 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         
         // Now we need to determine how many loci for each thread. If we want to use the entire binary file, instead of numLoci loci, then change this to lociPerThread = (size/(numIndividuals*2))/numThreads
         //unsigned long long int lociPerThread = numLoci / numThreads;
-        unsigned long long int lociPerThread = (readCounts.size()-1)/numThreads; // loci starts with 0, so need to subtract 1 from numLoci
         
+        //unsigned long long int lociPerThread = (readCounts.size()-1)/numThreads; // loci starts with 0, so need to subtract 1 from numLoci
+        unsigned long long int lociPerThread = (numLoci-1)/numThreads;
 
         std::cout << "Initialized lociPerThread with " << numLoci << std::endl;
         
