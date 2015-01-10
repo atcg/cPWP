@@ -7,6 +7,7 @@
 //
 
 #include "bamsToPWP.h"
+/*
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
@@ -20,6 +21,13 @@
 #include <boost/iostreams/filtering_streambuf.hpp>
 #include <boost/iostreams/filter/gzip.hpp>
 #include <boost/algorithm/string.hpp>
+*/
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <thread>
+#include <cstdlib>
+#include <cmath>
 
 typedef unsigned char BYTE;
 
@@ -202,7 +210,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
 
         //unsigned char* readCounts;
         //readCounts = new unsigned char[size];
-        std::vector<BYTE> readCounts(size);
+        std::vector<unsigned char> readCounts(size);
         file.read((char*) &readCounts[0], size);
         file.close();
         
@@ -228,7 +236,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
          */
         std::vector<std::vector<std::vector<long double>>> pwpThreads(numThreads, std::vector<std::vector<long double>> (numIndividuals, std::vector<long double> (numIndividuals,0) ) ); //pwpThreads[0] is the first 2D array for the first thread, etc...
         std::vector<std::vector<std::vector<unsigned long long int>>> weightingsThreads(numThreads, std::vector<std::vector<unsigned long long int> > (numIndividuals, std::vector<unsigned long long int> (numIndividuals,0) ) );
-        
+
 
 
         // Now we need to determine how many loci for each thread. If we want to use the entire binary file, instead of numLoci loci, then change this to lociPerThread = (size/(numIndividuals*2))/numThreads
