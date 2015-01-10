@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Evan McCartney-Melstad. All rights reserved.
 //
 
-#include "bamsToPWP.h"
+#include "bamsToBin.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>

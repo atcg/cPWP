@@ -14,7 +14,7 @@
 #include <fstream>
 #include <vector>
 #include "generateSimulatedData.h"
-#include "bamsToPWP.h"
+#include "bamsToBin.h"
 #include "calcPWP.h"
 
 
