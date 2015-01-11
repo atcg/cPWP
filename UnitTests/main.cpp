@@ -44,7 +44,7 @@ TEST_CASE( " Mapping first set of reads", "[mapReads]") {
 
 
 TEST_CASE( "Generate sequence reads 2", "[perfectReads2]") {
-    REQUIRE( generatePerfectReads ("simulatedReferenceGenomeMutated.fasta", 1, 100, 300, "mutatedRef") == 0);
+    REQUIRE( generatePerfectReads ("simulatedReferenceGenomeMutated.fasta", 10, 100, 300, "mutatedRef") == 0);
 }
 
 /*
