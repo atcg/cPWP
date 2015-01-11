@@ -47,11 +47,12 @@ TEST_CASE( "Generate sequence reads 2", "[perfectReads2]") {
     REQUIRE( generatePerfectReads ("simulatedReferenceGenomeMutated.fasta", 1, 100, 300, "mutatedRef") == 0);
 }
 
+*/
 
 TEST_CASE( " Mapping second set of reads", "[mapReads2]") {
     REQUIRE( mapReads("simulatedReferenceGenome.fasta", "mutatedRef_R1.fastq", "mutatedRef_R2.fastq", "mutated.bam", "25") == 0);
 }
-*/
+
  
 TEST_CASE( "Create heterozygous R1", "[createHet]") {
     REQUIRE( createHeterozygousGenome("normalRef_R1.fastq", "mutatedRef_R1.fastq", "hetRef_R1.fastq") == 0);
