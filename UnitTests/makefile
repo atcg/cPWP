@@ -1,5 +1,5 @@
 all:
-	g++ -Wall main.cpp ../cPWP/generateSimulatedData.cpp ../cPWP/bamsToPWP.cpp -o cPWP -lboost_iostreams -std=c++0x
+	g++ -Wall main.cpp ../cPWP/generateSimulatedData.cpp ../cPWP/bamsToBin.cpp ../cPWP/calcPWP.cpp -o cPWP -lboost_iostreams -pthread -std=c++0x
 
 clean:
 	rm -rf angsdOut* ind* cPWP bamlist.txt pwptest.txt simulatedReferenceGenome.fasta*

@@ -87,13 +87,13 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         std::vector<std::vector<long double>> weightingsSum(numIndividuals, std::vector<long double>(numIndividuals,0));
         std::vector<std::vector<long double>> pwpSum(numIndividuals, std::vector<long double>(numIndividuals,0));
         
-        for (int element = 0; element < numIndividuals; element++) {
-            for (int comparisonElement = 0; comparisonElement <= element; comparisonElement++) {
+        for (int tortoise = 0; tortoise < numIndividuals; tortoise++) {
+            for (int comparisonTortoise = 0; comparisonTortoise <= element; comparisonTortoise++) {
                 for (int threadVector = 0; threadVector < numThreads; threadVector++) {
                     //std::cout << "weightingsThreads[" << threadVector << "][" << element << "][" << comparisonElement << "] = " << weightingsThreads[threadVector][element][comparisonElement] << std::endl;
                     //std::cout << "pwpThreads[" << threadVector << "][" << element << "][" << comparisonElement << "] = " << pwpThreads[threadVector][element][comparisonElement] << std::endl;
-                    weightingsSum[element][comparisonElement] += weightingsThreads[threadVector][element][comparisonElement];
-                    pwpSum[element][comparisonElement] += pwpThreads[threadVector][element][comparisonElement];
+                    weightingsSum[tortoise][comparisonTortoise] += weightingsThreads[threadVector][tortoise][comparisonTortoise];
+                    pwpSum[tortoise][comparisonTortoise] += pwpThreads[threadVector][tortoise][comparisonTortoise];
                 }
             }
         }
@@ -109,7 +109,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         if (!pwpOUT) {
             std::cerr << "Crap, " << outFile << "didn't open!" << std::endl;
         } else {
-            for (int tortoise=0; tortoise <= (numIndividuals-1); tortoise++) {
+            for (int tortoise=0; tortoise < numIndividuals; tortoise++) {
                 for (int comparisonTortoise = 0; comparisonTortoise <= tortoise; comparisonTortoise++) {
                     rowCounter++;
                     
