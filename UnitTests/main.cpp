@@ -33,14 +33,19 @@ TEST_CASE ( "Mutate a reference genome", "[mutateRefGenome]") {
 
 
 TEST_CASE( "Generate sequence reads", "[perfectReads]") {
-    REQUIRE( generatePerfectReads ("simulatedReferenceGenome.fasta", 5, 100, 300, "normalRef") == 0);
+    REQUIRE( generatePerfectReads ("simulatedReferenceGenome.fasta", 5, 100, 300, "normalRef5") == 0);
+    //generatePerfectReads (std::string reference, unsigned int stagger, unsigned int readLengths, unsigned int fragmentLengths, std::string readPrefix);
+}
+
+TEST_CASE( "Generate sequence reads", "[perfectReads]") {
+    REQUIRE( generatePerfectReads ("simulatedReferenceGenome.fasta", 10, 100, 300, "normalRef10") == 0);
     //generatePerfectReads (std::string reference, unsigned int stagger, unsigned int readLengths, unsigned int fragmentLengths, std::string readPrefix);
 }
 
 
 
 TEST_CASE( " Mapping first set of reads", "[mapReads]") {
-    REQUIRE( mapReads("simulatedReferenceGenome.fasta", "normalRef_R1.fastq", "normalRef_R1.fastq", "normal.bam", "25") == 0);
+    REQUIRE( mapReads("simulatedReferenceGenome.fasta", "normalRef5_R1.fastq", "normalRef5_R2.fastq", "normal.bam", "25") == 0);
 }
 
 
@@ -59,11 +64,11 @@ TEST_CASE( " Mapping second set of reads", "[mapReads2]") {
 
 
 TEST_CASE( "Create heterozygous R1", "[createHet]") {
-    REQUIRE( createHeterozygousGenome("normalRef_R1.fastq", "mutatedRef_R1.fastq", "hetRef_R1.fastq") == 0);
+    REQUIRE( createHeterozygousGenome("normalRef10_R1.fastq", "mutatedRef_R1.fastq", "hetRef_R1.fastq") == 0);
 }
 
 TEST_CASE( "Create heterozygous R2", "[createHet]") {
-    REQUIRE( createHeterozygousGenome("normalRef_R2.fastq", "mutatedRef_R2.fastq", "hetRef_R2.fastq") == 0);
+    REQUIRE( createHeterozygousGenome("normalRef10_R2.fastq", "mutatedRef_R2.fastq", "hetRef_R2.fastq") == 0);
 }
 
 
