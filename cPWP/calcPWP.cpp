@@ -143,7 +143,7 @@ int calcPWPforRange (unsigned long long startingLocus, unsigned long long ending
              std::cout << locus << " loci processed through calcPWPfromBinaryFile" << std::endl;
          }
      
-         int coverages[numIndividuals];
+         unsigned long long coverages[numIndividuals];
          long double *majorAlleleFreqs = new long double[numIndividuals]; // This will hold the major allele frequencies for that locus for each tortoise
         
          for( int tortoise = 0; tortoise < numIndividuals; tortoise++ ) {
@@ -156,11 +156,14 @@ int calcPWPforRange (unsigned long long startingLocus, unsigned long long ending
                  majorAlleleFreqs[tortoise] = (long double)mainReadCountVector[majorIndex] / (long double)coverages[tortoise]; // Not necessarily an int, but could be 0 or 1
 
                  if (coverages[tortoise] > 1) {
-                     unsigned long long locusWeighting = coverages[tortoise]*(coverages[tortoise]-1);
+                     unsigned long long locusWeighting = unsigned long long (coverages[tortoise]*(coverages[tortoise]-1));
                      threadWeightings[tortoise][tortoise] += (unsigned long long)locusWeighting; // This is an int--discrete number of reads
      
 
-                     threadPWP[tortoise][tortoise] += (long double)(locusWeighting) * ((long double)2.0 * majorAlleleFreqs[tortoise] * ((long double)(coverages[tortoise]) - (long double)(mainReadCountVector[majorIndex]))) / (long double)((coverages[tortoise])-(long double)1.0);
+                     //threadPWP[tortoise][tortoise] += (long double)(locusWeighting) * ((long double)2.0 * majorAlleleFreqs[tortoise] * ((long double)(coverages[tortoise]) - (long double)(mainReadCountVector[majorIndex]))) / (long double)((coverages[tortoise])-(long double)1.0);
+                     threadPWP[tortoise][tortoise] += (long double)(locusWeighting) * ((long double)2.0 * majorAlleleFreqs[tortoise] * ((long double)(coverages[tortoise]) - (long double)(mainReadCountVector[majorIndex]))) / (long double)((coverages[tortoise]));
+                     
+                     //threadPWP[tortoise][tortoise] += locusWeighting*(2*majorAlleleFreqs[tortoise] * (coverages[tortoise]-majorReadCounts)) / (coverages[tortoise]-1)
                  }
      
                  for( int comparisonTortoise = 0; comparisonTortoise < tortoise; comparisonTortoise++) {
