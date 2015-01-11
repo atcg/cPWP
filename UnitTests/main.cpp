@@ -61,7 +61,7 @@ TEST_CASE( "Generate sequence reads for het", "[perfectReadsHet]") {
 }
 
 
-TEST_CASE( " Mapping second set of reads", "[mapReads2]") {
+TEST_CASE( " Mapping het reads", "[mapReads2]") {
     REQUIRE( mapReads("simulatedReferenceGenome.fasta", "hetRef_R1.fastq", "hetRef_R2.fastq", "het.bam", "25") == 0);
 }
 
