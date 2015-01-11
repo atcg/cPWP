@@ -105,7 +105,7 @@ int convertANGSDcountsToBinary(std::string angsdPrefix, std::string binaryOutput
     std::ifstream mafsFile(mafsFileName, std::ios_base::in | std::ios_base::binary);
     //std::ifstream mafsFile(mafsFileName, std::ios_base::in);
     std::ofstream outCountsFile(binaryOutputFileName, std::ios_base::out | std::ios_base::binary);
-    
+    std::cout << "Set up the binary conversion files" << std::endl;
     try {
         
         boost::iostreams::filtering_istream in;
@@ -114,6 +114,7 @@ int convertANGSDcountsToBinary(std::string angsdPrefix, std::string binaryOutput
         in.push(countsFile);
         inMafs.push(boost::iostreams::gzip_decompressor());
         inMafs.push(mafsFile);
+        std::cout << "Set up the gunzipping filters" << std::endl;
         
         int counter = 0;
         //int numIndividuals = 3;
