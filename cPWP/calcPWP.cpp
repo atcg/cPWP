@@ -157,16 +157,16 @@ int calcPWPforRange (unsigned long long startingLocus, unsigned long long ending
 
                  if (coverages[tortoise] > 1) {
                      unsigned long long locusWeighting = coverages[tortoise]*(coverages[tortoise]-1);
-                     //unsigned long long locusWeighting = coverages[tortoise]*(coverages[tortoise]);
                      threadWeightings[tortoise][tortoise] += (unsigned long long)locusWeighting; // This is an int--discrete number of reads
      
-                     //threadPWP[tortoise][tortoise] += double(locusWeighting) * (2.0 * majorAlleleFreqs[tortoise] * (double(coverages[tortoise]) - double(mainReadCountVector[majorIndex]))) / (double((coverages[tortoise])));
+
                      threadPWP[tortoise][tortoise] += double(locusWeighting) * (2.0 * majorAlleleFreqs[tortoise] * (double(coverages[tortoise]) - double(mainReadCountVector[majorIndex]))) / (double((coverages[tortoise])-1.0));
                  }
      
                  for( int comparisonTortoise = 0; comparisonTortoise < tortoise; comparisonTortoise++) {
                      if (coverages[comparisonTortoise] > 0) {
                          double locusWeighting = (double)coverages[tortoise] * (double)coverages[comparisonTortoise];
+                         //double locusWeighting = (double)coverages[tortoise] * (double)coverages[comparisonTortoise] - 1;
                          
                          threadWeightings[tortoise][comparisonTortoise] += locusWeighting;
                          threadPWP[tortoise][comparisonTortoise] += (double)locusWeighting * (majorAlleleFreqs[tortoise] * (1.0-majorAlleleFreqs[comparisonTortoise]) + majorAlleleFreqs[comparisonTortoise] * (1.0-majorAlleleFreqs[tortoise]));
@@ -179,6 +179,21 @@ int calcPWPforRange (unsigned long long startingLocus, unsigned long long ending
     std::cout << "Finished thread ending on locus " << endingLocus << std::endl;
     return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
