@@ -160,7 +160,7 @@ int calcPWPforRange (unsigned long long startingLocus, unsigned long long ending
                      threadWeightings[tortoise][tortoise] += (unsigned long long)locusWeighting; // This is an int--discrete number of reads
      
 
-                     threadPWP[tortoise][tortoise] += (long double)(locusWeighting) * (2.0 * majorAlleleFreqs[tortoise] * ((long double)(coverages[tortoise]) - (long double)(mainReadCountVector[majorIndex]))) / (long double)((coverages[tortoise])-1.0));
+                     threadPWP[tortoise][tortoise] += (long double)(locusWeighting) * ((long double)2.0 * majorAlleleFreqs[tortoise] * ((long double)(coverages[tortoise]) - (long double)(mainReadCountVector[majorIndex]))) / (long double)((coverages[tortoise])-(long double)1.0);
                  }
      
                  for( int comparisonTortoise = 0; comparisonTortoise < tortoise; comparisonTortoise++) {
