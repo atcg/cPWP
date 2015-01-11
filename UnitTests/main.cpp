@@ -28,7 +28,7 @@ TEST_CASE( "Generate reference genome for simulation tests", "[generateReference
 }
 
 TEST_CASE ( "Mutate a reference genome", "[mutateRefGenome]") {
-    REQUIRE( createMutatedGenome("simulatedReferenceGenome.fasta", "simulatedReferenceGenomeMutated.fasta", 0.01) == 0);
+    REQUIRE( createMutatedGenome("simulatedReferenceGenome.fasta", "simulatedReferenceGenomeMutated.fasta", 0.02) == 0);
 }
 
 
@@ -48,13 +48,12 @@ TEST_CASE( "Generate sequence reads 2", "[perfectReads2]") {
 }
 
 
-/*
 TEST_CASE( " Mapping second set of reads", "[mapReads2]") {
     REQUIRE( mapReads("simulatedReferenceGenome.fasta", "mutatedRef_R1.fastq", "mutatedRef_R2.fastq", "mutated.bam", "25") == 0);
 }
- */
 
- 
+
+/*
 TEST_CASE( "Create heterozygous R1", "[createHet]") {
     REQUIRE( createHeterozygousGenome("normalRef_R1.fastq", "mutatedRef_R1.fastq", "hetRef_R1.fastq") == 0);
 }
@@ -68,24 +67,13 @@ TEST_CASE( " Mapping het reads", "[mapReads2]") {
     REQUIRE( mapReads("simulatedReferenceGenome.fasta", "hetRef_R1.fastq", "hetRef_R2.fastq", "het.bam", "25") == 0);
 }
 
-
+*/
 
 
 TEST_CASE( "Run ANGSD on simulated reads", "[runANGSD]" ) {
     REQUIRE( runANGSDforReadCounts("bamlist.txt", "angsdOut", "25", "angsdOutLog.txt") == 0);
 }
 
-/*
-
-TEST_CASE( "Generate mutated reference genomes and simulate reads", "[genomeAndReadSim]") {
-    REQUIRE( generateReadsAndMap(3, 0.01, "300", "25", "10000", "100", "1234", "simulatedReferenceGenome.fasta", "25") == 0);
-}
-
-TEST_CASE( "Run ANGSD on simulated reads", "[runANGSD]" ) {
-    REQUIRE( runANGSDforReadCounts("bamlist.txt", "angsdOut", "25", "angsdOutLog.txt") == 0);
-}
- 
- */
 
 TEST_CASE( "Convert ANGSD read counts to unsigned chars for major and minor counts", "[convertCountsToBinary]") {
     REQUIRE( convertANGSDcountsToBinary("angsdOut", "angsdOut.readCounts.binary", 2, 5000) == 0); // 5000 as a max because we don't want to exclude any loci for this test
