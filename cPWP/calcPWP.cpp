@@ -165,8 +165,8 @@ int calcPWPforRange (unsigned long long startingLocus, unsigned long long ending
      
                  for( int comparisonTortoise = 0; comparisonTortoise < tortoise; comparisonTortoise++) {
                      if (coverages[comparisonTortoise] > 0) {
-                         double locusWeighting = (double)coverages[tortoise] * (double)coverages[comparisonTortoise];
-                         //double locusWeighting = (double)coverages[tortoise] * (double)coverages[comparisonTortoise] - 1;
+                         //double locusWeighting = (double)coverages[tortoise] * (double)coverages[comparisonTortoise];
+                         double locusWeighting = (double)coverages[tortoise] * (double)coverages[comparisonTortoise] - 1;
                          
                          threadWeightings[tortoise][comparisonTortoise] += locusWeighting;
                          threadPWP[tortoise][comparisonTortoise] += (double)locusWeighting * (majorAlleleFreqs[tortoise] * (1.0-majorAlleleFreqs[comparisonTortoise]) + majorAlleleFreqs[comparisonTortoise] * (1.0-majorAlleleFreqs[tortoise]));
