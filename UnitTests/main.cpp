@@ -67,8 +67,8 @@ while ( getline ( chrom1a, line2, '\n' ) )
 {
     write << line2 << endl;
 }
-read1.close();
-read2.close();
+chrom1.close();
+chrom1a.close();
 write.close();
 
 
