@@ -451,11 +451,11 @@ int createHeterozygousGenome(std::string firstFile, std::string secondFile, std:
     std::string line2;
     while ( std::getline ( chrom1, line, '\n' ) )
     {
-        write << line << endl;
+        write << line << std::endl;
     }
     while ( getline ( chrom1a, line2, '\n' ) )
     {
-        write << line2 << endl;
+        write << line2 << std::endl;
     }
     chrom1.close();
     chrom1a.close();
