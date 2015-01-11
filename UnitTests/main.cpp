@@ -54,9 +54,12 @@ TEST_CASE( " Mapping second set of reads", "[mapReads2]") {
 
 
 // Create heterozygous genome
-std::ifstream chrom1("simulatedReferenceGenome.fasta");
-std::ifstream chrom1a("simulatedReferenceGenomeMutated.fasta");
-std::ofstream write("simulatedHeterozygousGenome.fasta");
+std::ifstream chrom1;
+chrom1.open("simulatedReferenceGenome.fasta");
+std::ifstream chrom1a;
+chrom1a.open("simulatedReferenceGenomeMutated.fasta");
+std::ofstream write;
+write.open("simulatedHeterozygousGenome.fasta");
 std::string line;
 std::string line2;
 while ( std::getline ( chrom1, line, '\n' ) )
