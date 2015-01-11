@@ -12,7 +12,8 @@
 #include "../cPWP/calcPWP.h"
 #include "catch.hpp"
 #include <string>
-
+#include <iostream>
+#include <fstream>
 
 
 /*
@@ -50,6 +51,27 @@ TEST_CASE( "Generate sequence reads 2", "[perfectReads2]") {
 TEST_CASE( " Mapping second set of reads", "[mapReads2]") {
     REQUIRE( mapReads("simulatedReferenceGenome.fasta", "mutatedRef_R1.fastq", "mutatedRef_R2.fastq", "mutated.bam", "25") == 0);
 }
+
+
+// Create heterozygous genome
+std::ifstream chrom1("simulatedReferenceGenome.fasta");
+std::ifstream chrom1a("simulatedReferenceGenomeMutated.fasta");
+std::ofstream write ("simulatedHeterozygousGenome.fasta");
+std::string line;
+std::string line2;
+while ( std::getline ( chrom1, line, '\n' ) )
+{
+    write << line << endl;
+}
+while ( getline ( chrom1a, line2, '\n' ) )
+{
+    write << line2 << endl;
+}
+read1.close();
+read2.close();
+write.close();
+
+
 
 
 TEST_CASE( "Run ANGSD on simulated reads", "[runANGSD]" ) {
