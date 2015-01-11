@@ -24,6 +24,8 @@ int mapReads (std::string reference, std::string R1file, std::string R2file, std
 
 int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::string libFragmentSize, std::string stdevLibFragmentSize, std::string numReadPairs, std::string readLengths, std::string randomSeed, std::string reference, std::string threads = "25");
 
+int createHeterozygousGenome(std::string firstFile, std::string secondFile, std::string outputGenome);
+
 
 
 #endif /* defined(__cPWP__generateSimulatedData__) */

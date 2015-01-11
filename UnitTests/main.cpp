@@ -52,27 +52,18 @@ TEST_CASE( " Mapping second set of reads", "[mapReads2]") {
     REQUIRE( mapReads("simulatedReferenceGenome.fasta", "mutatedRef_R1.fastq", "mutatedRef_R2.fastq", "mutated.bam", "25") == 0);
 }
 
+TEST_CASE( "Create heterozygous genome", "[createHet]") {
+    REQUIRE( createHeterozygousGenome("simulatedReferenceGenome.fasta", "simulatedReferenceGenomeMutated.fasta", "heterozygousGenome.fasta") == 0);
+}
 
-// Create heterozygous genome
-std::ifstream chrom1;
-chrom1.open("simulatedReferenceGenome.fasta");
-std::ifstream chrom1a;
-chrom1a.open("simulatedReferenceGenomeMutated.fasta");
-std::ofstream write;
-write.open("simulatedHeterozygousGenome.fasta");
-std::string line;
-std::string line2;
-while ( std::getline ( chrom1, line, '\n' ) )
-{
-    write << line << endl;
+TEST_CASE( "Generate sequence reads for het", "[perfectReadsHet]") {
+    REQUIRE( generatePerfectReads ("heterozygousGenome.fasta", 1, 100, 300, "hetRef") == 0);
 }
-while ( getline ( chrom1a, line2, '\n' ) )
-{
-    write << line2 << endl;
+
+
+TEST_CASE( " Mapping second set of reads", "[mapReads2]") {
+    REQUIRE( mapReads("simulatedReferenceGenome.fasta", "hetRef_R1.fastq", "hetRef_R2.fastq", "het.bam", "25") == 0);
 }
-chrom1.close();
-chrom1a.close();
-write.close();
 
 
 

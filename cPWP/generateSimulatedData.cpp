@@ -442,8 +442,27 @@ int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::s
 }
 
 
-/*
- /home/evan/bin/angsd0.613/angsd -bam bamlist272.txt -out 272torts_allCounts_minmapq20minq30 -uniqueOnly 1 -only_proper_pairs 1 -remove_bads 1 -doCounts 1 -nThreads 8 -dumpCounts 4 -doMaf 1 -doMajorMinor 2 -GL 2 -minMapQ 20 -minQ 30 > 272tortsangsdMapQ30_allSites.log 2>&1
- 
-*/
+int createHeterozygousGenome(std::string firstFile, std::string secondFile, std::string outputGenome) {
+    std::ifstream chrom1(firstFile);
+    std::ifstream chrom1a(secondFile);
+    std::ofstream write(outputGenome);
+
+    std::string line;
+    std::string line2;
+    while ( std::getline ( chrom1, line, '\n' ) )
+    {
+        write << line << endl;
+    }
+    while ( getline ( chrom1a, line2, '\n' ) )
+    {
+        write << line2 << endl;
+    }
+    chrom1.close();
+    chrom1a.close();
+    write.close();
+}
+
+
+
+
 
