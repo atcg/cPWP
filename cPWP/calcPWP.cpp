@@ -156,7 +156,7 @@ int calcPWPforRange (unsigned long long startingLocus, unsigned long long ending
                  majorAlleleFreqs[tortoise] = (long double)mainReadCountVector[majorIndex] / (long double)coverages[tortoise]; // Not necessarily an int, but could be 0 or 1
 
                  if (coverages[tortoise] > 1) {
-                     unsigned long long locusWeighting = unsigned long long (coverages[tortoise]*(coverages[tortoise]-1));
+                     unsigned long long locusWeighting = (unsigned long long) (coverages[tortoise]*(coverages[tortoise]-1));
                      threadWeightings[tortoise][tortoise] += (unsigned long long)locusWeighting; // This is an int--discrete number of reads
      
 
