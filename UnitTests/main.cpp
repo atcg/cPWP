@@ -84,7 +84,7 @@ TEST_CASE( "Run ANGSD on simulated reads", "[runANGSD]" ) {
 
 
 TEST_CASE( "Convert ANGSD read counts to unsigned chars for major and minor counts", "[convertCountsToBinary]") {
-    REQUIRE( convertANGSDcountsToBinary("angsdOut", "angsdOut.readCounts.binary", 2, 5000) == 0); // 5000 as a max because we don't want to exclude any loci for this test
+    REQUIRE( convertANGSDcountsToBinary("angsdOut", "angsdOut.readCounts.binary", 2, 250) == 0); // 5000 as a max because we don't want to exclude any loci for this test
 }
 
 TEST_CASE( "Calculate PWP from the binary representations of the ANGSD readcounts", "[calcPWP]") {
