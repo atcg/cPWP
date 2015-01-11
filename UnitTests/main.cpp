@@ -42,7 +42,7 @@ TEST_CASE( " Mapping first set of reads", "[mapReads]") {
     REQUIRE( mapReads("simulatedReferenceGenome.fasta", "normalRef_R1.fastq", "normalRef_R2.fastq", "normal.bam", "25") == 0);
 }
 
-
+/*
 TEST_CASE( "Generate sequence reads 2", "[perfectReads2]") {
     REQUIRE( generatePerfectReads ("simulatedReferenceGenomeMutated.fasta", 1, 100, 300, "mutatedRef") == 0);
 }
@@ -51,7 +51,8 @@ TEST_CASE( "Generate sequence reads 2", "[perfectReads2]") {
 TEST_CASE( " Mapping second set of reads", "[mapReads2]") {
     REQUIRE( mapReads("simulatedReferenceGenome.fasta", "mutatedRef_R1.fastq", "mutatedRef_R2.fastq", "mutated.bam", "25") == 0);
 }
-
+*/
+ 
 TEST_CASE( "Create heterozygous R1", "[createHet]") {
     REQUIRE( createHeterozygousGenome("normalRef_R1.fastq", "mutatedRef_R1.fastq", "hetRef_R1.fastq") == 0);
 }
@@ -85,7 +86,7 @@ TEST_CASE( "Run ANGSD on simulated reads", "[runANGSD]" ) {
  */
 
 TEST_CASE( "Convert ANGSD read counts to unsigned chars for major and minor counts", "[convertCountsToBinary]") {
-    REQUIRE( convertANGSDcountsToBinary("angsdOut", "angsdOut.readCounts.binary", 2, 5000) == 0); // 3 individuals, not 2, because generateReadsAndMap actually generates n+1 individuals, since one individual is identical to the reference genome. And 5000 as a max because we don't want to exclude any loci for this test
+    REQUIRE( convertANGSDcountsToBinary("angsdOut", "angsdOut.readCounts.binary", 2, 5000) == 0); // 5000 as a max because we don't want to exclude any loci for this test
 }
 
 TEST_CASE( "Calculate PWP from the binary representations of the ANGSD readcounts", "[calcPWP]") {

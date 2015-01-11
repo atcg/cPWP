@@ -117,7 +117,6 @@ int convertANGSDcountsToBinary(std::string angsdPrefix, std::string binaryOutput
         std::cout << "Set up the gunzipping filters" << std::endl;
         
         int counter = 0;
-        //int numIndividuals = 3;
         for(std::string str; std::getline(in, str); )
         {
             /* Make sure to get the maf string before we do anything else to keep it in
