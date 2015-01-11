@@ -32,12 +32,12 @@ TEST_CASE ( "Mutate a reference genome", "[mutateRefGenome]") {
 }
 
 
-TEST_CASE( "Generate sequence reads", "[perfectReads]") {
+TEST_CASE( "Generate sequence reads 5", "[perfectReads]") {
     REQUIRE( generatePerfectReads ("simulatedReferenceGenome.fasta", 5, 100, 300, "normalRef5") == 0);
     //generatePerfectReads (std::string reference, unsigned int stagger, unsigned int readLengths, unsigned int fragmentLengths, std::string readPrefix);
 }
 
-TEST_CASE( "Generate sequence reads", "[perfectReads]") {
+TEST_CASE( "Generate sequence reads 10", "[perfectReads]") {
     REQUIRE( generatePerfectReads ("simulatedReferenceGenome.fasta", 10, 100, 300, "normalRef10") == 0);
     //generatePerfectReads (std::string reference, unsigned int stagger, unsigned int readLengths, unsigned int fragmentLengths, std::string readPrefix);
 }
