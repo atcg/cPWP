@@ -460,6 +460,7 @@ int createHeterozygousGenome(std::string firstFile, std::string secondFile, std:
     chrom1.close();
     chrom1a.close();
     write.close();
+    return 0;
 }
 
 
