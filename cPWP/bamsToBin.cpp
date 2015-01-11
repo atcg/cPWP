@@ -118,12 +118,12 @@ int convertANGSDcountsToBinary(std::string angsdPrefix, std::string binaryOutput
         
         int counter = 0;
         //int numIndividuals = 3;
-        for(std::string str; std::getline(countsFile, str); )
+        for(std::string str; std::getline(in, str); )
         {
             /* Make sure to get the maf string before we do anything else to keep it in
              sync with the counts string */
             std::string mafStr;
-            std::getline(mafsFile, mafStr);
+            std::getline(inMafs, mafStr);
             
             // Skip the first line of the counts and mafs file, since it is a header
             if (counter == 0) {
