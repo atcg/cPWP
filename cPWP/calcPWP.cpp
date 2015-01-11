@@ -119,7 +119,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
                         std::cout << std::fixed;
                         std::cout << "Weightings for tortoise " << tortoise << " and comparisonTortoise " << comparisonTortoise << " : " << weightingsSum[tortoise][comparisonTortoise] << std::endl;
                         std::cout << "PWP for tortoise " << tortoise << " and comparisonTortoise " << comparisonTortoise << " : " << pwpSum[tortoise][comparisonTortoise] << std::endl;
-                        std::cout << std::std::scientific;
+                        std::cout << std::scientific;
                         pwpOUT << pwpSum[tortoise][comparisonTortoise] / weightingsSum[tortoise][comparisonTortoise] << std::endl;
                     } else {
                         pwpOUT << "NA" << std::endl;
