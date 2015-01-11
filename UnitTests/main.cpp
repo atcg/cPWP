@@ -73,7 +73,7 @@ TEST_CASE( "Convert ANGSD read counts to unsigned chars for major and minor coun
 }
 
 TEST_CASE( "Calculate PWP from the binary representations of the ANGSD readcounts", "[calcPWP]") {
-    REQUIRE( calcPWPfromBinaryFile ("angsdOut.readCounts.binary", 0, "testingOut.pwp", 30) == 0);
+    REQUIRE( calcPWPfromBinaryFile ("angsdOut.readCounts.binary", 0, 272, "testingOut.pwp", 30) == 0);
 }
 
 
