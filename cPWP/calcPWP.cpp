@@ -116,8 +116,10 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
                     if (weightingsSum[tortoise][comparisonTortoise] > 0) {
                         //std::cout << weightings[tortoise][comparisonTortoise] << std::endl;
                         //std::cout << pwp[tortoise][comparisonTortoise] / weightings[tortoise][comparisonTortoise] << std::endl;
+                        std::cout << std::fixed;
                         std::cout << "Weightings for tortoise " << tortoise << " and comparisonTortoise " << comparisonTortoise << " : " << weightingsSum[tortoise][comparisonTortoise] << std::endl;
                         std::cout << "PWP for tortoise " << tortoise << " and comparisonTortoise " << comparisonTortoise << " : " << pwpSum[tortoise][comparisonTortoise] << std::endl;
+                        std::cout << std::std::scientific;
                         pwpOUT << pwpSum[tortoise][comparisonTortoise] / weightingsSum[tortoise][comparisonTortoise] << std::endl;
                     } else {
                         pwpOUT << "NA" << std::endl;
