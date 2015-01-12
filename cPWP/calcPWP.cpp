@@ -156,10 +156,11 @@ int calcPWPforRange (unsigned long long startingLocus, unsigned long long ending
                  majorAlleleFreqs[tortoise] = (long double)mainReadCountVector[majorIndex] / (long double)coverages[tortoise]; // Not necessarily an int, but could be 0 or 1
 
                  if (coverages[tortoise] > 1) {
-                     unsigned long long locusWeighting = (unsigned long long) (coverages[tortoise]*(coverages[tortoise]-1));
+                     //unsigned long long locusWeighting = (unsigned long long) (coverages[tortoise]*(coverages[tortoise]-1));
+                     unsigned long long locusWeighting = (unsigned long long) (coverages[tortoise]*(coverages[tortoise]));
                      threadWeightings[tortoise][tortoise] += (unsigned long long)locusWeighting; // This is an int--discrete number of reads
      
-                     threadPWP[tortoise][tortoise] += (long double)(locusWeighting) * ((long double)2.0 * majorAlleleFreqs[tortoise] * ((long double)(coverages[tortoise]) - (long double)(mainReadCountVector[majorIndex])) / (long double)((coverages[tortoise])-(long double)1.0));
+                     threadPWP[tortoise][tortoise] += (unsigned long long) (coverages[tortoise]*(coverages[tortoise]-1)) * ((long double)2.0 * majorAlleleFreqs[tortoise] * ((long double)(coverages[tortoise]) - (long double)(mainReadCountVector[majorIndex])) / (long double)((coverages[tortoise])-(long double)1.0));
                      
                      //Cancel out the "coverages[tortoise]-1"
                      //threadPWP[tortoise][tortoise] += (long double)(coverages[tortoise]) * ((long double)2.0 * majorAlleleFreqs[tortoise] * ((long double)(coverages[tortoise]) - (long double)(mainReadCountVector[majorIndex])));
