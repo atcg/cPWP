@@ -170,11 +170,12 @@ int calcPWPforRange (unsigned long long startingLocus, unsigned long long ending
      
                  for( int comparisonTortoise = 0; comparisonTortoise < tortoise; comparisonTortoise++) {
                      if (coverages[comparisonTortoise] > 0) {
-                         long double locusWeighting = (long double)coverages[tortoise] * (long double)(coverages[comparisonTortoise]-1.0);
+                         long double locusWeighting = (long double)coverages[tortoise] * (long double)(coverages[comparisonTortoise]);
                          
                          threadWeightings[tortoise][comparisonTortoise] += locusWeighting;
                          
-                         threadPWP[tortoise][comparisonTortoise] += (long double)locusWeighting * (majorAlleleFreqs[tortoise] * ((long double)1.0-majorAlleleFreqs[comparisonTortoise]) + majorAlleleFreqs[comparisonTortoise] * ((long double)1.0-majorAlleleFreqs[tortoise]));
+                         //threadPWP[tortoise][comparisonTortoise] += (long double)locusWeighting * (majorAlleleFreqs[tortoise] * ((long double)1.0-majorAlleleFreqs[comparisonTortoise]) + majorAlleleFreqs[comparisonTortoise] * ((long double)1.0-majorAlleleFreqs[tortoise]));
+                         threadPWP[tortoise][comparisonTortoise] += ((long double)coverages[tortoise] * (long double)(coverages[comparisonTortoise])) * (majorAlleleFreqs[tortoise] * ((long double)1.0-majorAlleleFreqs[comparisonTortoise]) + majorAlleleFreqs[comparisonTortoise] * ((long double)1.0-majorAlleleFreqs[tortoise]));
                     }
                 }
             }
