@@ -174,8 +174,7 @@ int calcPWPforRange (unsigned long long startingLocus, unsigned long long ending
                          
                          threadWeightings[tortoise][comparisonTortoise] += locusWeighting;
                          
-                         //threadPWP[tortoise][comparisonTortoise] += (long double)locusWeighting * (majorAlleleFreqs[tortoise] * ((long double)1.0-majorAlleleFreqs[comparisonTortoise]) + majorAlleleFreqs[comparisonTortoise] * ((long double)1.0-majorAlleleFreqs[tortoise]));
-                         threadPWP[tortoise][comparisonTortoise] += ((long double)coverages[tortoise] * (long double)(coverages[comparisonTortoise]-1)) * (majorAlleleFreqs[tortoise] * ((long double)1.0-majorAlleleFreqs[comparisonTortoise]) + majorAlleleFreqs[comparisonTortoise] * ((long double)1.0-majorAlleleFreqs[tortoise]));
+                         threadPWP[tortoise][comparisonTortoise] += (long double)locusWeighting * (majorAlleleFreqs[tortoise] * ((long double)1.0-majorAlleleFreqs[comparisonTortoise]) + majorAlleleFreqs[comparisonTortoise] * ((long double)1.0-majorAlleleFreqs[tortoise]));
                     }
                 }
             }
