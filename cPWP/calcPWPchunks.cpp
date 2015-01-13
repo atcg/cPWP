@@ -153,7 +153,6 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
 
 int calcPWPforRange (int numIndividuals, unsigned long long int lociToCalc, std::vector<unsigned char>& mainReadCountVector, std::vector<std::vector<long double>>& threadPWP, std::vector<std::vector<unsigned long long int>>& threadWeightings) {
     
-    std::cout << "Calculating PWP for the following locus range: " << startingLocus << " to " << endingLocus << std::endl;
     for( unsigned long long locus = 0; locus < lociToCalc; locus++) {
         //std::cout << "Processing locus # " << locus << std::endl;
         if (locus % 100000 == 0) {
@@ -191,7 +190,6 @@ int calcPWPforRange (int numIndividuals, unsigned long long int lociToCalc, std:
         }
         delete[] majorAlleleFreqs; // Needed to avoid memory leaks
     }
-    std::cout << "Finished thread ending on locus " << endingLocus << std::endl;
     return 0;
 }
 
