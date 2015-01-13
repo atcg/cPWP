@@ -176,7 +176,7 @@ int calcPWPforRange (int numberIndividuals, unsigned long long int lociToCalc, s
         for( int tortoise = 0; tortoise < numberIndividuals; tortoise++ ) {
             unsigned long long majorIndex = locus * (numberIndividuals*2) + 2 * tortoise;
             unsigned long long minorIndex = locus * (numberIndividuals*2) + 2 * tortoise + 1;
-            std::cout << "Made it to line 178 for tortoise " << tortoise <<
+            std::cout << "Made it to line 178 for tortoise " << tortoise << " and locus " << locus << std::endl;
             
             coverages[tortoise] = int(mainReadCountVector[majorIndex]) + int(mainReadCountVector[minorIndex]); // Hold the coverages for each locus
             std::cout << "Made it to line 182 for tortoise" << tortoise << " and locus " << locus << std::endl;
