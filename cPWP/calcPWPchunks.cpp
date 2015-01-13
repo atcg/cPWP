@@ -95,7 +95,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         std::vector<unsigned char> readCountsRemaining(remainingBytesAfterFullChunks);
         file.read((char*) &readCountsRemaining[0], remainingBytesAfterFullChunks);
         unsigned long long int remainingLociAfterFullChunks = (remainingBytesAfterFullChunks/(numIndividuals*2));
-        finishingLocus = (readCountsRemaining.size()/(numIndividuals*2)) - 1;
+        unsigned long long int finishingLocus = (readCountsRemaining.size()/(numIndividuals*2)) - 1;
         calcPWPforRange(0, finishingLocus, numIndividuals, std::ref(readCountsRemaining), std::ref(pwpThreads[0]), std::ref(weightingsThreads[0]));
         
         
