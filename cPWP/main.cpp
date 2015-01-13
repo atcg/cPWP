@@ -15,7 +15,8 @@
 #include <vector>
 #include "generateSimulatedData.h"
 #include "bamsToBin.h"
-#include "calcPWP.h"
+//#include "calcPWP.h"
+#include "calcPWPchunks.h"
 
 
 int main (int argc, char *argv[]) {
@@ -27,7 +28,8 @@ int main (int argc, char *argv[]) {
     
     /* Full 272 tort SNP list: calcPWPfromBinaryFile ("272torts_snp1e6_minmapq20minq30.binarycounts", 56575856, 272);
      */
-     calcPWPfromBinaryFile (argv[1], atoi(argv[2]), 272, argv[3], atoi(argv[4]));
+     calcPWPfromBinaryFile (argv[1], atoi(argv[2]), 272, argv[3], atoi(argv[4]), atoi(arg[5]));
+     calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoci, const int numIndividuals, std::string outFile, int lociChunkSize, int numThreads)
     // First supply the binary readcounts file, then the number of loci to consider, then the number of individuals, then the output file
     // calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoci, const int numIndividuals, std::string outFile, int numThreads = 10);
 }
