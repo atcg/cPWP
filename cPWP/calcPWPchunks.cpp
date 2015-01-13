@@ -27,7 +27,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         
         
         
-        unsigned long long int maxLocus = (unsigned long long)(size/(numIndividuals*2));
+        unsigned long long int maxLocus = numLoci;
         /*
         if (numLoci == 0) {
             maxLocus = (unsigned long long)(size/(numIndividuals*2));
