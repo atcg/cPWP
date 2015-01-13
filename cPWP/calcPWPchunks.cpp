@@ -6,7 +6,7 @@
 //
 //
 
-#include "calcPWP.h"
+#include "calcPWPchunks.h"
 #include <iostream>
 #include <vector>
 #include <fstream>
