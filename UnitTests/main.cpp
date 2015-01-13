@@ -10,7 +10,7 @@
 #include "../cPWP/generateSimulatedData.h"
 #include "../cPWP/bamsToBin.h"
 //#include "../cPWP/calcPWP.h"
-#include "calcPWPchunks.h"
+#include "../cPWP/calcPWPchunks.h"
 #include "catch.hpp"
 #include <string>
 #include <iostream>
