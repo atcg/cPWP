@@ -9,7 +9,8 @@
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
 #include "../cPWP/generateSimulatedData.h"
 #include "../cPWP/bamsToBin.h"
-#include "../cPWP/calcPWP.h"
+//#include "../cPWP/calcPWP.h"
+#include "calcPWPchunks.h"
 #include "catch.hpp"
 #include <string>
 #include <iostream>
@@ -88,7 +89,25 @@ TEST_CASE( "Convert ANGSD read counts to unsigned chars for major and minor coun
 }
 
 TEST_CASE( "Calculate PWP from the binary representations of the ANGSD readcounts", "[calcPWP]") {
-    REQUIRE( calcPWPfromBinaryFile ("angsdOut.readCounts.binary", 0, 2, "testingOut.pwp", 30) == 0);
+    REQUIRE( calcPWPfromBinaryFile ("angsdOut.readCounts.binary", 999990, 2, "testingOut.pwp", 1000, 30) == 0);
 }
+
+//int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoci, const int numIndividuals, std::string outFile, int lociChunkSize, int numThreads=30);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
