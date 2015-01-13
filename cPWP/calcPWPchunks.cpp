@@ -35,9 +35,12 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         std::cout << "Calculating divergence based on " << maxLocus << " total loci." << std::endl;
         
         // How many bytes to read in at one time (this number of loci will be split amongs numThreads threads, so it should be divisible exactly by numThreads. So the number of loci read in at a time will actually be numLoci*numThreads
-        unsigned long long int lociChunkByteSize = (unsigned long long)lociChunkSize * numIndividuals * 2 * numThreads;
+        unsigned long long int lociChunkByteSize = (unsigned long long)lociChunkSize * numIndividuals * 2 * numThreads; // 990000
         int numFullChunks = (maxLocus*numIndividuals*2)/lociChunkByteSize; // Truncates answer to an integer
         unsigned long long remainingBytesAfterFullChunks = (maxLocus*numIndividuals*2) % lociChunkByteSize;
+        
+        std::cout << "Total number of chunks to run: " << numFullChunks + 1 << std::endl;
+        
         
         /* We are going to split the loci between numThreads threads. Each thread will modify two multidimensional
          vectors of the forms std::vector< std::vector<long double> > pwp(numIndividuals, std::vector<long double>(numIndividuals,0))    and   std::vector< std::vector<unsigned long long int> > weightings(numIndividuals, std::vector<unsigned long long int>(numIndividuals,0))
@@ -55,6 +58,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         
         int chunkCounter = 0;
         while (chunkCounter < numFullChunks) {
+            std::cout << "Running chunk #" << chunkCounter << std::endl;
             std::vector<unsigned char> readCounts(lociChunkByteSize);
             file.read((char*) &readCounts[0], lociChunkByteSize);
             
