@@ -35,7 +35,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         std::cout << "Calculating divergence based on " << maxLocus << " total loci." << std::endl;
         
         // How many bytes to read in at one time (this number of loci will be split amongs numThreads threads, so it should be divisible exactly by numThreads. So the number of loci read in at a time will actually be numLoci*numThreads
-        unsigned long long int lociChunkByteSize = (unsigned long long)lociChunkSize * numIndividuals * 2 * numThreads; // *
+        unsigned long long int lociChunkByteSize = (unsigned long long)lociChunkSize * numIndividuals * 2 * numThreads;
         int numFullChunks = (maxLocus*numIndividuals*2)/lociChunkByteSize; // Truncates answer to an integer
         unsigned long long remainingBytesAfterFullChunks = (maxLocus*numIndividuals*2) % lociChunkByteSize;
         
@@ -58,6 +58,9 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         
         int chunkCounter = 0;
         while (chunkCounter < numFullChunks) {
+            unsigned long long bytesPerThread = lociChunkByteSize / numThreads;
+            unsigned long long int lociPerThread = bytesPerThread / (numIndividuals*2);
+            
             std::cout << "Running chunk #" << chunkCounter << std::endl;
             std::vector<unsigned char> readCounts(lociChunkByteSize);
             file.read((char*) &readCounts[0], lociChunkByteSize);
@@ -66,14 +69,15 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
             
             std::vector<std::thread> threadsVec;
             for (int threadRunning = 0; threadRunning < numThreads; threadRunning++) {
-                unsigned long long bytesPerThread = lociChunkByteSize / numThreads;
-                std::vector<unsigned char> readCounts(bytesPerThread);
-                file.read((char*) &readCounts[0], bytesPerThread);
-                unsigned long long int lociPerThread = bytesPerThread / (numIndividuals*2);
+                
+                unsigned long long int firstLocus = (unsigned long long int) threadRunning * lociPerThread;
+                unsigned long long int finishingLocus = ((unsigned long long int) threadRunning * lociPerThread) + lociPerThread - (unsigned long long)1.0;
                 
                 std::cout << "Got to the function call in main loop. Running thread # " << threadRunning << std::endl;
                 
-                threadsVec.push_back(std::thread(calcPWPforRange, numIndividuals, lociPerThread, std::ref(readCounts), std::ref(pwpThreads[threadRunning]), std::ref(weightingsThreads[threadRunning])));
+                //threadsVec.push_back(std::thread(calcPWPforRange, numIndividuals, lociPerThread, std::ref(readCounts), std::ref(pwpThreads[threadRunning]), std::ref(weightingsThreads[threadRunning])));
+                threadsVec.push_back(std::thread(calcPWPforRange, firstLocus, finishingLocus, numIndividuals, std::ref(readCounts), std::ref(pwpThreads[threadRunning]), std::ref(weightingsThreads[threadRunning])));
+
             }
             
             // Wait on threads to finish
@@ -85,27 +89,16 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
             chunkCounter++;
         }
         
-        // That takes care of all the full-sized loci chunks, now deal with the remainder of loci
+        
+        
+        // For the last chunk, we'll just run it in a single thread, so we don't have to worry about numRemainingLoci/lociPerThread remainders... Just add everything to the vectors for thread 1
         std::vector<unsigned char> readCountsRemaining(remainingBytesAfterFullChunks);
         file.read((char*) &readCountsRemaining[0], remainingBytesAfterFullChunks);
-        unsigned long long remainingLociAfterFullChunks = (remainingBytesAfterFullChunks/(numIndividuals*2));
-
-        std::vector<std::thread> threadsVecRemaining;
-        for (int threadRunning = 0; threadRunning < numThreads; threadRunning++) {
-            std::cout << "Got to the function call in the remaining loci. Running thread # " << threadRunning << std::endl;
-          
-            threadsVecRemaining.push_back(std::thread(calcPWPforRange, numIndividuals, remainingLociAfterFullChunks, std::ref(readCountsRemaining), std::ref(pwpThreads[threadRunning]), std::ref(weightingsThreads[threadRunning])));
-        }
-        
-        // Wait on threads to finish
-        for (int i = 0; i < numThreads; ++i) {
-            threadsVecRemaining[i].join();
-            std::cout << "Joined thread " << i << std::endl;
-        }
-        std::cout << "All threads completed running for last chunk." << std::endl;
+        unsigned long long int remainingLociAfterFullChunks = (remainingBytesAfterFullChunks/(numIndividuals*2));
+        finishingLocus = (readCountsRemaining.size()/(numIndividuals*2)) - 1;
+        calcPWPforRange(0, finishingLocus, numIndividuals, std::ref(readCountsRemaining), std::ref(pwpThreads[0]), std::ref(weightingsThreads[0]));
         
         
-
         
         // Now aggregate the results of the threads and print final results
         std::vector<std::vector<long double>> weightingsSum(numIndividuals, std::vector<long double>(numIndividuals,0));
@@ -156,6 +149,55 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
 
 
 
+int calcPWPforRange (unsigned long long startingLocus, unsigned long long endingLocus, int numIndividuals, std::vector<unsigned char>& mainReadCountVector, std::vector<std::vector<long double>>& threadPWP, std::vector<std::vector<unsigned long long int>>& threadWeightings) {
+    
+    std::cout << "Calculating PWP for the following locus range: " << startingLocus << " to " << endingLocus << std::endl;
+    for( unsigned long long locus = startingLocus; locus < endingLocus; locus++) {
+        //std::cout << "Processing locus # " << locus << std::endl;
+        if (locus % 100000 == 0) {
+            std::cout << locus << " loci processed through calcPWPfromBinaryFile" << std::endl;
+        }
+        
+        unsigned long long coverages[numIndividuals];
+        long double *majorAlleleFreqs = new long double[numIndividuals]; // This will hold the major allele frequencies for that locus for each tortoise
+        
+        for( int tortoise = 0; tortoise < numIndividuals; tortoise++ ) {
+            unsigned long long majorIndex = locus * (numIndividuals*2) + 2 * tortoise;
+            unsigned long long minorIndex = locus * (numIndividuals*2) + 2 * tortoise + 1;
+            
+            coverages[tortoise] = int(mainReadCountVector[majorIndex]) + int(mainReadCountVector[minorIndex]); // Hold the coverages for each locus
+            if ( coverages[tortoise] > 0 ) {
+                majorAlleleFreqs[tortoise] = (long double)mainReadCountVector[majorIndex] / (long double)coverages[tortoise]; // Not necessarily an int, but could be 0 or 1
+                
+                if (coverages[tortoise] > 1) {
+                    unsigned long long locusWeighting = (unsigned long long) (coverages[tortoise]*(coverages[tortoise]-1));
+                    //unsigned long long locusWeighting = (unsigned long long) (coverages[tortoise]*(coverages[tortoise])); // Shift weightings to match the weightings of the inter-comparisons by removing the -1
+                    threadWeightings[tortoise][tortoise] += (unsigned long long)locusWeighting; // This is an integer--discrete number of reads
+                    
+                    threadPWP[tortoise][tortoise] += (long double)(locusWeighting) * ((long double)2.0 * majorAlleleFreqs[tortoise] * ((long double)(coverages[tortoise]) - (long double)(mainReadCountVector[majorIndex])) / (long double)((coverages[tortoise])-(long double)1.0));
+                }
+                
+                for( int comparisonTortoise = 0; comparisonTortoise < tortoise; comparisonTortoise++) {
+                    if (coverages[comparisonTortoise] > 0) {
+                        unsigned long long locusWeighting = (unsigned long long)coverages[tortoise] * (unsigned long long)(coverages[comparisonTortoise]);
+                        threadWeightings[tortoise][comparisonTortoise] += locusWeighting;
+                        
+                        threadPWP[tortoise][comparisonTortoise] += (long double)locusWeighting * (majorAlleleFreqs[tortoise] * ((long double)1.0-majorAlleleFreqs[comparisonTortoise]) + majorAlleleFreqs[comparisonTortoise] * ((long double)1.0-majorAlleleFreqs[tortoise]));
+                    }
+                }
+            }
+        }
+        delete[] majorAlleleFreqs; // Needed to avoid memory leaks
+    }
+    std::cout << "Finished thread ending on locus " << endingLocus << std::endl;
+    return 0;
+}
+
+
+
+
+
+/*
 int calcPWPforRange (int numberIndividuals, unsigned long long int lociToCalc, std::vector<unsigned char>& mainReadCountVector, std::vector<std::vector<long double>>& threadPWP, std::vector<std::vector<unsigned long long int>>& threadWeightings) {
     
     std::cout << "Processing " << lociToCalc << " total loci" << std::endl;
@@ -214,7 +256,7 @@ int calcPWPforRange (int numberIndividuals, unsigned long long int lociToCalc, s
 
 
 
-
+*/
 
 
 
