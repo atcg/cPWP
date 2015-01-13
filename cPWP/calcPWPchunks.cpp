@@ -18,7 +18,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
     
     std::cout << "Number of threads: " << numThreads << std::endl;
     //std::streampos size;
-    std::ifstream file (binaryFile, std::ios::in|std::ios::binary|std::ios::beg);
+    std::ifstream file (binaryFile, std::ios::in|std::ios::binary);
 
     if (file.is_open()) {
         //size = file.tellg(); // Just a variable that shows position of stream--at end since ios::ate, so it's the file size. PROBABLY WON'T WORK FOR FILES LARGER THAN ~ 2GB!
