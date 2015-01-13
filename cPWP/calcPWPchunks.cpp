@@ -62,6 +62,8 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
             std::vector<unsigned char> readCounts(lociChunkByteSize);
             file.read((char*) &readCounts[0], lociChunkByteSize);
             
+            std::cout << "Number of loci in the chunk vector: " << readCounts.size() << std::endl;
+            
             std::vector<std::thread> threadsVec;
             for (int threadRunning = 0; threadRunning < numThreads; threadRunning++) {
                 unsigned long long bytesPerThread = lociChunkByteSize / numThreads;
