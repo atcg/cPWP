@@ -17,20 +17,24 @@
 int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoci, const int numIndividuals, std::string outFile, int lociChunkSize, int numThreads) {
     
     std::cout << "Number of threads: " << numThreads << std::endl;
-    std::streampos size;
-    std::ifstream file (binaryFile, std::ios::in|std::ios::binary|std::ios::ate);
+    //std::streampos size;
+    std::ifstream file (binaryFile, std::ios::in|std::ios::binary|std::ios::beg);
 
     if (file.is_open()) {
-        size = file.tellg(); // Just a variable that shows position of stream--at end since ios::ate, so it's the file size. PROBABLY WON'T WORK FOR FILES LARGER THAN ~ 2GB!
-        file.seekg (0, std::ios::beg); // Go back to the beginning of the file
-        std::cout << "The total size of the file is " << size << "bytes. This corresponds to " << size/(numIndividuals*2) << " loci" << std::endl;
+        //size = file.tellg(); // Just a variable that shows position of stream--at end since ios::ate, so it's the file size. PROBABLY WON'T WORK FOR FILES LARGER THAN ~ 2GB!
+        //file.seekg (0, std::ios::beg); // Go back to the beginning of the file
+        //std::cout << "The total size of the file is " << size << "bytes. This corresponds to " << size/(numIndividuals*2) << " loci" << std::endl;
         
-        unsigned long long int maxLocus;
+        
+        
+        unsigned long long int maxLocus = (unsigned long long)(size/(numIndividuals*2));
+        /*
         if (numLoci == 0) {
             maxLocus = (unsigned long long)(size/(numIndividuals*2));
         } else {
             maxLocus = numLoci;
         }
+         */
         
         std::cout << "Calculating divergence based on " << maxLocus << " total loci." << std::endl;
         
