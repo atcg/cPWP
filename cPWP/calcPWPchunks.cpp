@@ -67,7 +67,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
                 
                 std::cout << "Got to the function call in main loop. Running thread # " << threadRunning << std::endl;
                 
-                threadsVec.push_back(std::thread(calcPWPforRange, lociPerThread, numIndividuals, std::ref(readCounts), std::ref(pwpThreads[threadRunning]), std::ref(weightingsThreads[threadRunning])));
+                threadsVec.push_back(std::thread(calcPWPforRange, numIndividuals, lociPerThread, std::ref(readCounts), std::ref(pwpThreads[threadRunning]), std::ref(weightingsThreads[threadRunning])));
             }
             
             // Wait on threads to finish
@@ -88,7 +88,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         for (int threadRunning = 0; threadRunning < numThreads; threadRunning++) {
             std::cout << "Got to the function call in the remaining loci. Running thread # " << threadRunning << std::endl;
           
-            threadsVecRemaining.push_back(std::thread(calcPWPforRange, remainingLociAfterFullChunks, numIndividuals, std::ref(readCountsRemaining), std::ref(pwpThreads[threadRunning]), std::ref(weightingsThreads[threadRunning])));
+            threadsVecRemaining.push_back(std::thread(calcPWPforRange, numIndividuals, remainingLociAfterFullChunks, std::ref(readCountsRemaining), std::ref(pwpThreads[threadRunning]), std::ref(weightingsThreads[threadRunning])));
         }
         
         // Wait on threads to finish
@@ -150,7 +150,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
 
 
 
-int calcPWPforRange (int numIndividuals, unsigned long long int lociToCalc, std::vector<unsigned char>& mainReadCountVector, std::vector<std::vector<long double>>& threadPWP, std::vector<std::vector<unsigned long long int>>& threadWeightings) {
+int calcPWPforRange (int numberIndividuals, unsigned long long int lociToCalc, std::vector<unsigned char>& mainReadCountVector, std::vector<std::vector<long double>>& threadPWP, std::vector<std::vector<unsigned long long int>>& threadWeightings) {
     
     for( unsigned long long locus = 0; locus < lociToCalc; locus++) {
         //std::cout << "Processing locus # " << locus << std::endl;
@@ -158,12 +158,12 @@ int calcPWPforRange (int numIndividuals, unsigned long long int lociToCalc, std:
             std::cout << locus << " loci processed through calcPWPfromBinaryFile" << std::endl;
         }
         
-        unsigned long long coverages[numIndividuals];
-        long double *majorAlleleFreqs = new long double[numIndividuals]; // This will hold the major allele frequencies for that locus for each tortoise
+        unsigned long long coverages[numberIndividuals];
+        long double *majorAlleleFreqs = new long double[numberIndividuals]; // This will hold the major allele frequencies for that locus for each tortoise
         
-        for( int tortoise = 0; tortoise < numIndividuals; tortoise++ ) {
-            unsigned long long majorIndex = locus * (numIndividuals*2) + 2 * tortoise;
-            unsigned long long minorIndex = locus * (numIndividuals*2) + 2 * tortoise + 1;
+        for( int tortoise = 0; tortoise < numberIndividuals; tortoise++ ) {
+            unsigned long long majorIndex = locus * (numberIndividuals*2) + 2 * tortoise;
+            unsigned long long minorIndex = locus * (numberIndividuals*2) + 2 * tortoise + 1;
             
             coverages[tortoise] = int(mainReadCountVector[majorIndex]) + int(mainReadCountVector[minorIndex]); // Hold the coverages for each locus
             if ( coverages[tortoise] > 0 ) {
