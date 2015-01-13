@@ -158,6 +158,8 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
 
 int calcPWPforRange (int numberIndividuals, unsigned long long int lociToCalc, std::vector<unsigned char>& mainReadCountVector, std::vector<std::vector<long double>>& threadPWP, std::vector<std::vector<unsigned long long int>>& threadWeightings) {
     
+    std::cout << "Processing " << lociToCalc << " total loci" << std::endl;
+    
     for( unsigned long long locus = 0; locus < lociToCalc; locus++) {
         //std::cout << "Processing locus # " << locus << std::endl;
         if (locus % 100000 == 0) {
