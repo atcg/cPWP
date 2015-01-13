@@ -94,7 +94,6 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         // For the last chunk, we'll just run it in a single thread, so we don't have to worry about numRemainingLoci/lociPerThread remainders... Just add everything to the vectors for thread 1
         std::vector<unsigned char> readCountsRemaining(remainingBytesAfterFullChunks);
         file.read((char*) &readCountsRemaining[0], remainingBytesAfterFullChunks);
-        unsigned long long int remainingLociAfterFullChunks = (remainingBytesAfterFullChunks/(numIndividuals*2));
         unsigned long long int finishingLocus = (readCountsRemaining.size()/(numIndividuals*2)) - 1;
         calcPWPforRange(0, finishingLocus, numIndividuals, std::ref(readCountsRemaining), std::ref(pwpThreads[0]), std::ref(weightingsThreads[0]));
         
