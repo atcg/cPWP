@@ -92,6 +92,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
             }
             std::cout << "All threads completed running for chunk " << chunkCounter << " of " << numFullChunks + 1 << std::endl;
             chunkCounter++;
+            std::cout << "Finished processing " << chunkCounter * lociPerThread * numThreads << " loci out of " << maxLocus << std::endl;
         }
         
         
@@ -155,12 +156,12 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
 
 int calcPWPforRange (unsigned long long startingLocus, unsigned long long endingLocus, int numIndividuals, std::vector<unsigned char>& mainReadCountVector, std::vector<std::vector<long double>>& threadPWP, std::vector<std::vector<unsigned long long int>>& threadWeightings) {
     
-    std::cout << "Calculating PWP for the following locus range: " << startingLocus << " to " << endingLocus << std::endl;
+    //std::cout << "Calculating PWP for the following locus range: " << startingLocus << " to " << endingLocus << std::endl;
     for( unsigned long long locus = startingLocus; locus < endingLocus; locus++) {
         //std::cout << "Processing locus # " << locus << std::endl;
-        if (locus % 100000 == 0) {
-            std::cout << locus << " loci processed through calcPWPfromBinaryFile" << std::endl;
-        }
+        //if (locus % 100000 == 0) {
+        //    std::cout << locus << " loci processed through calcPWPfromBinaryFile" << std::endl;
+        //}
         
         unsigned long long coverages[numIndividuals];
         long double *majorAlleleFreqs = new long double[numIndividuals]; // This will hold the major allele frequencies for that locus for each tortoise
