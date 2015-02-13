@@ -39,8 +39,8 @@ int calcCOVARfromBinaryFile (std::string binaryFile, unsigned long long int numL
          First, we'll generate all of these vectors, which apparently in C++ needs to be constructed of a
          vector of two-dimensional vectors...
          */
-        std::vector<std::vector<std::vector<unsigned long long>>> weightSumProductsThreads(numThreads, std::vector<std::vector<unsigned long long>> (numIndividuals, std::vector<unsigned long long> (numIndividuals,0) ) ); //covarThreads[0] is the first 2D array for the first thread, etc...
-        std::vector<std::vector<std::vector<unsigned long long>>> weightSumFirstThreads(numThreads, std::vector<std::vector<unsigned long long>> (numIndividuals, std::vector<unsigned long long> (numIndividuals,0) ) ); //covarThreads[0] is the first 2D array for the first thread, etc...
+        std::vector<std::vector<std::vector<unsigned long long int>>> weightSumProductsThreads(numThreads, std::vector<std::vector<unsigned long long int>> (numIndividuals, std::vector<unsigned long long int> (numIndividuals,0) ) ); //covarThreads[0] is the first 2D array for the first thread, etc...
+        std::vector<std::vector<std::vector<unsigned long long int>>> weightSumFirstThreads(numThreads, std::vector<std::vector<unsigned long long int>> (numIndividuals, std::vector<unsigned long long int> (numIndividuals,0) ) ); //covarThreads[0] is the first 2D array for the first thread, etc...
         std::vector<std::vector<std::vector<unsigned long long int>>> weightingsThreads(numThreads, std::vector<std::vector<unsigned long long int> > (numIndividuals, std::vector<unsigned long long int> (numIndividuals,0) ) );
         std::cout << "Initialized the 3d weighting and covar vectors" << std::endl;
         
@@ -84,6 +84,9 @@ int calcCOVARfromBinaryFile (std::string binaryFile, unsigned long long int numL
         file.read((char*) &readCountsRemaining[0], remainingBytesAfterFullChunks);
         unsigned long long int finishingLocus = (readCountsRemaining.size()/(numIndividuals*2)) - 1;
         calcCOVARforRange(0, finishingLocus, numIndividuals, std::ref(readCountsRemaining), std::ref(weightSumProductsThreads[0]), std::ref(weightSumFirstThreads[0]), std::ref(weightingsThreads[0]));
+        
+        //calcCOVARforRange (unsigned long long startingLocus, unsigned long long endingLocus, int numIndividuals, std::vector<unsigned char>& mainReadCountVector, std::vector<std::vector<unsigned long long int>>& weightSumProducts, std::vector<std::vector<unsigned long long int>>& weightSumFirst, std::vector<std::vector<unsigned long long int>>& threadWeightings)
+        //calcPWPforRange(0, finishingLocus, numIndividuals, std::ref(readCountsRemaining), std::ref(pwpThreads[0]), std::ref(weightingsThreads[0]));
         
         
         // Now aggregate the results of the threads and print final results
