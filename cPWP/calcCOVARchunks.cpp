@@ -13,6 +13,9 @@
 #include <thread>
 #include <string>
 
+#include "calcPWPchunks.h"
+
+
 
 int calcCOVARfromBinaryFile (std::string binaryFile, unsigned long long int numLoci, const int numIndividuals, std::string outFile, int lociChunkSize, int numThreads) {
     
@@ -66,7 +69,7 @@ int calcCOVARfromBinaryFile (std::string binaryFile, unsigned long long int numL
                 std::cout << "Got to the function call in main loop. Running thread # " << threadRunning << std::endl;
                 
                 //threadsVec.push_back(std::thread(calcCOVARforRange, numIndividuals, lociPerThread, std::ref(readCounts), std::ref(covarThreads[threadRunning]), std::ref(weightingsThreads[threadRunning])));
-                threadsVec.push_back(std::thread(calcCOVARforRange, firstLocus, finishingLocus, numIndividuals, &readCounts, &weightSumProductsThreads[threadRunning], &weightSumFirstThreads[threadRunning], &weightingsThreads[threadRunning]));
+                threadsVec.push_back(std::thread(calcCOVARforRange, firstLocus, finishingLocus, numIndividuals, std::ref(readCounts), std::ref(weightSumProductsThreads[threadRunning]), std::ref(weightSumFirstThreads[threadRunning]), std::ref(weightingsThreads[threadRunning])));
             }
             // Wait on threads to finish
             for (int i = 0; i < numThreads; ++i) {
