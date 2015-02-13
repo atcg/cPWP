@@ -10,6 +10,8 @@
 #define ____calcCOVARchunks__
 
 #include <iostream>
+#include <vector>
+
 
 int calcCOVARfromBinaryFile (std::string binaryFile, unsigned long long int numLoci, const int numIndividuals, std::string outFile, int lociChunkSize, int numThreads);
 
