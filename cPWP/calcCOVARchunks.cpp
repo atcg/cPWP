@@ -121,7 +121,9 @@ int calcCOVARfromBinaryFile (std::string binaryFile, unsigned long long int numL
             for (int tortoise=0; tortoise < numIndividuals; tortoise++) {
                 for (int comparisonTortoise = 0; comparisonTortoise <= tortoise; comparisonTortoise++) {
 
-                    long double covar = long double(((weightSumProductsSUM[tortoise][comparisonTortoise])/(weightingsSUM[tortoise][comparisonTortoise])) - ((weightSumFirstSUM[tortoise][comparisonTortoise])/(weightingsSUM[tortoise][comparisonTortoise]))*((weightSumFirstSUM[comparisonTortoise][tortoise])/weightingsSUM[tortoise][comparisonTortoise]));
+                    
+                    //(C[N,M]/W[N,M]) - (Z[N,M]/W[N,M])*(Z[M,N]/W[N,M]);
+                    long double covar = long double(((weightSumProductsSUM[tortoise][comparisonTortoise])/(weightingsSUM[tortoise][comparisonTortoise])) - ((weightSumFirstSUM[tortoise][comparisonTortoise])/(weightingsSUM[tortoise][comparisonTortoise]))*((weightSumFirstSUM[comparisonTortoise][tortoise])/(weightingsSUM[tortoise][comparisonTortoise])));
                     covarOUT << covar << std::endl;
                 }
             }
