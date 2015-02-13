@@ -83,7 +83,7 @@ int calcCOVARfromBinaryFile (std::string binaryFile, unsigned long long int numL
         std::vector<unsigned char> readCountsRemaining(remainingBytesAfterFullChunks);
         file.read((char*) &readCountsRemaining[0], remainingBytesAfterFullChunks);
         unsigned long long int finishingLocus = (readCountsRemaining.size()/(numIndividuals*2)) - 1;
-        calcCOVARforRange(0, finishingLocus, numIndividuals, std::ref(readCountsRemaining), std::ref(weightSumProductsThreads[0]), std::ref(weightSumFirstThreads[0]), std::ref(weightingsThreads[0]));
+        //calcCOVARforRange(0, finishingLocus, numIndividuals, std::ref(readCountsRemaining), std::ref(weightSumProductsThreads[0]), std::ref(weightSumFirstThreads[0]), std::ref(weightingsThreads[0]));
         
         //calcCOVARforRange (unsigned long long startingLocus, unsigned long long endingLocus, int numIndividuals, std::vector<unsigned char>& mainReadCountVector, std::vector<std::vector<unsigned long long int>>& weightSumProducts, std::vector<std::vector<unsigned long long int>>& weightSumFirst, std::vector<std::vector<unsigned long long int>>& threadWeightings)
         //calcPWPforRange(0, finishingLocus, numIndividuals, std::ref(readCountsRemaining), std::ref(pwpThreads[0]), std::ref(weightingsThreads[0]));
