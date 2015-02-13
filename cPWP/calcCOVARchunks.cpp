@@ -115,13 +115,12 @@ int calcCOVARfromBinaryFile (std::string binaryFile, unsigned long long int numL
         
         // Now print out the final output to the pairwise covariance file:
         std::ofstream covarOUT (outFile);
-        int rowCounter = 0;
         if (!covarOUT) {
             std::cerr << "Crap, " << outFile << "didn't open!" << std::endl;
         } else {
             for (int tortoise=0; tortoise < numIndividuals; tortoise++) {
                 for (int comparisonTortoise = 0; comparisonTortoise <= tortoise; comparisonTortoise++) {
-                    covarOUT <<  long double(((weightSumProductsSUM[tortoise][comparisonTortoise])/(weightingsSUM[tortoise][comparisonTortoise])) - ((weightSumFirstSUM[tortoise][comparisonTortoise])/(weightingsSUM[tortoise][comparisonTortoise]))*((weightSumFirstSUM[comparisonTortoise][tortoise])/weightingsSUM[tortoise][comparisonTortoise])) << std::endl;
+                    covarOUT << long double(((weightSumProductsSUM[tortoise][comparisonTortoise])/(weightingsSUM[tortoise][comparisonTortoise])) - ((weightSumFirstSUM[tortoise][comparisonTortoise])/(weightingsSUM[tortoise][comparisonTortoise]))*((weightSumFirstSUM[comparisonTortoise][tortoise])/weightingsSUM[tortoise][comparisonTortoise])) << std::endl;
                 }
             }
         }
@@ -155,7 +154,7 @@ int calcCOVARforRange (unsigned long long startingLocus, unsigned long long endi
         }
         
         unsigned long long coverages[numIndividuals];
-        unsigned long long int *majorAlleleCounts = new unsigned long long int[numIndividuals]; // This will hold the major allele frequencies for that locus for each tortoise
+        unsigned long long int *majorAlleleCounts = new unsigned long long int[numIndividuals]; // This will hold the major allele counts for that locus for each tortoise
         
         for( int tortoise = 0; tortoise < numIndividuals; tortoise++ ) {
             unsigned long long majorIndex = locus * (numIndividuals*2) + 2 * tortoise;
@@ -187,7 +186,7 @@ int calcCOVARforRange (unsigned long long startingLocus, unsigned long long endi
                 }
             }
         }
-        delete[] majorAlleleFreqs; // Needed to avoid memory leaks
+        delete[] majorAlleleCounts; // Needed to avoid memory leaks
     }
     std::cout << "Finished thread ending on locus " << endingLocus << std::endl;
     return 0;
