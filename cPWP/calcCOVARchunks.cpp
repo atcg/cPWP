@@ -13,8 +13,6 @@
 #include <thread>
 #include <string>
 
-#include "calcPWPchunks.h"
-
 
 
 int calcCOVARfromBinaryFile (std::string binaryFile, unsigned long long int numLoci, const int numIndividuals, std::string outFile, int lociChunkSize, int numThreads) {
