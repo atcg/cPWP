@@ -153,7 +153,7 @@ int calcCOVARfromBinaryFile (std::string binaryFile, long long int numLoci, cons
  */
 
 
-int calcCOVARforRange (long long int startingLocus, long long int endingLocus, int numIndividuals, std::vector<unsigned char>& mainReadCountVector, std::vector<std::vector<long long int>>& weightSumProducts, std::vector<std::vector<long long int>>& weightSumFirst, std::vector<std::vector<long long int>>& threadWeightings) {
+int calcCOVARforRange (long long int startingLocus, long long int endingLocus, const int numIndividuals, std::vector<unsigned char>& mainReadCountVector, std::vector<std::vector<long long int>>& weightSumProducts, std::vector<std::vector<long long int>>& weightSumFirst, std::vector<std::vector<long long int>>& threadWeightings) {
     
     std::cout << "Calculating COVAR for the following locus range: " << startingLocus << " to " << endingLocus << std::endl;
     
