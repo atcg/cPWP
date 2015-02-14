@@ -15,7 +15,7 @@
 
 
 
-int calcCOVARfromBinaryFile (std::string binaryFile, unsigned long long int numLoci, const int numIndividuals, std::string outFile, int lociChunkSize, const int numThreads) {
+int calcCOVARfromBinaryFile (std::string binaryFile, long long int numLoci, const int numIndividuals, std::string outFile, int lociChunkSize, const int numThreads) {
     
     std::cout << "Number of threads: " << numThreads << std::endl;
     //std::streampos size;
@@ -24,14 +24,14 @@ int calcCOVARfromBinaryFile (std::string binaryFile, unsigned long long int numL
     
     if (file.is_open()) {
 
-        unsigned long long int maxLocus = numLoci;
+        long long int maxLocus = numLoci;
         
         std::cout << "Calculating divergence based on " << maxLocus << " total loci." << std::endl;
         
         // How many bytes to read in at one time (this number of loci will be split amongs numThreads threads, so it should be divisible exactly by numThreads. So the number of loci read in at a time will actually be numLoci*numThreads
-        unsigned long long int lociChunkByteSize = (unsigned long long)lociChunkSize * numIndividuals * 2 * numThreads;
+        long long int lociChunkByteSize = (long long int)lociChunkSize * numIndividuals * 2 * numThreads;
         int numFullChunks = (maxLocus*numIndividuals*2)/lociChunkByteSize; // Truncates answer to an integer
-        unsigned long long remainingBytesAfterFullChunks = (maxLocus*numIndividuals*2) % lociChunkByteSize;
+        long long int remainingBytesAfterFullChunks = (maxLocus*numIndividuals*2) % lociChunkByteSize;
         
         std::cout << "Total number of chunks to run: " << numFullChunks + 1 << std::endl;
         
@@ -40,17 +40,17 @@ int calcCOVARfromBinaryFile (std::string binaryFile, unsigned long long int numL
          First, we'll generate all of these vectors, which apparently in C++ needs to be constructed of a
          vector of two-dimensional vectors...
          */
-        std::vector<std::vector<std::vector<unsigned long long int>>> weightSumProductsThreads(numThreads, std::vector<std::vector<unsigned long long int>> ((unsigned long long int)numIndividuals, std::vector<unsigned long long int> (numIndividuals,0) ) ); //covarThreads[0] is the first 2D array for the first thread, etc...
-        std::vector<std::vector<std::vector<unsigned long long int>>> weightSumFirstThreads(numThreads, std::vector<std::vector<unsigned long long int>> (numIndividuals, std::vector<unsigned long long int> (numIndividuals,0) ) ); //covarThreads[0] is the first 2D array for the first thread, etc...
-        std::vector<std::vector<std::vector<unsigned long long int>>> weightingsThreads(numThreads, std::vector<std::vector<unsigned long long int> > (numIndividuals, std::vector<unsigned long long int> (numIndividuals,0) ) );
+        std::vector<std::vector<std::vector<long long int>>> weightSumProductsThreads(numThreads, std::vector<std::vector<long long int>> (numIndividuals, std::vector<long long int> (numIndividuals,0) ) ); //covarThreads[0] is the first 2D array for the first thread, etc...
+        std::vector<std::vector<std::vector<long long int>>> weightSumFirstThreads(numThreads, std::vector<std::vector<long long int>> (numIndividuals, std::vector<long long int> (numIndividuals,0) ) ); //covarThreads[0] is the first 2D array for the first thread, etc...
+        std::vector<std::vector<std::vector<long long int>>> weightingsThreads(numThreads, std::vector<std::vector<long long int> > (numIndividuals, std::vector<long long int> (numIndividuals,0) ) );
         std::cout << "Initialized the 3d weighting and covar vectors" << std::endl;
         
         
         // Read in the data in chunks, and process each chunk using numThreads threads
         int chunkCounter = 0;
         while (chunkCounter < numFullChunks) {
-            unsigned long long bytesPerThread = lociChunkByteSize / numThreads;
-            unsigned long long int lociPerThread = bytesPerThread / (numIndividuals*2);
+            long long int bytesPerThread = lociChunkByteSize / numThreads;
+            long long int lociPerThread = bytesPerThread / (numIndividuals*2);
             
             std::cout << "Running chunk #" << chunkCounter << std::endl;
             std::vector<unsigned char> readCounts(lociChunkByteSize);
@@ -61,8 +61,8 @@ int calcCOVARfromBinaryFile (std::string binaryFile, unsigned long long int numL
             std::vector<std::thread> threadsVec;
             for (int threadRunning = 0; threadRunning < numThreads; threadRunning++) {
                 
-                unsigned long long int firstLocus = (unsigned long long int) threadRunning * lociPerThread;
-                unsigned long long int finishingLocus = ((unsigned long long int) threadRunning * lociPerThread) + lociPerThread - (unsigned long long)1.0;
+                long long int firstLocus = (long long int) threadRunning * lociPerThread;
+                long long int finishingLocus = ((long long int) threadRunning * lociPerThread) + lociPerThread - (long long int)1.0;
                 
                 std::cout << "Got to the function call in main loop. Running thread # " << threadRunning << std::endl;
                 
@@ -85,10 +85,10 @@ int calcCOVARfromBinaryFile (std::string binaryFile, unsigned long long int numL
         // For the last chunk, we'll just run it in a single thread, so we don't have to worry about numRemainingLoci/lociPerThread remainders... Just add everything to the vectors for thread 1
         std::vector<unsigned char> readCountsRemaining(remainingBytesAfterFullChunks);
         file.read((char*) &readCountsRemaining[0], remainingBytesAfterFullChunks);
-        unsigned long long int finishingLocus = (readCountsRemaining.size()/(numIndividuals*2)) - 1;
+        long long int finishingLocus = (readCountsRemaining.size()/(numIndividuals*2)) - 1;
         calcCOVARforRange(0, finishingLocus, numIndividuals, std::ref(readCountsRemaining), std::ref(weightSumProductsThreads[0]), std::ref(weightSumFirstThreads[0]), std::ref(weightingsThreads[0]));
         
-        //calcCOVARforRange (unsigned long long startingLocus, unsigned long long endingLocus, int numIndividuals, std::vector<unsigned char>& mainReadCountVector, std::vector<std::vector<unsigned long long int>>& weightSumProducts, std::vector<std::vector<unsigned long long int>>& weightSumFirst, std::vector<std::vector<unsigned long long int>>& threadWeightings)
+        //calcCOVARforRange (long long int startingLocus, long long int endingLocus, int numIndividuals, std::vector<unsigned char>& mainReadCountVector, std::vector<std::vector<long long int>>& weightSumProducts, std::vector<std::vector<long long int>>& weightSumFirst, std::vector<std::vector<long long int>>& threadWeightings)
         //calcPWPforRange(0, finishingLocus, numIndividuals, std::ref(readCountsRemaining), std::ref(pwpThreads[0]), std::ref(weightingsThreads[0]));
         
         
@@ -153,30 +153,30 @@ int calcCOVARfromBinaryFile (std::string binaryFile, unsigned long long int numL
  */
 
 
-int calcCOVARforRange (unsigned long long startingLocus, unsigned long long endingLocus, int numIndividuals, std::vector<unsigned char>& mainReadCountVector, std::vector<std::vector<unsigned long long int>>& weightSumProducts, std::vector<std::vector<unsigned long long int>>& weightSumFirst, std::vector<std::vector<unsigned long long int>>& threadWeightings) {
+int calcCOVARforRange (long long int startingLocus, long long int endingLocus, int numIndividuals, std::vector<unsigned char>& mainReadCountVector, std::vector<std::vector<long long int>>& weightSumProducts, std::vector<std::vector<long long int>>& weightSumFirst, std::vector<std::vector<long long int>>& threadWeightings) {
     
     std::cout << "Calculating COVAR for the following locus range: " << startingLocus << " to " << endingLocus << std::endl;
     
-    for( unsigned long long locus = startingLocus; locus < endingLocus; locus++) {
+    for( long long int locus = startingLocus; locus < endingLocus; locus++) {
         if (locus % 100000 == 0) {
             std::cout << locus << " loci processed through calcCOVARfromBinaryFile" << std::endl;
         }
         
-        unsigned long long coverages[numIndividuals];
-        unsigned long long int *majorAlleleCounts = new unsigned long long int[numIndividuals]; // This will hold the major allele counts for that locus for each tortoise
+        long long int coverages[numIndividuals];
+        long long int *majorAlleleCounts = new long long int[numIndividuals]; // This will hold the major allele counts for that locus for each tortoise
         
         for( int tortoise = 0; tortoise < numIndividuals; tortoise++ ) {
-            unsigned long long majorIndex = locus * (numIndividuals*2) + 2 * tortoise;
-            unsigned long long minorIndex = locus * (numIndividuals*2) + 2 * tortoise + 1;
+            long long int majorIndex = locus * (numIndividuals*2) + 2 * tortoise;
+            long long int minorIndex = locus * (numIndividuals*2) + 2 * tortoise + 1;
             coverages[tortoise] = int(mainReadCountVector[majorIndex]) + int(mainReadCountVector[minorIndex]); // Hold the coverages for each locus
             
             if ( coverages[tortoise] > 0 ) {
-                majorAlleleCounts[tortoise] = (unsigned long long int)mainReadCountVector[majorIndex]; // This will be an integer value
+                majorAlleleCounts[tortoise] = (long long int)mainReadCountVector[majorIndex]; // This will be an integer value
                 
                 if (coverages[tortoise] > 1) {
 
-                    unsigned long long int locusWeighting = (unsigned long long int) (coverages[tortoise]*(coverages[tortoise]-1));
-                    threadWeightings[tortoise][tortoise] += (unsigned long long int)locusWeighting; // This is an integer--discrete number of reads
+                    long long int locusWeighting = (long long int) (coverages[tortoise]*(coverages[tortoise]-1));
+                    threadWeightings[tortoise][tortoise] += (long long int)locusWeighting; // This is an integer--discrete number of reads
 
                     weightSumProducts[tortoise][tortoise] += (majorAlleleCounts[tortoise]) * (majorAlleleCounts[tortoise]) * (coverages[tortoise]-1)/(coverages[tortoise]);
                     weightSumFirst[tortoise][tortoise] += (majorAlleleCounts[tortoise]) * (coverages[tortoise]-1);
@@ -185,7 +185,7 @@ int calcCOVARforRange (unsigned long long startingLocus, unsigned long long endi
 
                 for( int comparisonTortoise = 0; comparisonTortoise < tortoise; comparisonTortoise++) {
                     if (coverages[comparisonTortoise] > 0) {
-                        unsigned long long int locusWeighting = (unsigned long long int)coverages[tortoise] * (unsigned long long int)(coverages[comparisonTortoise]);
+                        long long int locusWeighting = (long long int)coverages[tortoise] * (long long int)(coverages[comparisonTortoise]);
                         threadWeightings[tortoise][comparisonTortoise] += locusWeighting;
                         
                         weightSumProducts[tortoise][comparisonTortoise] += (majorAlleleCounts[tortoise]) * (majorAlleleCounts[comparisonTortoise]);
