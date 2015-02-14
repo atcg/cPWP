@@ -15,7 +15,7 @@
 
 
 
-int calcCOVARfromBinaryFile (std::string binaryFile, unsigned long long int numLoci, unsigned long long int numIndividuals, std::string outFile, int lociChunkSize, const int numThreads) {
+int calcCOVARfromBinaryFile (std::string binaryFile, unsigned long long int numLoci, const int numIndividuals, std::string outFile, int lociChunkSize, const int numThreads) {
     
     std::cout << "Number of threads: " << numThreads << std::endl;
     //std::streampos size;
@@ -40,7 +40,7 @@ int calcCOVARfromBinaryFile (std::string binaryFile, unsigned long long int numL
          First, we'll generate all of these vectors, which apparently in C++ needs to be constructed of a
          vector of two-dimensional vectors...
          */
-        std::vector<std::vector<std::vector<unsigned long long int>>> weightSumProductsThreads(numThreads, std::vector<std::vector<unsigned long long int>> (numIndividuals, std::vector<unsigned long long int> (numIndividuals,0) ) ); //covarThreads[0] is the first 2D array for the first thread, etc...
+        std::vector<std::vector<std::vector<unsigned long long int>>> weightSumProductsThreads(numThreads, std::vector<std::vector<unsigned long long int>> ((unsigned long long int)numIndividuals, std::vector<unsigned long long int> (numIndividuals,0) ) ); //covarThreads[0] is the first 2D array for the first thread, etc...
         std::vector<std::vector<std::vector<unsigned long long int>>> weightSumFirstThreads(numThreads, std::vector<std::vector<unsigned long long int>> (numIndividuals, std::vector<unsigned long long int> (numIndividuals,0) ) ); //covarThreads[0] is the first 2D array for the first thread, etc...
         std::vector<std::vector<std::vector<unsigned long long int>>> weightingsThreads(numThreads, std::vector<std::vector<unsigned long long int> > (numIndividuals, std::vector<unsigned long long int> (numIndividuals,0) ) );
         std::cout << "Initialized the 3d weighting and covar vectors" << std::endl;
