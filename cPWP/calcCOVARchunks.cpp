@@ -67,7 +67,7 @@ int calcCOVARfromBinaryFile (std::string binaryFile, long long int numLoci, cons
                 std::cout << "Got to the function call in main loop. Running thread # " << threadRunning << std::endl;
                 
 
-                //threadsVec.push_back(std::thread(calcCOVARforRange, firstLocus, finishingLocus, numIndividuals, std::ref(readCounts), std::ref(weightSumProductsThreads[threadRunning]), std::ref(weightSumFirstThreads[threadRunning]), std::ref(weightingsThreads[threadRunning])));
+                threadsVec.push_back(std::thread(calcCOVARforRange, firstLocus, finishingLocus, numIndividuals, std::ref(readCounts), std::ref(weightSumProductsThreads[threadRunning]), std::ref(weightSumFirstThreads[threadRunning]), std::ref(weightingsThreads[threadRunning])));
                 
                 //threadsVec.push_back(std::thread(calcPWPforRange, firstLocus, finishingLocus, numIndividuals, std::ref(readCounts), std::ref(pwpThreads[threadRunning]), std::ref(weightingsThreads[threadRunning])));
             }
