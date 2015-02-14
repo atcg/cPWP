@@ -15,7 +15,7 @@
 
 
 
-int calcCOVARfromBinaryFile (std::string binaryFile, unsigned long long int numLoci, const int numIndividuals, std::string outFile, int lociChunkSize, int numThreads) {
+int calcCOVARfromBinaryFile (std::string binaryFile, unsigned long long int numLoci, const int numIndividuals, std::string outFile, int lociChunkSize, unsigned long long int numThreads) {
     
     std::cout << "Number of threads: " << numThreads << std::endl;
     //std::streampos size;
