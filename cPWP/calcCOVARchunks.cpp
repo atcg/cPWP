@@ -201,6 +201,8 @@ int calcCOVARforRange (long long int startingLocus, long long int endingLocus, c
         }
         delete[] majorAlleleCounts; // Needed to avoid memory leaks
     }
+    
+    std::cout << "Weightings for tortoise 1 vs itself for one thread and one chunk: " << threadWeightings[0][0] << std::endl;
     std::cout << "Finished thread ending on locus " << endingLocus << std::endl;
     return 0;
 }
