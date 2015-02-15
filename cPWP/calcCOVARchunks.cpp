@@ -126,6 +126,10 @@ int calcCOVARfromBinaryFile (std::string binaryFile, long long int numLoci, cons
         } else {
             for (int tortoise=0; tortoise < numIndividuals; tortoise++) {
                 for (int comparisonTortoise = 0; comparisonTortoise <= tortoise; comparisonTortoise++) {
+                    std::cout << "weightSumProducts of " << tortoise << " and " << comparisonTortoise << ": " << weightSumProductsSUM[tortoise][comparisonTortoise] << std::endl;
+                    std::cout << "weightings of " << tortoise << " and " << comparisonTortoise << ": " << weightingsSUM[tortoise][comparisonTortoise] << std::endl;
+                    std::cout << "weightSumFirst of " << tortoise << " and " << comparisonTortoise << ": " << weightingsSUM[tortoise][comparisonTortoise] << std::endl;
+                    std::cout << "weightSumFirst of " << comparisonTortoise << " and " << tortoise << ": " << weightingsSUM[comparisonTortoise][tortoise] << std::endl;
                     
                     //(C[N,M]/W[N,M]) - (Z[N,M]/W[N,M])*(Z[M,N]/W[N,M]);
                     long double covar = ((weightSumProductsSUM[tortoise][comparisonTortoise])/(weightingsSUM[tortoise][comparisonTortoise])) - ((weightSumFirstSUM[tortoise][comparisonTortoise])/(weightingsSUM[tortoise][comparisonTortoise]))*((weightSumFirstSUM[comparisonTortoise][tortoise])/(weightingsSUM[tortoise][comparisonTortoise]));

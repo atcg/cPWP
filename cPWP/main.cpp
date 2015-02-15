@@ -31,6 +31,7 @@ int main (int argc, char *argv[]) {
     // calcPWPfromBinaryFile (argv[1], atoi(argv[2]), 272, argv[3], atoi(argv[4]), atoi(argv[5]));
     
     // CALC covariance:
+    //calcCOVARfromBinaryFile (std::string binaryFile, long long int numLoci, const int numIndividuals, std::string outFile, int lociChunkSize, const int numThreads)
     calcCOVARfromBinaryFile(argv[1], atoi(argv[2]), 272, argv[3], atoi(argv[4]), atoi(argv[5]));
     
     //calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoci, const int numIndividuals, std::string outFile, int lociChunkSize, int numThreads=30);
