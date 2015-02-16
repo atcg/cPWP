@@ -1,3 +1,2 @@
 normal.bam
 het.bam
-het2.bam

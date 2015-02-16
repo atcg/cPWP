@@ -20,6 +20,8 @@ int generatePerfectReads (std::string reference, unsigned int stagger, unsigned 
 
 int createMutatedGenome (std::string reference, std::string mutatedReferenceFile, float percDivergent);
 
+int createMutatedGenomesForCovar (std::string reference, std::string mutatedReferenceFile1, std::string mutatedReferenceFile2, float percDivergent);
+
 int mapReads (std::string reference, std::string R1file, std::string R2file, std::string outBam, std::string threads = "25");
 
 int generateReadsAndMap (int numIndividuals, double mutationRateStepSize, std::string libFragmentSize, std::string stdevLibFragmentSize, std::string numReadPairs, std::string readLengths, std::string randomSeed, std::string reference, std::string threads = "25");
