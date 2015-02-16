@@ -49,7 +49,7 @@ TEST_CASE( "Generate sequence reads 10", "[perfectReads]") {
 
 
 TEST_CASE( " Mapping first set of reads", "[mapReads]") {
-    REQUIRE( mapReads("simulatedReferenceGenome.fasta", "normalRef5_R1.fastq", "normalRef5_R2.fastq", "normal.bam", "25") == 0);
+    REQUIRE( mapReads("simulatedReferenceGenome.fasta", "normalRef5_R1.fastq", "normalRef5_R2.fastq", "normal.bam", "5") == 0);
     //mapReads (std::string reference, std::string R1file, std::string R2file, std::string outBam, std::string threads)
 }
 
@@ -80,7 +80,7 @@ TEST_CASE( "Create heterozygous R2", "[createHet]") {
 
 
 TEST_CASE( " Mapping het reads", "[mapReads2]") {
-    REQUIRE( mapReads("simulatedReferenceGenome.fasta", "hetRef_R1.fastq", "hetRef_R2.fastq", "het.bam", "25") == 0);
+    REQUIRE( mapReads("simulatedReferenceGenome.fasta", "hetRef_R1.fastq", "hetRef_R2.fastq", "het.bam", "5") == 0);
     //mapReads (std::string reference, std::string R1file, std::string R2file, std::string outBam, std::string threads)
 }
 
