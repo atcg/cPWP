@@ -87,7 +87,7 @@ TEST_CASE( " Mapping het reads", "[mapReads2]") {
 
 
 TEST_CASE( "Run ANGSD on simulated reads", "[runANGSD]" ) {
-    REQUIRE( runANGSDforReadCounts("bamlist.txt", "angsdOut", "25", "angsdOutLog.txt") == 0);
+    REQUIRE( runANGSDforReadCounts("bamlist.txt", "angsdOut", "5", "angsdOutLog.txt") == 0);
     //runANGSDforReadCounts (std::string bamlist, std::string angsdPrefix, std::string nThreads, std::string angsdOutputLog)
 }
 
