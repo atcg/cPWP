@@ -116,7 +116,6 @@ TEST_CASE( "Calculate PWP from the binary representations of the ANGSD readcount
  
  
  */
-std::cout << "\n\n******Running the covariance test now******\n" << std::endl;
 
 TEST_CASE( "Generate reference genome for the covariance tests", "[generateReferenceCovar]") {
     REQUIRE( createReferenceGenome(10000000, 0.42668722, "simulatedReferenceGenome10mil.fasta") == 0 );
