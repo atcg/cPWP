@@ -125,7 +125,7 @@ TEST_CASE( "Generate reference genome for the covariance tests", "[generateRefer
 
 
 TEST_CASE ( "Mutate a reference genome", "[mutateRefGenomeCovar]") {
-    REQUIRE( createMutatedGenomeForCovar("simulatedReferenceGenome10mil.fasta", "simulatedReferenceGenomeMutatedRef1.fasta", "simulatedReferenceGenomeMutatedRef2.fasta", 0.01) == 0);
+    REQUIRE( createMutatedGenomesForCovar("simulatedReferenceGenome10mil.fasta", "simulatedReferenceGenomeMutatedRef1.fasta", "simulatedReferenceGenomeMutatedRef2.fasta", 0.01) == 0);
     //createMutatedGenomesForCovar (std::string reference, std::string mutatedReferenceFile1, std::string mutatedReferenceFile2, float percDivergent)
 }
 
