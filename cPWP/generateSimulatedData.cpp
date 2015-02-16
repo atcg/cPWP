@@ -227,6 +227,7 @@ int createMutatedGenomesForCovar (std::string reference, std::string mutatedRefe
         
         if (baseNum < 100) {
             mutGenomeOut << wholeGenome[baseNum];
+            mutGenomeOut2 << wholeGenome[baseNum];
             baseNum++;
             continue; // Don't want to put mutations in the first 100 bp
         }
@@ -301,10 +302,14 @@ int createMutatedGenomesForCovar (std::string reference, std::string mutatedRefe
             }
         }
         mutGenomeOut << wholeGenome[baseNum];
+        mutGenomeOut2 << wholeGenome[baseNum];
         baseNum++;
     }
     mutGenomeOut << std::endl;
+    mutGenomeOut2 << std::endl;
     mutGenomeOut.close();
+    mutGenomeOut2.close();
+
     std::cout << "Inserted " << mutationCounter << " total mutations into " << mutatedReferenceFile1 << std::endl;
     std::cout << "Position of last mutation: " << lastMutationPosition << std::endl;
     std::cout << "A total of " << mutationsKept << " mutations were kept in the less-heterozygous individual" << std::endl;
