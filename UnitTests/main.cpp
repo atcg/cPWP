@@ -192,13 +192,13 @@ TEST_CASE( " Mapping reads for covariance ind2", "[mapReadsCovar2]") {
 
 
 // Use angsd to generate the read counts for the two individuals
-TEST_CASE( "Run ANGSD on simulated reads", "[runANGSD]" ) {
+TEST_CASE( "Run ANGSD on simulated reads for the covariance test", "[runANGSDCovar]" ) {
     REQUIRE( runANGSDforReadCounts("covarBamlist.txt", "covarAngsdOut", "5", "covarAngsdOutLog.txt") == 0);
     //runANGSDforReadCounts (std::string bamlist, std::string angsdPrefix, std::string nThreads, std::string angsdOutputLog)
 }
 
 // Convert read counts to binary
-TEST_CASE( "Convert ANGSD read counts to unsigned chars for major and minor counts", "[convertCountsToBinary]") {
+TEST_CASE( "Convert ANGSD read counts to unsigned chars for major and minor counts for the covariance test", "[convertCountsToBinaryCovar]") {
     REQUIRE( convertANGSDcountsToBinary("covarAngsdOut", "covarAngsdOut.readCounts.binary", 2, 250) == 0);
     //convertANGSDcountsToBinary(std::string angsdPrefix, std::string binaryOutputFileName, int numIndividuals, int readDepthMax)
 }
