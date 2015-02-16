@@ -39,7 +39,7 @@ int runANGSDforReadCounts (std::string bamlist, std::string angsdPrefix, std::st
     
     //std::string angsdCommand = "/home/evan/bin/angsd0.613/angsd -bam " + bamlist + " -out " + angsdPrefix + " -uniqueOnly 1 -only_proper_pairs 1 -remove_bads 1 -doCounts 1 -nThreads " + nThreads + " -dumpCounts 4 -doMaf 1 -doMajorMinor 2 -GL 2 -minMapQ 20 -minQ 30 -SNP_pval 1e-6 > " + angsdOutputLog + " 2>&1";
     
-    std::string angsdCommand = "/home/evan/bin/angsd0.613/angsd -bam " + bamlist + " -out " + angsdPrefix + " -uniqueOnly 1 -only_proper_pairs 1 -remove_bads 1 -doCounts 1 -nThreads " + nThreads + " -dumpCounts 4 -doMaf 1 -doMajorMinor 2 -GL 2 -minMapQ 20 -minQ 30 > " + angsdOutputLog + " 2>&1";
+    std::string angsdCommand = "env angsd -bam " + bamlist + " -out " + angsdPrefix + " -uniqueOnly 1 -only_proper_pairs 1 -remove_bads 1 -doCounts 1 -nThreads " + nThreads + " -dumpCounts 4 -doMaf 1 -doMajorMinor 2 -GL 2 -minMapQ 20 -minQ 30 > " + angsdOutputLog + " 2>&1";
     
     if (system((angsdCommand).c_str()) != 0) {
         std::cout << "**********\nFailure running the following command: " << angsdCommand << "\n**********\n";
