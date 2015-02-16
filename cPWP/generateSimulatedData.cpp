@@ -304,7 +304,7 @@ int createMutatedGenomesForCovar (std::string reference, std::string mutatedRefe
     }
     mutGenomeOut << std::endl;
     mutGenomeOut.close();
-    std::cout << "Inserted " << mutationCounter << " total mutations into " << mutatedReferenceFile << std::endl;
+    std::cout << "Inserted " << mutationCounter << " total mutations into " << mutatedReferenceFile1 << std::endl;
     std::cout << "Position of last mutation: " << lastMutationPosition << std::endl;
     std::cout << "A total of " << mutationsKept << " mutations were kept in the less-heterozygous individual" << std::endl;
     return 0;
