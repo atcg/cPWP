@@ -11,6 +11,7 @@
 #include "../cPWP/bamsToBin.h"
 //#include "../cPWP/calcPWP.h"
 #include "../cPWP/calcPWPchunks.h"
+#include "../cPWP/calcCOVARchunks.h"
 #include "catch.hpp"
 #include <string>
 #include <iostream>
