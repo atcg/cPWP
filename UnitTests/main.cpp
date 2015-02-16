@@ -98,13 +98,13 @@ TEST_CASE( "Convert ANGSD read counts to unsigned chars for major and minor coun
 }
 
 TEST_CASE( "Calculate PWP from the binary representations of the ANGSD readcounts", "[calcPWP]") {
-    REQUIRE( calcPWPfromBinaryFile ("angsdOut.readCounts.binary", 999990, 2, "testingOut.pwp", 1000, 5) == 0);
+    REQUIRE( calcPWPfromBinaryFile("angsdOut.readCounts.binary", 999990, 2, "testingOut.pwp", 1000, 5) == 0);
     //int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoci, const int numIndividuals, std::string outFile, int lociChunkSize, int numThreads=30);
 }
 
 
 TEST_CASE( "Calculate covariances from the same representations of the ANGSD readcounts", "[calcCovar]") {
-    REQUIRE(  calcCOVARfromBinaryFile ("angsdOut.readCounts.binary", 999990, 2, "testingOut.covar", 1000, 5)== 0);
+    REQUIRE(  calcCOVARfromBinaryFile("angsdOut.readCounts.binary", 999990, 2, "testingOut.covar", 1000, 5)== 0);
     //calcCOVARfromBinaryFile (std::string binaryFile, long long int numLoci, const int numIndividuals, std::string outFile, int lociChunkSize, const int numThreads)
 }
 
