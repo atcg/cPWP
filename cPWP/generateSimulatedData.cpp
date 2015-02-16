@@ -286,7 +286,7 @@ int createMutatedGenomesForCovar (std::string reference, std::string mutatedRefe
                 
                 if (rand() % 2 == 1) {
                     mutGenomeOut2 << gMutBases[randomBaseNum];
-                    mutationsKept++
+                    mutationsKept++;
                 } else {
                     mutGenomeOut2 << "G";
                 }
