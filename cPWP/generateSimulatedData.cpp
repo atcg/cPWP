@@ -222,6 +222,7 @@ int createMutatedGenomesForCovar (std::string reference, std::string mutatedRefe
     while (baseNum < wholeGenome.length()) {
         if (baseNum % 80 == 0) {
             mutGenomeOut << std::endl; // Just for ease of readability
+            mutGenomeOut2 << std::endl;
         }
         
         if (baseNum < 100) {

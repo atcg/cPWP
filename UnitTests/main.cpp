@@ -116,7 +116,7 @@ TEST_CASE( "Calculate PWP from the binary representations of the ANGSD readcount
  
  
  */
-
+std::cout << "\n\n******Running the covariance test now******\n" << std::endl;
 
 TEST_CASE( "Generate reference genome for the covariance tests", "[generateReferenceCovar]") {
     REQUIRE( createReferenceGenome(10000000, 0.42668722, "simulatedReferenceGenome10mil.fasta") == 0 );
@@ -205,7 +205,7 @@ TEST_CASE( "Convert ANGSD read counts to unsigned chars for major and minor coun
 
 
 TEST_CASE( "Calculate covariances from the same representations of the ANGSD readcounts", "[calcCovar]") {
-    REQUIRE(  calcCOVARfromBinaryFile("covarAngsdOut.readCounts.binary", 9999990, 2, "testingOut.covar", 1000, 5)== 0);
+    REQUIRE(  calcCOVARfromBinaryFile("covarAngsdOut.readCounts.binary", 8999990, 2, "testingOut.covar", 1000, 5)== 0);
     //calcCOVARfromBinaryFile (std::string binaryFile, long long int numLoci, const int numIndividuals, std::string outFile, int lociChunkSize, const int numThreads)
 }
 
