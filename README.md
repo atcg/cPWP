@@ -82,7 +82,7 @@ So, if we wanted to analyze the first 800,000 loci in the majorMinorCounts.binar
 we had 10 total individuals represented in that file, we could do something like:
 
 ```
-./cPWP/cPWP/cPWP counts.binary 800000 10 divergenceFile.txt 40000 3
+./cPWP/cPWP/cPWP majorMinorCounts.binary 800000 10 divergenceOutput.txt 40000 3
 ```
 
 This command would take the first 800,000 sites in the binary file and break them
