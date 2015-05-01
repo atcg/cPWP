@@ -38,12 +38,13 @@ does both of those things.
 To use it, you must first generate the read counts for each base with ANGSD, which
 corresponds to the `-dumpCounts 4` argument. One such command might be:
 
-`~/bin/angsd0.613/angsd -bam bamlist.txt -out countsPrefix -doCounts 1 -dumpCounts 4 -doMajorMinor 2 -doMaf 8`
+`angsd0.613/angsd -bam bamlist.txt -out countsPrefix -doCounts 1 -dumpCounts 4 -doMajorMinor 2 -doMaf 8`
 
 This will generate three output files: countsPrefix.counts.gz, countsPrefix.pos.gz, and
 countsPrefix.mafs.gz. We will use countsPrefix.mafs.gz to determine which allele
-is major and which is minor, and with that information we will pull the appropriate
-columns from each line of countsPrefix.counts.gz. We'll unzip these first:
+is major and which is minor (this is created by supplying the -doMaf 8 argument),
+and with that information we will pull the appropriate columns from each line of
+countsPrefix.counts.gz. We'll unzip these first:
 
 ```
 gunzip countsPrefix.counts.gz
