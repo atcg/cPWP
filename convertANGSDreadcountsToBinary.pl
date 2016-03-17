@@ -41,14 +41,15 @@ GetOptions  ("maf=s"         => \$MAF,
              "maxdepth=i"    => \$maxReadDepth,
              "help|man"      => \$help) || die "Couldn't get options with GetOpt::Long: $!\n";
 
-if (!$MAF or !$countsFile or !$outFile or !$maxReadDepth or ($maxReadDepth > 255) or $help) {
-    die "Must supply --maf, --counts, --numIndividuals, --out, and --maxdepth.\n--maf designates the mafs \
-    file output by ANGSD\n--counts is for the counts file output by ANGSD\n--individuals
-    is the number of individuals input into ANGSD (the number of files in the bam file list\n\
-    --out is the desired name of the output file that holds the binary representation of the readcounts.\
-    --maxdepth is the highest allowed number for a major or minor allele read count (to avoid overweighting repetitive regions.\
-    The mafs and counts files should be unzipped first.\n\
-    Also note that the maximum value for --maxdepth is 255";
+if (!$MAF or !$countsFile or !$outFile or !$numIndividuals or !$maxReadDepth or ($maxReadDepth > 255) or $help) {
+    die "Must supply --maf, --counts, --individuals, --out, and --maxdepth.
+    --maf designates the mafs file output by ANGSD (uncompressed)
+    --counts is for the counts file output by ANGSD (uncompressed)
+    --individuals is the number of individuals input into ANGSD (the number of files in the bam file list)
+    --out is the desired name of the output file that holds the binary representation of the readcounts.
+    --maxdepth is the highest allowed number for a major or minor allele read count (to avoid overweighting repetitive regions.
+The mafs and counts files should be unzipped first.
+Also note that the maximum value for --maxdepth is 255";
 }
 
 my $locusCounter = 1;
