@@ -19,7 +19,6 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
     std::cout << "Number of threads: " << numThreads << std::endl;
     //std::streampos size;
     std::ifstream file (binaryFile, std::ios::in|std::ios::binary);
-    std::cout << "Made it to line 22" << std::endl;
 
 
     std::ifstream sampleFile(sampleNamesFile);
@@ -31,7 +30,6 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         sampleLines.push_back(sampleLine);
     }
     std::cout << "Tortoise 1: " << sampleLines[0] << ". Tortoise 100: " << sampleLines[99] << std::endl;
-    std::cout << "Line 34" << std::endl;
 
     if (file.is_open()) {
         //size = file.tellg(); // Just a variable that shows position of stream--at end since ios::ate, so it's the file size. PROBABLY WON'T WORK FOR FILES LARGER THAN ~ 2GB!
@@ -50,7 +48,6 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
          */
 
         std::cout << "Calculating divergence based on " << maxLocus << " total loci." << std::endl;
-        std::cout << "made it to line 53" << std::endl;
         // How many bytes to read in at one time (this number of loci will be split amongs numThreads threads, so it should be divisible exactly by numThreads. So the number of loci read in at a time will actually be numLoci*numThreads
         unsigned long long int lociChunkByteSize = (unsigned long long)lociChunkSize * numIndividuals * 2 * numThreads;
         int numFullChunks = (maxLocus*numIndividuals*2)/lociChunkByteSize; // Truncates answer to an integer
@@ -135,6 +132,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
 
         // Now print out the final output to the pairwise pi file:
         std::ofstream pwpOUT (outFile);
+        pwpOUT << "Sample1\tSample2\tPWP" << std::endl;
         int rowCounter = 0;
         if (!pwpOUT) {
             std::cerr << "Crap, " << outFile << "didn't open!" << std::endl;
@@ -152,14 +150,17 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
                         std::cout << "Weightings for tortoise " << tortoise << " and comparisonTortoise " << comparisonTortoise << " : " << weightingsSum[tortoise][comparisonTortoise] << std::endl;
                         std::cout << "PWP for tortoise " << tortoise << " and comparisonTortoise " << comparisonTortoise << " : " << pwpSum[tortoise][comparisonTortoise] << std::endl;
                         std::cout << std::scientific;
-                        pwpOUT << pwpSum[tortoise][comparisonTortoise] / weightingsSum[tortoise][comparisonTortoise] << std::endl;
+                        //pwpOUT << pwpSum[tortoise][comparisonTortoise] / weightingsSum[tortoise][comparisonTortoise] << std::endl;
+                        pwpOUT << sampleLines[tortoise] << "\t" << sampleLines[comparisonTortoise] << "\t" << pwpSum[tortoise][comparisonTortoise] / weightingsSum[tortoise][comparisonTortoise] << std::endl;
                     } else {
                         pwpOUT << "NA" << std::endl;
                     }
                 }
             }
         }
-    } else std::cout << "Unable to open file";
+    } else {
+        std::cout << "Unable to open file";
+    }
 
     return 0;
 }
