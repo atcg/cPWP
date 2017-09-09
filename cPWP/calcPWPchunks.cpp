@@ -31,7 +31,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         sampleLines.push_back(sampleLine);
     }
     std::cout << "Tortoise 1: " << sampleLines[0] << ". Tortoise 100: " << sampleLines[99] << std::endl;
-
+    std::cout << "Line 34" << std::endl;
 
     if (file.is_open()) {
         //size = file.tellg(); // Just a variable that shows position of stream--at end since ios::ate, so it's the file size. PROBABLY WON'T WORK FOR FILES LARGER THAN ~ 2GB!
@@ -50,7 +50,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
          */
 
         std::cout << "Calculating divergence based on " << maxLocus << " total loci." << std::endl;
-
+        std::cout << "made it to line 53" << std::endl;
         // How many bytes to read in at one time (this number of loci will be split amongs numThreads threads, so it should be divisible exactly by numThreads. So the number of loci read in at a time will actually be numLoci*numThreads
         unsigned long long int lociChunkByteSize = (unsigned long long)lociChunkSize * numIndividuals * 2 * numThreads;
         int numFullChunks = (maxLocus*numIndividuals*2)/lociChunkByteSize; // Truncates answer to an integer
