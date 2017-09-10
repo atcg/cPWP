@@ -29,7 +29,6 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
     while (std::getline(sampleFile, sampleLine)) {
         sampleLines.push_back(sampleLine);
     }
-    std::cout << "Tortoise 1: " << sampleLines[0] << ". Tortoise 100: " << sampleLines[99] << std::endl;
 
     if (file.is_open()) {
         //size = file.tellg(); // Just a variable that shows position of stream--at end since ios::ate, so it's the file size. PROBABLY WON'T WORK FOR FILES LARGER THAN ~ 2GB!
