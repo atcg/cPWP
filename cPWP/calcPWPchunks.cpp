@@ -13,13 +13,10 @@
 #include <thread>
 #include <string>
 
-
 int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoci, const int numIndividuals, std::string outFile, int lociChunkSize, std::string sampleNamesFile, int numThreads) {
-
     std::cout << "Number of threads: " << numThreads << std::endl;
     //std::streampos size;
     std::ifstream file (binaryFile, std::ios::in|std::ios::binary);
-
 
     std::ifstream sampleFile(sampleNamesFile);
 
@@ -88,9 +85,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
 
                 std::cout << "Got to the function call in main loop. Running thread # " << threadRunning << std::endl;
 
-                //threadsVec.push_back(std::thread(calcPWPforRange, numIndividuals, lociPerThread, std::ref(readCounts), std::ref(pwpThreads[threadRunning]), std::ref(weightingsThreads[threadRunning])));
                 threadsVec.push_back(std::thread(calcPWPforRange, firstLocus, finishingLocus, numIndividuals, std::ref(readCounts), std::ref(pwpThreads[threadRunning]), std::ref(weightingsThreads[threadRunning])));
-
             }
 
             // Wait on threads to finish
@@ -103,19 +98,21 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
             std::cout << "Finished processing " << chunkCounter * lociPerThread * numThreads << " loci out of " << maxLocus << std::endl;
         }
 
-
-
         // For the last chunk, we'll just run it in a single thread, so we don't have to worry about numRemainingLoci/lociPerThread remainders... Just add everything to the vectors for thread 1
-        std::vector<unsigned char> readCountsRemaining(remainingBytesAfterFullChunks);
-        file.read((char*) &readCountsRemaining[0], remainingBytesAfterFullChunks);
-        unsigned long long int finishingLocus = (readCountsRemaining.size()/(numIndividuals*2)) - 1;
-        calcPWPforRange(0, finishingLocus, numIndividuals, std::ref(readCountsRemaining), std::ref(pwpThreads[0]), std::ref(weightingsThreads[0]));
-
+        // We need to skip this block, however, if remainingBytesAfterFullChunks is 0
+        if (remainingBytesAfterFullChunks != 0) {
+            std::vector<unsigned char> readCountsRemaining(remainingBytesAfterFullChunks);
+            file.read((char*) &readCountsRemaining[0], remainingBytesAfterFullChunks);
+            unsigned long long int finishingLocus = (readCountsRemaining.size()/(numIndividuals*2)) - 1;
+            calcPWPforRange(0, finishingLocus, numIndividuals, std::ref(readCountsRemaining), std::ref(pwpThreads[0]), std::ref(weightingsThreads[0]));
+        }
 
 
         // Now aggregate the results of the threads and print final results
         std::vector<std::vector<long double>> weightingsSum(numIndividuals, std::vector<long double>(numIndividuals,0));
+        std::cout << "Made it to 116" << std::endl;
         std::vector<std::vector<long double>> pwpSum(numIndividuals, std::vector<long double>(numIndividuals,0));
+        std::cout << "Made it to 118" << std::endl;
 
         for (int tortoise = 0; tortoise < numIndividuals; tortoise++) {
             for (int comparisonTortoise = 0; comparisonTortoise <= tortoise; comparisonTortoise++) {
@@ -160,7 +157,6 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
     } else {
         std::cout << "Unable to open file";
     }
-
     return 0;
 }
 
@@ -210,67 +206,3 @@ int calcPWPforRange (unsigned long long startingLocus, unsigned long long ending
     return 0;
 }
 
-
-
-
-
-/*
-int calcPWPforRange (int numberIndividuals, unsigned long long int lociToCalc, std::vector<unsigned char>& mainReadCountVector, std::vector<std::vector<long double>>& threadPWP, std::vector<std::vector<unsigned long long int>>& threadWeightings) {
-
-    std::cout << "Processing " << lociToCalc << " total loci" << std::endl;
-
-    for( unsigned long long locus = 0; locus < lociToCalc; locus++) {
-        std::cout << "Working on locus " << locus << std::endl;
-        //std::cout << "Processing locus # " << locus << std::endl;
-        if (locus % 100000 == 0) {
-            std::cout << locus << " loci processed through calcPWPfromBinaryFile" << std::endl;
-        }
-
-        std::cout << "Made it to line 169" << std::endl;
-
-        unsigned long long coverages[numberIndividuals];
-        long double *majorAlleleFreqs = new long double[numberIndividuals]; // This will hold the major allele frequencies for that locus for each tortoise
-        std::cout << "Made it to line 173" << std::endl;
-
-        for( int tortoise = 0; tortoise < numberIndividuals; tortoise++ ) {
-            unsigned long long majorIndex = locus * (numberIndividuals*2) + 2 * tortoise;
-            std::cout << "Major index for tortoise " << tortoise << " and locus " << locus << " : " << majorIndex << std::endl;
-            unsigned long long minorIndex = locus * (numberIndividuals*2) + 2 * tortoise + 1;
-            std::cout << "Minor index for tortoise " << tortoise << " and locus " << locus << " : " << minorIndex << std::endl;
-
-            std::cout << "Made it to line 178 for tortoise " << tortoise << " and locus " << locus << std::endl;
-
-            coverages[tortoise] = int(mainReadCountVector[majorIndex]) + int(mainReadCountVector[minorIndex]); // Hold the coverages for each locus
-            std::cout << "Made it to line 182 for tortoise" << tortoise << " and locus " << locus << std::endl;
-            if ( coverages[tortoise] > 0 ) {
-                majorAlleleFreqs[tortoise] = (long double)mainReadCountVector[majorIndex] / (long double)coverages[tortoise]; // Not necessarily an int, but could be 0 or 1
-                std::cout << "Made it to line 185 for tortoise" << tortoise << " and locus " << locus << std::endl;
-                if (coverages[tortoise] > 1) {
-                    unsigned long long locusWeighting = (unsigned long long) (coverages[tortoise]*(coverages[tortoise]-1));
-                    //unsigned long long locusWeighting = (unsigned long long) (coverages[tortoise]*(coverages[tortoise])); // Shift weightings to match the weightings of the inter-comparisons by removing the -1
-                    threadWeightings[tortoise][tortoise] += (unsigned long long)locusWeighting; // This is an integer--discrete number of reads
-                    std::cout << "Made it to line 190 for tortoise" << tortoise << " and locus " << locus << std::endl;
-                    threadPWP[tortoise][tortoise] += (long double)(locusWeighting) * ((long double)2.0 * majorAlleleFreqs[tortoise] * ((long double)(coverages[tortoise]) - (long double)(mainReadCountVector[majorIndex])) / (long double)((coverages[tortoise])-(long double)1.0));
-                }
-                std::cout << "Made it to line 193 for tortoise" << tortoise << " and locus " << locus << std::endl;
-                for( int comparisonTortoise = 0; comparisonTortoise < tortoise; comparisonTortoise++) {
-                    if (coverages[comparisonTortoise] > 0) {
-                        unsigned long long locusWeighting = (unsigned long long)coverages[tortoise] * (unsigned long long)(coverages[comparisonTortoise]);
-                        threadWeightings[tortoise][comparisonTortoise] += locusWeighting;
-
-                        threadPWP[tortoise][comparisonTortoise] += (long double)locusWeighting * (majorAlleleFreqs[tortoise] * ((long double)1.0-majorAlleleFreqs[comparisonTortoise]) + majorAlleleFreqs[comparisonTortoise] * ((long double)1.0-majorAlleleFreqs[tortoise]));
-                    }
-                }
-            }
-        }
-        delete[] majorAlleleFreqs; // Needed to avoid memory leaks
-    }
-    return 0;
-}
-
-
-
-
-
-
-*/

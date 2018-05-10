@@ -76,14 +76,16 @@ To run divergence calculations based on the data in the file, you can use the fo
 command:
 
 ```
-cPWP majorMinorCounts.binary <numLociToAnalyze> <numIndividuals> <outputFileName> <blockSize> <numThreads>
+cPWP majorMinorCounts.binary <numLociToAnalyze> <numIndividuals> <outputFileName> <blockSize> sampleNames.txt <numThreads>
 ```
+Here sampleNames.txt is simply a file that contains all of the sample names in order, one name per 
+line. This is used to make the output more readable.
 
 So, if we wanted to analyze the first 800,000 loci in the majorMinorCounts.binary file and
 we had 10 total individuals represented in that file, we could do something like:
 
 ```
-./cPWP/cPWP/cPWP majorMinorCounts.binary 800000 10 divergenceOutput.txt 40000 3
+./cPWP/cPWP/cPWP majorMinorCounts.binary 800000 10 divergenceOutput.txt 40000 sampleNames.txt 3
 ```
 
 This command would take the first 800,000 sites in the binary file and break them
