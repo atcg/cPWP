@@ -32,25 +32,15 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         //file.seekg (0, std::ios::beg); // Go back to the beginning of the file
         //std::cout << "The total size of the file is " << size << "bytes. This corresponds to " << size/(numIndividuals*2) << " loci" << std::endl;
 
-
-
         unsigned long long int maxLocus = numLoci;
-        /*
-        if (numLoci == 0) {
-            maxLocus = (unsigned long long)(size/(numIndividuals*2));
-        } else {
-            maxLocus = numLoci;
-        }
-         */
-
         std::cout << "Calculating divergence based on " << maxLocus << " total loci." << std::endl;
         // How many bytes to read in at one time (this number of loci will be split amongs numThreads threads, so it should be divisible exactly by numThreads. So the number of loci read in at a time will actually be numLoci*numThreads
         unsigned long long int lociChunkByteSize = (unsigned long long)lociChunkSize * numIndividuals * 2 * numThreads;
-        int numFullChunks = (maxLocus*numIndividuals*2)/lociChunkByteSize; // Truncates answer to an integer
+        std::cout << "Chunk size: " << lociChunkByteSize << std::endl;
         unsigned long long remainingBytesAfterFullChunks = (maxLocus*numIndividuals*2) % lociChunkByteSize;
+        std::cout << "RemainingBytesAfterFullChunks: " << remainingBytesAfterFullChunks << std::endl;
 
-        std::cout << "Total number of chunks to run: " << numFullChunks + 1 << std::endl;
-
+        int numFullChunks = (maxLocus*numIndividuals*2)/lociChunkByteSize;
 
         /* We are going to split the loci between numThreads threads. Each thread will modify two multidimensional
          vectors of the forms std::vector< std::vector<long double> > pwp(numIndividuals, std::vector<long double>(numIndividuals,0))    and   std::vector< std::vector<unsigned long long int> > weightings(numIndividuals, std::vector<unsigned long long int>(numIndividuals,0))
@@ -62,16 +52,13 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         std::cout << "Initialized the 3d weighting and pwp vectors" << std::endl;
 
 
-        //file.read((char*) &readCounts[0], size);
-
         // Read in the data in chunks, and process each chunk using numThreads threads
-
         int chunkCounter = 0;
         while (chunkCounter < numFullChunks) {
             unsigned long long bytesPerThread = lociChunkByteSize / numThreads;
             unsigned long long int lociPerThread = bytesPerThread / (numIndividuals*2);
 
-            std::cout << "Running chunk #" << chunkCounter << std::endl;
+            std::cout << "Running chunk #" << chunkCounter + 1<< std::endl;
             std::vector<unsigned char> readCounts(lociChunkByteSize);
             file.read((char*) &readCounts[0], lociChunkByteSize);
 
@@ -93,7 +80,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
                 threadsVec[i].join();
                 std::cout << "Joined thread " << i << std::endl;
             }
-            std::cout << "All threads completed running for chunk " << chunkCounter << " of " << numFullChunks + 1 << std::endl;
+            std::cout << "All threads completed running for full chunk " << chunkCounter + 1 << " of " << numFullChunks << std::endl;
             chunkCounter++;
             std::cout << "Finished processing " << chunkCounter * lociPerThread * numThreads << " loci out of " << maxLocus << std::endl;
         }
@@ -107,12 +94,9 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
             calcPWPforRange(0, finishingLocus, numIndividuals, std::ref(readCountsRemaining), std::ref(pwpThreads[0]), std::ref(weightingsThreads[0]));
         }
 
-
         // Now aggregate the results of the threads and print final results
         std::vector<std::vector<long double>> weightingsSum(numIndividuals, std::vector<long double>(numIndividuals,0));
-        std::cout << "Made it to 116" << std::endl;
         std::vector<std::vector<long double>> pwpSum(numIndividuals, std::vector<long double>(numIndividuals,0));
-        std::cout << "Made it to 118" << std::endl;
 
         for (int tortoise = 0; tortoise < numIndividuals; tortoise++) {
             for (int comparisonTortoise = 0; comparisonTortoise <= tortoise; comparisonTortoise++) {
@@ -161,16 +145,9 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
 }
 
 
-
 int calcPWPforRange (unsigned long long startingLocus, unsigned long long endingLocus, int numIndividuals, std::vector<unsigned char>& mainReadCountVector, std::vector<std::vector<long double>>& threadPWP, std::vector<std::vector<unsigned long long int>>& threadWeightings) {
-
-    //std::cout << "Calculating PWP for the following locus range: " << startingLocus << " to " << endingLocus << std::endl;
-    for( unsigned long long locus = startingLocus; locus < endingLocus; locus++) {
-        //std::cout << "Processing locus # " << locus << std::endl;
-        //if (locus % 100000 == 0) {
-        //    std::cout << locus << " loci processed through calcPWPfromBinaryFile" << std::endl;
-        //}
-
+    std::cout << "Calculating PWP for the following locus range: " << startingLocus << " to " << endingLocus << std::endl;
+    for( unsigned long long locus = startingLocus; locus <= endingLocus; locus++) {
         unsigned long long coverages[numIndividuals];
         long double *majorAlleleFreqs = new long double[numIndividuals]; // This will hold the major allele frequencies for that locus for each tortoise
 
@@ -198,6 +175,8 @@ int calcPWPforRange (unsigned long long startingLocus, unsigned long long ending
                         threadPWP[tortoise][comparisonTortoise] += (long double)locusWeighting * (majorAlleleFreqs[tortoise] * ((long double)1.0-majorAlleleFreqs[comparisonTortoise]) + majorAlleleFreqs[comparisonTortoise] * ((long double)1.0-majorAlleleFreqs[tortoise]));
                     }
                 }
+            } else {
+                std::cout << "NO COVERARAGE" << std::endl;
             }
         }
         delete[] majorAlleleFreqs; // Needed to avoid memory leaks
