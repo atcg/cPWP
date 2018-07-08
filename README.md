@@ -76,21 +76,24 @@ To run divergence calculations based on the data in the file, you can use the fo
 command:
 
 ```
-cPWP majorMinorCounts.binary <numLociToAnalyze> <numIndividuals> <outputFileName> <blockSize> <numThreads>
+cPWP majorMinorCounts.binary <numLociToAnalyze> <numIndividuals> <outputFileName> <blockSize> <orderedNameList> <numThreads>
 ```
 
 So, if we wanted to analyze the first 800,000 loci in the majorMinorCounts.binary file and
 we had 10 total individuals represented in that file, we could do something like:
 
 ```
-./cPWP/cPWP/cPWP majorMinorCounts.binary 800000 10 divergenceOutput.txt 40000 3
+./cPWP/cPWP/cPWP majorMinorCounts.binary 800000 10 divergenceOutput.txt 40000 names.list 3
 ```
 
 This command would take the first 800,000 sites in the binary file and break them
 into chunks of 40,000 sites, deploying those chunks to three independent threads for
 computation. Once all chunks across all threads are finished running, results across
 all threads are pooled and the final divergence numbers are output to the specified
-output file.
+output file. Here, names.list is an ordered list of sample names in the same order as
+the list of bams that was originally passed to ANGSD (you could actually just use the 
+same bam list that you passed to ANGSD, but then your output columns 1 and 2 would look
+like "sample1.bam" and "sample2.bam" instead of "sample1" and "sample2".
 
 cPWP should experience a near-linear speed increase with increasing threads. {Examples of speed
 for different calculations}. To determine the chunk size and number of threads to use,
