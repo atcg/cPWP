@@ -91,8 +91,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
             calcPWPforRange(0, finishingLocus, numIndividuals, std::ref(readCountsRemaining), std::ref(pwpThreads[0]), std::ref(weightingsThreads[0]));
         }
 
-
-        // Now aggregate the results of the threads and print final results
+        //////// Aggregate the results of the threads and print final results ////////
         std::vector<std::vector<long double>> weightingsSum(numIndividuals, std::vector<long double>(numIndividuals,0));
         std::vector<std::vector<long double>> pwpSum(numIndividuals, std::vector<long double>(numIndividuals,0));
 
@@ -107,7 +106,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         std::cout << "Finished summing the threads vectors" << std::endl;\
         file.close(); // This is the binary file that holds all the read count data
 
-        // Now print out the final output to the pairwise pi file:
+        //////// Print out the final output to the pairwise pi file ////////
         std::ofstream pwpOUT (outFile);
         pwpOUT << "Sample1\tSample2\tPWP" << std::endl;
         int rowCounter = 0;
@@ -120,13 +119,14 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
 
                     //std::cout << "Tortoise numbers: " << tortoise << " and " << comparisonTortoise << std::endl;
                     if (weightingsSum[tortoise][comparisonTortoise] > 0) {
-                        //std::cout << weightings[tortoise][comparisonTortoise] << std::endl;
-                        //std::cout << pwp[tortoise][comparisonTortoise] / weightings[tortoise][comparisonTortoise] << std::endl;
+                        /*
+                        std::cout << weightings[tortoise][comparisonTortoise] << std::endl;
+                        std::cout << pwp[tortoise][comparisonTortoise] / weightings[tortoise][comparisonTortoise] << std::endl;
                         std::cout << std::fixed;
-//                        std::cout << "Weightings for tortoise " << tortoise << " and comparisonTortoise " << comparisonTortoise << " : " << weightingsSum[tortoise][comparisonTortoise] << std::endl;
-//                        std::cout << "PWP for tortoise " << tortoise << " and comparisonTortoise " << comparisonTortoise << " : " << pwpSum[tortoise][comparisonTortoise] << std::endl;
+                        std::cout << "Weightings for tortoise " << tortoise << " and comparisonTortoise " << comparisonTortoise << " : " << weightingsSum[tortoise][comparisonTortoise] << std::endl;
+                        std::cout << "PWP for tortoise " << tortoise << " and comparisonTortoise " << comparisonTortoise << " : " << pwpSum[tortoise][comparisonTortoise] << std::endl;
                         std::cout << std::scientific;
-                        //pwpOUT << pwpSum[tortoise][comparisonTortoise] / weightingsSum[tortoise][comparisonTortoise] << std::endl;
+                        */
                         pwpOUT << sampleLines[tortoise] << "\t" << sampleLines[comparisonTortoise] << "\t" << pwpSum[tortoise][comparisonTortoise] / weightingsSum[tortoise][comparisonTortoise] << std::endl;
                     } else {
                         pwpOUT << "NA" << std::endl;
@@ -161,7 +161,6 @@ int calcPWPforRange (unsigned long long startingLocus, unsigned long long ending
 
                 if (coverages[tortoise] > 1) {
                     unsigned long long locusWeighting = (unsigned long long) (coverages[tortoise]*(coverages[tortoise]-1));
-                    //unsigned long long locusWeighting = (unsigned long long) (coverages[tortoise]*(coverages[tortoise])); // Shift weightings to match the weightings of the inter-comparisons by removing the -1
                     threadWeightings[tortoise][tortoise] += (unsigned long long)locusWeighting; // This is an integer--discrete number of reads
 
                     threadPWP[tortoise][tortoise] += (long double)(locusWeighting) * ((long double)2.0 * majorAlleleFreqs[tortoise] * ((long double)(coverages[tortoise]) - (long double)(mainReadCountVector[majorIndex])) / (long double)((coverages[tortoise])-(long double)1.0));
@@ -182,6 +181,7 @@ int calcPWPforRange (unsigned long long startingLocus, unsigned long long ending
     //std::cout << "Finished thread ending on locus " << endingLocus + ((chunkCounter + 1) * numLoci * numThreads) << std::endl;
     return 0;
 }
+
 
 
 
