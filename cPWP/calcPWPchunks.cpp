@@ -27,11 +27,10 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
     if (file.is_open()) {
         std::cout << "Calculating divergence based on " << numLoci << " total loci." << std::endl;
 
-        // Calculate many bytes to read in at one time (this number of loci will be split amongs numThreads threads, so it should be divisible exactly by numThreads. 
-        // So the number of loci read in at a time will actually be numLoci*numThreads
-        unsigned long long int lociChunkByteSize = (unsigned long long)lociChunkSize * numIndividuals * 2 * numThreads;
+        // How many bytes to read in at one time. The number of loci read in at a time will actually be numLoci*numThreads
+        unsigned long long int lociChunkByteSize = (unsigned long long int)lociChunkSize * numIndividuals * 2 * numThreads;
         int numFullChunks = (numLoci*numIndividuals*2)/lociChunkByteSize; // Truncates answer to an integer
-        unsigned long long remainingBytesAfterFullChunks = (numLoci*numIndividuals*2) % lociChunkByteSize;
+        unsigned long long int remainingBytesAfterFullChunks = (numLoci*numIndividuals*2) % lociChunkByteSize;
 
         if (remainingBytesAfterFullChunks != 0) {
             std::cout << "Total number of chunks to run: " << numFullChunks + 1 << std::endl;
@@ -63,7 +62,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
             std::vector<std::thread> threadsVec;
             for (int threadRunning = 0; threadRunning < numThreads; threadRunning++) {
                 unsigned long long int firstLocus = (unsigned long long int) threadRunning * lociPerThread;
-                unsigned long long int finishingLocus = ((unsigned long long int) threadRunning * lociPerThread) + lociPerThread - (unsigned long long)1.0;
+                unsigned long long int finishingLocus = ((unsigned long long int) threadRunning * lociPerThread) + lociPerThread - (unsigned long long int)1.0;
 
                 threadsVec.push_back(std::thread(calcPWPforRange, firstLocus, finishingLocus, numIndividuals, std::ref(readCounts), std::ref(pwpThreads[threadRunning]), std::ref(weightingsThreads[threadRunning])));
             }
