@@ -155,10 +155,6 @@ int calcCOVARfromBinaryFile (std::string binaryFile, long long int numLoci, cons
 
 int calcCOVARforRange (long long int startingLocus, long long int endingLocus, const int numIndividuals, std::vector<unsigned char>& mainReadCountVector, std::vector<std::vector<long long int>>& weightSumProducts, std::vector<std::vector<long long int>>& weightSumFirst, std::vector<std::vector<long long int>>& threadWeightings) {    
     for( long long int locus = startingLocus; locus < endingLocus; locus++) {
-        if (locus % 100000 == 0) {
-            std::cout << locus << " loci processed through calcCOVARfromBinaryFile" << std::endl;
-        }
-        
         long long int coverages[numIndividuals];
         long long int *majorAlleleCounts = new long long int[numIndividuals]; // This will hold the major allele counts for that locus for each tortoise
         
