@@ -15,8 +15,15 @@
 
 
 
-int calcCOVARfromBinaryFile (std::string binaryFile, long long int numLoci, const int numIndividuals, std::string outFile, int lociChunkSize, const int numThreads) {
-    
+int calcCOVARfromBinaryFile (std::string binaryFile, long long int numLoci, const int numIndividuals, std::string outFile, int lociChunkSize, std::string sampleNamesFile, const int numThreads) {
+    // Get the list of sample names from the sampleNames file
+    std::ifstream sampleFile(sampleNamesFile);
+    std::string sampleLine;
+    std::vector<std::string> sampleLines;
+    while (std::getline(sampleFile, sampleLine)) {
+        sampleLines.push_back(sampleLine);
+    }
+
     std::cout << "Number of threads: " << numThreads << std::endl;
     //std::streampos size;
     std::ifstream file (binaryFile, std::ios::in|std::ios::binary);
@@ -133,7 +140,7 @@ int calcCOVARfromBinaryFile (std::string binaryFile, long long int numLoci, cons
                     
                     //(C[N,M]/W[N,M]) - (Z[N,M]/W[N,M])*(Z[M,N]/W[N,M]);
                     long double covar = ((weightSumProductsSUM[tortoise][comparisonTortoise])/(weightingsSUM[tortoise][comparisonTortoise])) - ((weightSumFirstSUM[tortoise][comparisonTortoise])/(weightingsSUM[tortoise][comparisonTortoise]))*((weightSumFirstSUM[comparisonTortoise][tortoise])/(weightingsSUM[tortoise][comparisonTortoise]));
-                    covarOUT << covar << std::endl;
+                    covarOUT << sampleLines[tortoise] << "\t" << sampleLines[comparisonTortoise] << "\t" << covar << std::endl;
                 }
             }
         }
@@ -141,8 +148,6 @@ int calcCOVARfromBinaryFile (std::string binaryFile, long long int numLoci, cons
     
     return 0;
 }
-
-
 
 /*
  D[N] =  total coverage

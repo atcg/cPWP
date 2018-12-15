@@ -18,10 +18,11 @@
 
 
 int main (int argc, char *argv[]) {
-    // PWP:
-    calcPWPfromBinaryFile (argv[1], atoi(argv[2]), atoi(argv[3]), argv[4], atoi(argv[5]), argv[6], atoi(argv[7]));
-
-    // Covariance:
-    //calcCOVARfromBinaryFile(std::string binaryFile, long long int numLoci, const int numIndividuals, std::string outFile, int lociChunkSize, const int numThreads)
-    //calcCOVARfromBinaryFile(argv[1], atoi(argv[2]), 272, argv[3], atoi(argv[4]), atoi(argv[5]));
+    if (std::string(argv[1]) == "pwp") {
+        // PWP:
+        calcPWPfromBinaryFile (argv[2], atoi(argv[3]), atoi(argv[4]), argv[5], atoi(argv[6]), argv[7], atoi(argv[8]));
+    } else if (std::string(argv[1]) == "covar") {
+        // Covariance:
+        calcCOVARfromBinaryFile (argv[2], atoi(argv[3]), atoi(argv[4]), argv[5], atoi(argv[6]), argv[7], atoi(argv[8]));
+    }
 }
