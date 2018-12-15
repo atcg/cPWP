@@ -4,7 +4,8 @@ This software can be used to calculate genetic differentiation between
 individual samples based on aligned short-read sequencing data. It is
 particularly useful for calculating global genome-wide differentiation
 between samples that have been sequenced at very low coverage, as it
-does not rely on called genotypes at any locus.
+does not rely on called genotypes at any locus. There are functions to
+calculate both pairwise pi and covariance among samples.
 
 
 Instructions:
@@ -72,18 +73,33 @@ file.
 
 The script will output a single file, in this case called `majorMinorCounts.binary`. 
 
-To run divergence calculations based on the data in the file, you can use the following
+A total of eight arguments must be supplied to cPWP:
+1) Either "pwp" for pairwise pi or "covar" for covariance
+2) The (full or relative) path to the binary read counts file
+3) The number of loci to analyze. This should be the total number of loci in your read counts file, unless you want to use a smaller subset for testing
+4) The number of individuals represented in the read counts file (this information is not encoded in the read counts file itself, so you need to supply this so that cPWP knows when a new locus begins)
+5) A name for the output file to be created
+6) The number of loci to be analyzed in a block per thread (see below).
+7) A file containing the sample names, with one name per line. For instance, the bamlist.txt file from above would work here
+8) The number of threads to use for computation
+
+To run pwp calculations based on the data in the file, you can use the following
 command:
 
 ```
-cPWP majorMinorCounts.binary <numLociToAnalyze> <numIndividuals> <outputFileName> <blockSize> <orderedNameList> <numThreads>
+cPWP pwp majorMinorCounts.binary <numLociToAnalyze> <numIndividuals> <outputFileName> <blockSize> <orderedNameList> <numThreads>
 ```
 
-So, if we wanted to analyze the first 800,000 loci in the majorMinorCounts.binary file and
+Similarly, to run covariance calculations based on the data in the file, you can use the following command:
+```
+cPWP covar majorMinorCounts.binary <numLociToAnalyze> <numIndividuals> <outputFileName> <blockSize> <orderedNameList> <numThreads>
+```
+
+So, if we wanted to calculate PWP over the first 800,000 loci in the majorMinorCounts.binary file and
 we had 10 total individuals represented in that file, we could do something like:
 
 ```
-./cPWP/cPWP/cPWP majorMinorCounts.binary 800000 10 divergenceOutput.txt 40000 names.list 3
+./cPWP/cPWP/cPWP pwp majorMinorCounts.binary 800000 10 divergenceOutput.txt 40000 names.list 3
 ```
 
 This command would take the first 800,000 sites in the binary file and break them
@@ -95,11 +111,18 @@ the list of bams that was originally passed to ANGSD (you could actually just us
 same bam list that you passed to ANGSD, but then your output columns 1 and 2 would look
 like "sample1.bam" and "sample2.bam" instead of "sample1" and "sample2".
 
-cPWP should experience a near-linear speed increase with increasing threads. {Examples of speed
-for different calculations}. To determine the chunk size and number of threads to use,
-first consider the amount of free RAM available. RAM usage will be equal to slightly
-more than the number of threads times the chunk size times 2, in bytes. If you have more bytes
+cPWP should experience a near-linear speed increase with increasing threads. To determine the chunk size 
+and number of threads to use, first consider the amount of free RAM available. RAM usage will be equal 
+to slightly more than the number of threads * chunk size * number of individuals * 2, in bytes. If you have more bytes
 of free RAM than the total size of the binary input file (again, in bytes), then simply
 make the chunk size equal to slightly less than the total number of loci to analyze divided by
 the number of free threads you have available. Otherwise, reduce the chunk size to reduce
-RAM usage.
+RAM usage. 
+
+For example, let's say you have a machine with 32 cores and 8GB of RAM, with read count data for 100,000,000 
+loci and 1,000 individuals. The binary read counts file would be 100000000*1000*2 = 200 billion bytes in size. If you 
+want to use all 32 cores, then you need to set the chunk size so that 32 * 2 * chunk size * number of samples 
+is smaller than 8GB (about 8 billion). So the absolute maximum chunk size would be about 8 billion / (32 * 2 * 1000) = 125,000.
+In practice, you shouldn't try to maximize the chunk size. In the scenario above I'd set the chunk size to 100,000, for instance,
+to leave some RAM available on the machine.
+
