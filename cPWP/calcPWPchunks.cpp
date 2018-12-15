@@ -73,9 +73,9 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
                 threadsVec[i].join();
             }
             if (remainingBytesAfterFullChunks != 0) {
-                std::cout << "All threads completed running for chunk " << chunkCounter << " of " << numFullChunks + 1 << std::endl;
+                std::cout << "All threads completed running for chunk " << chunkCounter + 1 << " of " << numFullChunks + 1 << std::endl;
             } else {
-                std::cout << "All threads completed running for chunk " << chunkCounter << " of " << numFullChunks << std::endl;
+                std::cout << "All threads completed running for chunk " << chunkCounter + 1 << " of " << numFullChunks << std::endl;
             }
             chunkCounter++;
             std::cout << "Finished processing " << chunkCounter * lociPerThread * numThreads << " loci out of " << numLoci << std::endl;

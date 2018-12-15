@@ -79,7 +79,7 @@ A total of eight arguments must be supplied to cPWP:
 3) The number of loci to analyze. This should be the total number of loci in your read counts file, unless you want to use a smaller subset for testing
 4) The number of individuals represented in the read counts file (this information is not encoded in the read counts file itself, so you need to supply this so that cPWP knows when a new locus begins)
 5) A name for the output file to be created
-6) The number of loci to be analyzed in a block per thread (see below).
+6) The number of loci to be analyzed in a block per thread. Choose 10000 for this unless you have a small amount of RAM and thousands of individuals (see below if you do).
 7) A file containing the sample names, with one name per line. For instance, the bamlist.txt file from above would work here
 8) The number of threads to use for computation
 
@@ -119,10 +119,18 @@ make the chunk size equal to slightly less than the total number of loci to anal
 the number of free threads you have available. Otherwise, reduce the chunk size to reduce
 RAM usage. 
 
+*** Maximim chunk size ***
+tl;dr: Just set the chunk size to 10000 and you should be fine. Setting a large chunk size doesn't make the
+software run appreciably faster. This will probably be defaulted in the future.
+
+For those interested, the chunk size tells the software how many loci to analyze at a time for each thread.
 For example, let's say you have a machine with 32 cores and 8GB of RAM, with read count data for 100,000,000 
 loci and 1,000 individuals. The binary read counts file would be 100000000*1000*2 = 200 billion bytes in size. If you 
 want to use all 32 cores, then you need to set the chunk size so that 32 * 2 * chunk size * number of samples 
 is smaller than 8GB (about 8 billion). So the absolute maximum chunk size would be about 8 billion / (32 * 2 * 1000) = 125,000.
-In practice, you shouldn't try to maximize the chunk size. In the scenario above I'd set the chunk size to 100,000, for instance,
-to leave some RAM available on the machine.
+
+In practice, you shouldn't try to maximize the chunk size. In the scenario above I'd just set the chunk size to 10,000, for instance,
+to leave RAM available on the machine. Also, if total loci / (chunk size * threads) is not a perfect integer, the remaining loci after
+all full chunks have run will be processed on a single thread. By setting the chunk size relatively small you ensure that this final 
+single-threaded chunk will be relatively small. This setting will likely be hard coded in the future.
 
