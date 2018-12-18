@@ -119,13 +119,13 @@ make the chunk size equal to slightly less than the total number of loci to anal
 the number of free threads you have available. Otherwise, reduce the chunk size to reduce
 RAM usage. 
 
-*** Maximim chunk size ***
+***Maximim chunk size***
 tl;dr: Just set the chunk size to 10000 and you should be fine. Setting a large chunk size doesn't make the
 software run appreciably faster. This will probably be defaulted in the future.
 
 For those interested, the chunk size tells the software how many loci to analyze at a time for each thread.
 For example, let's say you have a machine with 32 cores and 8GB of RAM, with read count data for 100,000,000 
-loci and 1,000 individuals. The binary read counts file would be 100000000*1000*2 = 200 billion bytes in size. If you 
+loci and 1,000 individuals. The binary read counts file would be 100000000 * 1000 * 2 = 200 billion bytes in size. If you 
 want to use all 32 cores, then you need to set the chunk size so that 32 * 2 * chunk size * number of samples 
 is smaller than 8GB (about 8 billion). So the absolute maximum chunk size would be about 8 billion / (32 * 2 * 1000) = 125,000.
 
