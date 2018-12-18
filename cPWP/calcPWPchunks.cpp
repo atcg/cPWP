@@ -13,7 +13,7 @@
 #include <string>
 
 int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoci, const int numIndividuals, std::string outFile, int lociChunkSize, std::string sampleNamesFile, int numThreads) {
-    // Get the list of sample names from the sampleNames file
+    // Get the list of sample names from the sampleNames file. We'll store these in a vector so that we can make the output readable at the end
     std::ifstream sampleFile(sampleNamesFile);
     std::string sampleLine;
     std::vector<std::string> sampleLines;
@@ -41,8 +41,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
         /* We are going to split the loci in the chunk between numThreads threads. Each thread will modify two multidimensional
          vectors of the forms std::vector< std::vector<long double> > pwp(numIndividuals, std::vector<long double>(numIndividuals,0))    
          and std::vector< std::vector<unsigned long long int> > weightings(numIndividuals, std::vector<unsigned long long int>(numIndividuals,0))
-         First, we'll generate all of these vectors, which apparently in C++ needs to be constructed of a
-         vector of two-dimensional vectors...
+         First, we'll generate all of these vectors of two-dimensional vectors:
          */
         std::vector<std::vector<std::vector<long double>>> pwpThreads(numThreads, std::vector<std::vector<long double>> (numIndividuals, std::vector<long double> (numIndividuals,0) ) ); //pwpThreads[0] is the first 2D array for the first thread, etc...
         std::vector<std::vector<std::vector<unsigned long long int>>> weightingsThreads(numThreads, std::vector<std::vector<unsigned long long int> > (numIndividuals, std::vector<unsigned long long int> (numIndividuals,0) ) );
@@ -67,7 +66,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
                 threadsVec.push_back(std::thread(calcPWPforRange, firstLocus, finishingLocus, numIndividuals, std::ref(readCounts), std::ref(pwpThreads[threadRunning]), std::ref(weightingsThreads[threadRunning])));
             }
 
-            // Wait on threads to finish
+            // Wait on all threads to finish
             for (int i = 0; i < numThreads; ++i) {
                 threadsVec[i].join();
             }
@@ -90,7 +89,7 @@ int calcPWPfromBinaryFile (std::string binaryFile, unsigned long long int numLoc
             calcPWPforRange(0, finishingLocus, numIndividuals, std::ref(readCountsRemaining), std::ref(pwpThreads[0]), std::ref(weightingsThreads[0]));
         }
 
-        //////// Aggregate the results of the threads and print final results ////////
+        //////// Aggregate the results of the threads and print final results into the output file ////////
         std::vector<std::vector<long double>> weightingsSum(numIndividuals, std::vector<long double>(numIndividuals,0));
         std::vector<std::vector<long double>> pwpSum(numIndividuals, std::vector<long double>(numIndividuals,0));
 
