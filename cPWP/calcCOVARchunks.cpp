@@ -13,7 +13,7 @@
 #include <string>
 
 int calcCOVARfromBinaryFile (std::string binaryFile, long long int numLoci, const int numIndividuals, std::string outFile, int lociChunkSize, std::string sampleNamesFile, const int numThreads) {
-    // Get the list of sample names from the sampleNames file
+    // Get the list of sample names from the sampleNames file. We'll use these to make the output file readable:
     std::ifstream sampleFile(sampleNamesFile);
     std::string sampleLine;
     std::vector<std::string> sampleLines;
@@ -27,7 +27,7 @@ int calcCOVARfromBinaryFile (std::string binaryFile, long long int numLoci, cons
     if (file.is_open()) {
         std::cout << "Calculating covariance based on " << numLoci << " total loci." << std::endl;
         
-        // How many bytes to read in at one time. The number of loci read in at a time will actually be numLoci*numThreads
+        // Determine how many bytes to read in at one time. The number of loci read in at a time will actually be numLoci*numThreads
         unsigned long long int lociChunkByteSize = (unsigned long long int)lociChunkSize * numIndividuals * 2 * numThreads;
         int numFullChunks = (numLoci*numIndividuals*2)/lociChunkByteSize; // Truncates answer to an integer
         unsigned long long int remainingBytesAfterFullChunks = (numLoci*numIndividuals*2) % lociChunkByteSize;
@@ -40,8 +40,7 @@ int calcCOVARfromBinaryFile (std::string binaryFile, long long int numLoci, cons
         
         /* We are going to split the loci between numThreads threads. Each thread will modify two multidimensional
          vectors that will hold the weightings, the weighted sum of products, and weighted sums of the firsts.
-         First, we'll generate all of these vectors, which apparently in C++ needs to be constructed of a
-         vector of two-dimensional vectors...
+         First, we'll generate all of these vectors of two-dimensional vectors:
          */
         std::vector<std::vector<std::vector<long long int>>> weightSumProductsThreads(numThreads, std::vector<std::vector<long long int>> (numIndividuals, std::vector<long long int> (numIndividuals,0) ) ); //covarThreads[0] is the first 2D array for the first thread, etc...
         std::vector<std::vector<std::vector<long long int>>> weightSumFirstThreads(numThreads, std::vector<std::vector<long long int>> (numIndividuals, std::vector<long long int> (numIndividuals,0) ) ); //covarThreads[0] is the first 2D array for the first thread, etc...
@@ -91,7 +90,7 @@ int calcCOVARfromBinaryFile (std::string binaryFile, long long int numLoci, cons
             calcCOVARforRange(0, finishingLocus, numIndividuals, std::ref(readCountsRemaining), std::ref(weightSumProductsThreads[0]), std::ref(weightSumFirstThreads[0]), std::ref(weightingsThreads[0]));
         }
         
-        // Now aggregate the results of the threads and print final results
+        // Now aggregate the results of the threads and print final results to output file
         std::vector<std::vector<long double>> weightingsSUM(numIndividuals, std::vector<long double>(numIndividuals,0));
         std::vector<std::vector<long double>> weightSumProductsSUM(numIndividuals, std::vector<long double>(numIndividuals,0));
         std::vector<std::vector<long double>> weightSumFirstSUM(numIndividuals, std::vector<long double>(numIndividuals,0));
